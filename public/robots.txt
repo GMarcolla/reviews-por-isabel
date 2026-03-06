@@ -1,0 +1,10 @@
+# Reviews por Isabel - Robots.txt
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://reviewsporisabel.com.br/sitemap.xml
+
+# Disallow test pages
+Disallow: /test-*
