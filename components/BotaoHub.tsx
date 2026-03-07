@@ -55,20 +55,26 @@ export function BotaoHub({
           'group relative block overflow-visible',
           'transition-all duration-300',
           'hover:shadow-none hover:-translate-y-1',
-          'focus:outline-none focus:ring-2 focus:ring-rosa-blush focus:ring-offset-2',
+          'focus:outline-none',
           'w-full aspect-[16/9]'
         )}
         aria-label={description ? `${title}: ${description}` : title}
-        style={{ padding: 0, background: 'transparent' }}
+        style={{ 
+          padding: 0, 
+          background: 'transparent',
+          WebkitTapHighlightColor: 'transparent',
+          userSelect: 'none',
+        }}
       >
         <Image
           src={imageSrc}
           alt={title}
           fill
-          className="object-contain transition-transform duration-300 group-hover:scale-105"
+          className="object-contain transition-transform duration-300 group-hover:scale-105 pointer-events-none"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           priority
           style={{ width: '100%', height: '100%' }}
+          draggable={false}
         />
       </Link>
     );

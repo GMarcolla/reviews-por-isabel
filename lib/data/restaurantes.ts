@@ -3,20 +3,6 @@ import { Lugar } from '../types';
 export const restaurantes: Lugar[] = [
   // Hamburguerias
   {
-    id: 'alexandria',
-    nome: 'Alexandria',
-    categoria: 'hamburgueria',
-    descricaoCurta: 'É ótimo pra experimentar vários sabores de hambúrguer e comer à vontade!',
-    descricaoCompleta: 'É ótimo pra experimentar vários sabores de hambúrguer e comer à vontade! Um lugar perfeito para quem ama hambúrguer e quer experimentar diferentes combinações.',
-    imagem: '/placeholder-restaurante.svg',
-    imagemAlt: 'Alexandria Hamburgueria',
-    endereco: 'Blumenau-SC',
-    enderecoGoogleMaps: 'https://maps.app.goo.gl/p8ifE91UjfSCqonL7',
-    instagramReview: 'https://www.instagram.com/reel/DLK5r8xMxsU/?igsh=NGxvaDJidW14NXh1',
-    destaque: true,
-    ordem: 1,
-  },
-  {
     id: 'hope-burger-pizza',
     nome: 'Hope Burger Pizza',
     categoria: 'hamburgueria',
@@ -30,6 +16,20 @@ export const restaurantes: Lugar[] = [
     enderecoGoogleMaps2: 'https://maps.app.goo.gl/u6CmMEy4nADBRDFD7',
     enderecoGoogleMaps2Label: 'Pizzaria',
     instagramReview: 'https://www.instagram.com/reel/DTJMoqEj-km/?igsh=MTY0cDlmem1iZTMzYg==',
+    ordem: 1,
+  },
+  {
+    id: 'alexandria',
+    nome: 'Alexandria',
+    categoria: 'hamburgueria',
+    descricaoCurta: 'É ótimo pra experimentar vários sabores de hambúrguer e comer à vontade!',
+    descricaoCompleta: 'É ótimo pra experimentar vários sabores de hambúrguer e comer à vontade! Um lugar perfeito para quem ama hambúrguer e quer experimentar diferentes combinações.',
+    imagem: '/placeholder-restaurante.svg',
+    imagemAlt: 'Alexandria Hamburgueria',
+    endereco: 'Blumenau-SC',
+    enderecoGoogleMaps: 'https://maps.app.goo.gl/p8ifE91UjfSCqonL7',
+    instagramReview: 'https://www.instagram.com/reel/DLK5r8xMxsU/?igsh=NGxvaDJidW14NXh1',
+    destaque: true,
     ordem: 2,
   },
   {

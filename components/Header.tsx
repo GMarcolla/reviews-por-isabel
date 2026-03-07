@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
@@ -58,9 +59,15 @@ export function Header({ currentPath }: HeaderProps) {
             className="flex items-center space-x-2"
             onClick={() => setMobileMenuOpen(false)}
           >
-            <h1 className="font-display text-xl md:text-2xl font-bold text-marrom-forte">
-              Reviews por Isabel
-            </h1>
+            <div className="relative w-32 h-10 md:w-40 md:h-12">
+              <Image
+                src="/logotipo.png"
+                alt="Reviews por Isabel"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
           </Link>
 
           {/* Menu Desktop */}

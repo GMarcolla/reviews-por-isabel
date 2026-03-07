@@ -38,6 +38,10 @@ export const metadata: Metadata = {
   authors: [{ name: "Isabel" }],
   creator: "Isabel",
   publisher: "Reviews por Isabel",
+  icons: {
+    icon: '/logotipo.png',
+    apple: '/logotipo.png',
+  },
   formatDetection: {
     email: false,
     address: false,
