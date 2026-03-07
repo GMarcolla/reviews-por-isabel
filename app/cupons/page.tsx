@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Container } from '@/components/Container';
 import { getCupons } from '@/lib/data/cupons';
 import { Ticket, Search, Filter } from 'lucide-react';
 
-export default function CuponsPage() {
+function CuponsContent() {
   const searchParams = useSearchParams();
   const lugarIdParam = searchParams.get('lugar');
   
@@ -224,5 +224,19 @@ export default function CuponsPage() {
         </div>
       )}
     </Container>
+  );
+}
+
+export default function CuponsPage() {
+  return (
+    <Suspense fallback={
+      <Container size="xl" className="py-8 md:py-12">
+        <div className="text-center">
+          <p className="text-lg text-marrom-rosado">Carregando cupons...</p>
+        </div>
+      </Container>
+    }>
+      <CuponsContent />
+    </Suspense>
   );
 }
