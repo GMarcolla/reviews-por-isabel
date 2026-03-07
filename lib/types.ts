@@ -46,6 +46,10 @@ export interface Lugar {
   imagemAlt: string;             // Alt text da imagem
   galeria?: string[];            // Imagens adicionais
   endereco?: string;             // Endereço completo
+  enderecoGoogleMaps?: string;   // Link do Google Maps (endereço 1)
+  enderecoGoogleMapsLabel?: string; // Descrição do endereço 1 (ex: "Hamburgueria")
+  enderecoGoogleMaps2?: string;  // Link do Google Maps (endereço 2)
+  enderecoGoogleMaps2Label?: string; // Descrição do endereço 2 (ex: "Pizzaria")
   telefone?: string;             // Telefone de contato
   instagram?: string;            // Handle/URL do Instagram do estabelecimento
   instagramReview?: string;      // URL do vídeo de review no Instagram

@@ -113,9 +113,31 @@ export default async function LazerPage({ params }: { params: Promise<{ slug: st
               {lazer.endereco && (
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
-                  <div>
+                  <div className="flex-1">
                     <p className="text-sm font-semibold text-marrom-forte">Endereço</p>
-                    <p className="text-sm text-marrom-rosado">{lazer.endereco}</p>
+                    <p className="text-sm text-marrom-rosado mb-2">{lazer.endereco}</p>
+                    <div className="space-y-2">
+                      {lazer.enderecoGoogleMaps && (
+                        <a 
+                          href={lazer.enderecoGoogleMaps}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block text-xs text-white bg-marrom-rosado hover:bg-marrom-forte px-3 py-2 rounded-md transition-colors text-center"
+                        >
+                          📍 {lazer.enderecoGoogleMapsLabel || 'Ver no Google Maps'}
+                        </a>
+                      )}
+                      {lazer.enderecoGoogleMaps2 && (
+                        <a 
+                          href={lazer.enderecoGoogleMaps2}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block text-xs text-white bg-marrom-rosado hover:bg-marrom-forte px-3 py-2 rounded-md transition-colors text-center"
+                        >
+                          📍 {lazer.enderecoGoogleMaps2Label || 'Ver endereço 2'}
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}

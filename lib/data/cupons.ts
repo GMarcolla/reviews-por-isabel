@@ -129,6 +129,10 @@ export function getCupomByLugarId(lugarId: string): Cupom | undefined {
   return cupons.find(c => c.lugarId === lugarId && c.ativo);
 }
 
+export function getCuponsByLugarId(lugarId: string): Cupom[] {
+  return cupons.filter(c => c.lugarId === lugarId && c.ativo);
+}
+
 export function getCuponsByCategoria(categoria: string): Cupom[] {
   return cupons.filter(c => c.categoria === categoria && c.ativo);
 }

@@ -39,6 +39,7 @@ export default function PrestadoresPage() {
           <CardLugar 
             key={prestador.id} 
             lugar={prestador}
+            showSubcategoria={true}
           />
         ))}
       </div>

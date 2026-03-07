@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { MapPin, Phone, Instagram, Globe, Clock, DollarSign, Ticket } from 'lucide-react';
 import { getPrestadores, getPrestadorBySlug } from '@/lib/data/prestadores';
-import { getCupomByLugarId } from '@/lib/data/cupons';
+import { getCuponsByLugarId } from '@/lib/data/cupons';
 import { Container } from '@/components/Container';
 
 // Generate static params for SSG
@@ -45,8 +45,8 @@ export default async function PrestadorPage({ params }: { params: Promise<{ slug
     notFound();
   }
 
-  // Verificar se tem cupom
-  const cupom = getCupomByLugarId(prestador.id);
+  // Verificar se tem cupons
+  const cupons = getCuponsByLugarId(prestador.id);
 
   // Helper function to render price range
   const renderPriceRange = (faixaPreco?: number) => {
@@ -105,6 +105,65 @@ export default async function PrestadorPage({ params }: { params: Promise<{ slug
               </div>
             </div>
           )}
+
+          {/* Cupons Section */}
+          {cupons.length > 0 && (
+            <div className="mt-12">
+              <div className="border-t-2 border-rosa-claro pt-8 mb-6">
+                <h2 className="font-display text-3xl text-marrom-forte">
+                  Cupons de Desconto
+                </h2>
+              </div>
+
+              <div className="grid gap-6 md:grid-cols-2">
+                {cupons.map((cupom) => (
+                  <div key={cupom.id} className="bg-white rounded-card shadow-card p-6 hover:shadow-card-hover transition-shadow">
+                    {/* Header */}
+                    <div className="flex items-start gap-3 mb-4">
+                      <div className="flex-shrink-0 w-12 h-12 bg-rosa-blush rounded-full flex items-center justify-center">
+                        <Ticket className="w-6 h-6 text-marrom-forte" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-display text-xl text-marrom-forte mb-1">
+                          Cupom de Desconto
+                        </h3>
+                        <p className="text-sm text-marrom-rosado">
+                          Oferta exclusiva
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Desconto */}
+                    <div className="mb-4 p-4 bg-rosa-claro/50 rounded-lg">
+                      <p className="text-2xl font-bold text-marrom-forte text-center">
+                        {cupom.descricao}
+                      </p>
+                    </div>
+
+                    {/* Código */}
+                    {cupom.codigo && (
+                      <div className="mb-4">
+                        <p className="text-sm font-semibold text-marrom-forte mb-2">Código:</p>
+                        <div className="p-3 bg-creme-claro rounded-lg border-2 border-dashed border-rosa-blush">
+                          <p className="text-center font-mono font-bold text-marrom-forte">
+                            {cupom.codigo}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Termos */}
+                    {cupom.termos && (
+                      <div className="text-xs text-marrom-rosado">
+                        <p className="font-semibold mb-1">Termos:</p>
+                        <p>{cupom.termos}</p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Sidebar with details */}
@@ -112,25 +171,36 @@ export default async function PrestadorPage({ params }: { params: Promise<{ slug
           <div className="bg-rosa-claro rounded-lg p-6 sticky top-24">
             <h2 className="font-display text-2xl text-marrom-forte mb-4">Informações</h2>
             
-            {/* Botão de Cupom */}
-            {cupom && (
-              <Link
-                href={`/cupons?lugar=${prestador.id}`}
-                className="flex items-center justify-center gap-2 w-full mb-6 px-4 py-3 bg-rosa-blush text-marrom-forte font-semibold rounded-lg hover:bg-rosa-blush/80 transition-colors"
-              >
-                <Ticket className="w-5 h-5" />
-                Ver Cupom de Desconto
-              </Link>
-            )}
-            
             <div className="space-y-4">
               {/* Address */}
               {prestador.endereco && (
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
-                  <div>
+                  <div className="flex-1">
                     <p className="text-sm font-semibold text-marrom-forte">Endereço</p>
-                    <p className="text-sm text-marrom-rosado">{prestador.endereco}</p>
+                    <p className="text-sm text-marrom-rosado mb-2">{prestador.endereco}</p>
+                    <div className="space-y-2">
+                      {prestador.enderecoGoogleMaps && (
+                        <a 
+                          href={prestador.enderecoGoogleMaps}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block text-xs text-white bg-marrom-rosado hover:bg-marrom-forte px-3 py-2 rounded-md transition-colors text-center"
+                        >
+                          📍 {prestador.enderecoGoogleMapsLabel || 'Ver no Google Maps'}
+                        </a>
+                      )}
+                      {prestador.enderecoGoogleMaps2 && (
+                        <a 
+                          href={prestador.enderecoGoogleMaps2}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block text-xs text-white bg-marrom-rosado hover:bg-marrom-forte px-3 py-2 rounded-md transition-colors text-center"
+                        >
+                          📍 {prestador.enderecoGoogleMaps2Label || 'Ver endereço 2'}
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}

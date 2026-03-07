@@ -7,6 +7,7 @@ interface CardLugarProps {
   lugar: Lugar;
   variant?: 'default' | 'large';
   showCategory?: boolean;
+  showSubcategoria?: boolean;
 }
 
 /**
@@ -24,7 +25,8 @@ interface CardLugarProps {
 export function CardLugar({ 
   lugar, 
   variant = 'default',
-  showCategory = false 
+  showCategory = false,
+  showSubcategoria = false
 }: CardLugarProps) {
   // Determina a rota base baseada na categoria
   const getRoutePrefix = (categoria: string): string => {
@@ -125,6 +127,11 @@ export function CardLugar({
         {/* Nome do lugar */}
         <h3 className="text-xl md:text-2xl font-display font-bold text-marrom-forte mb-2 line-clamp-2">
           {lugar.nome}
+          {showSubcategoria && lugar.subcategoria && (
+            <span className="text-base md:text-lg font-normal text-marrom-rosado ml-2">
+              ({lugar.subcategoria})
+            </span>
+          )}
         </h3>
 
         {/* Descrição curta */}
