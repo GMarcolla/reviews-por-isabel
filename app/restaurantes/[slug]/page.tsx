@@ -2,8 +2,9 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { MapPin, Phone, Instagram, Globe, Clock, DollarSign } from 'lucide-react';
+import { MapPin, Phone, Instagram, Globe, Clock, DollarSign, Ticket } from 'lucide-react';
 import { getRestaurantes, getRestauranteBySlug } from '@/lib/data/restaurantes';
+import { getCupomByLugarId } from '@/lib/data/cupons';
 import { Container } from '@/components/Container';
 
 // Generate static params for SSG
@@ -43,6 +44,9 @@ export default async function RestaurantePage({ params }: { params: Promise<{ sl
   if (!restaurante) {
     notFound();
   }
+
+  // Verificar se tem cupom
+  const cupom = getCupomByLugarId(restaurante.id);
 
   // Helper function to render price range
   const renderPriceRange = (faixaPreco?: number) => {
@@ -108,6 +112,17 @@ export default async function RestaurantePage({ params }: { params: Promise<{ sl
           <div className="bg-rosa-claro rounded-lg p-6 sticky top-24">
             <h2 className="font-display text-2xl text-marrom-forte mb-4">Informações</h2>
             
+            {/* Botão de Cupom */}
+            {cupom && (
+              <Link
+                href={`/cupons?lugar=${restaurante.id}`}
+                className="flex items-center justify-center gap-2 w-full mb-6 px-4 py-3 bg-rosa-blush text-marrom-forte font-semibold rounded-lg hover:bg-rosa-blush/80 transition-colors"
+              >
+                <Ticket className="w-5 h-5" />
+                Ver Cupom de Desconto
+              </Link>
+            )}
+            
             <div className="space-y-4">
               {/* Address */}
               {restaurante.endereco && (
@@ -165,12 +180,30 @@ export default async function RestaurantePage({ params }: { params: Promise<{ sl
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Instagram</p>
                     <a 
-                      href={`https://instagram.com/${restaurante.instagram.replace('@', '')}`}
+                      href={restaurante.instagram.startsWith('http') ? restaurante.instagram : `https://instagram.com/${restaurante.instagram.replace('@', '')}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm text-marrom-rosado hover:text-marrom-forte transition-colors"
                     >
-                      {restaurante.instagram}
+                      {restaurante.instagram.startsWith('http') ? 'Ver perfil' : restaurante.instagram}
+                    </a>
+                  </div>
+                </div>
+              )}
+
+              {/* Review */}
+              {restaurante.instagramReview && (
+                <div className="flex items-start gap-3">
+                  <Instagram className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
+                  <div>
+                    <p className="text-sm font-semibold text-marrom-forte">Review</p>
+                    <a 
+                      href={restaurante.instagramReview}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-marrom-rosado hover:text-marrom-forte transition-colors"
+                    >
+                      Ver vídeo de review
                     </a>
                   </div>
                 </div>

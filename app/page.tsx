@@ -1,5 +1,5 @@
 import { BotaoHub } from '@/components/BotaoHub';
-import { UtensilsCrossed, Coffee, Compass, Map, Ticket, Mail } from 'lucide-react';
+import { UtensilsCrossed, Coffee, Sparkles, Map, Ticket, Mail, Store, Briefcase } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -72,10 +72,24 @@ export default function Home() {
               variant="secondary"
             />
             <BotaoHub
-              title="Passeios"
+              title="Lazer"
               description="Experiências inesquecíveis"
-              icon={Compass}
-              href="/passeios"
+              icon={Sparkles}
+              href="/lazer"
+              variant="primary"
+            />
+            <BotaoHub
+              title="Prestadores de Serviços"
+              description="Profissionais de confiança"
+              icon={Briefcase}
+              href="/prestadores"
+              variant="secondary"
+            />
+            <BotaoHub
+              title="Lojas"
+              description="Compras especiais"
+              icon={Store}
+              href="/lojas"
               variant="primary"
             />
             <BotaoHub

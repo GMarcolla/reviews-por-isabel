@@ -1,131 +1,228 @@
-import { Container } from '@/components/Container';
-import { SectionTitle } from '@/components/SectionTitle';
-import { getCuponsAtivos } from '@/lib/data/cupons';
-import { getRestaurantes } from '@/lib/data/restaurantes';
-import { getCafes } from '@/lib/data/cafes';
-import { Lugar } from '@/lib/types';
-import { Tag, ExternalLink } from 'lucide-react';
-import Link from 'next/link';
-import type { Metadata } from 'next';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Cupons de Desconto',
-  description: 'Cupons exclusivos de desconto para os melhores lugares de Blumenau',
-};
+import { useState, useMemo } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Container } from '@/components/Container';
+import { getCupons } from '@/lib/data/cupons';
+import { Ticket, Search, Filter } from 'lucide-react';
 
 export default function CuponsPage() {
-  const cupons = getCuponsAtivos();
-  const restaurantes = getRestaurantes();
-  const cafes = getCafes();
+  const searchParams = useSearchParams();
+  const lugarIdParam = searchParams.get('lugar');
   
-  // Combinar todos os lugares para facilitar a busca
-  const todosLugares: Lugar[] = [...restaurantes, ...cafes];
-  
-  // Função para encontrar o lugar relacionado ao cupom
-  const getLugarByCupom = (lugarId: string): Lugar | undefined => {
-    return todosLugares.find(lugar => lugar.id === lugarId);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategoria, setSelectedCategoria] = useState('');
+  const [selectedSubcategoria, setSelectedSubcategoria] = useState('');
+
+  const todosCupons = getCupons();
+
+  // Filtrar cupons
+  const cuponsFiltrados = useMemo(() => {
+    let filtered = todosCupons;
+
+    // Filtro por lugar (vindo da URL)
+    if (lugarIdParam) {
+      filtered = filtered.filter(c => c.lugarId === lugarIdParam);
+    }
+
+    // Filtro por busca
+    if (searchTerm) {
+      const lowerSearch = searchTerm.toLowerCase();
+      filtered = filtered.filter(c =>
+        c.lugarNome.toLowerCase().includes(lowerSearch) ||
+        c.descricao.toLowerCase().includes(lowerSearch)
+      );
+    }
+
+    // Filtro por categoria
+    if (selectedCategoria) {
+      filtered = filtered.filter(c => c.categoria === selectedCategoria);
+    }
+
+    // Filtro por subcategoria
+    if (selectedSubcategoria) {
+      filtered = filtered.filter(c => c.subcategoria === selectedSubcategoria);
+    }
+
+    return filtered;
+  }, [todosCupons, lugarIdParam, searchTerm, selectedCategoria, selectedSubcategoria]);
+
+  // Extrair categorias únicas
+  const categorias = useMemo(() => {
+    const cats = new Set(todosCupons.map(c => c.categoria));
+    return Array.from(cats).sort();
+  }, [todosCupons]);
+
+  // Extrair subcategorias únicas baseadas na categoria selecionada
+  const subcategorias = useMemo(() => {
+    if (!selectedCategoria) return [];
+    const subcats = new Set(
+      todosCupons
+        .filter(c => c.categoria === selectedCategoria)
+        .map(c => c.subcategoria)
+    );
+    return Array.from(subcats).sort();
+  }, [todosCupons, selectedCategoria]);
+
+  // Limpar filtros
+  const limparFiltros = () => {
+    setSearchTerm('');
+    setSelectedCategoria('');
+    setSelectedSubcategoria('');
   };
 
   return (
-    <Container className="py-12">
-      <SectionTitle 
-        title="Cupons de Desconto" 
-        subtitle="Aproveite descontos exclusivos nos melhores lugares de Blumenau"
-        align="center"
-      />
-      
-      {cupons.length === 0 ? (
+    <Container size="xl" className="py-8 md:py-12">
+      {/* Hero Section */}
+      <div className="mb-12 md:mb-16 text-center">
+        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-marrom-forte mb-4">
+          Cupons de Desconto
+        </h1>
+        <p className="text-lg md:text-xl text-marrom-rosado max-w-2xl mx-auto">
+          Aproveite descontos exclusivos nos melhores lugares de Blumenau e região!
+        </p>
+      </div>
+
+      {/* Filtros */}
+      <div className="mb-8 bg-rosa-claro/50 rounded-card p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Filter className="w-5 h-5 text-marrom-forte" />
+          <h2 className="font-display text-xl text-marrom-forte">Filtros</h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Busca por nome */}
+          <div>
+            <label htmlFor="search" className="block text-sm font-semibold text-marrom-forte mb-2">
+              Buscar por nome
+            </label>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-marrom-rosado" />
+              <input
+                id="search"
+                type="text"
+                placeholder="Digite o nome do lugar..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 rounded-lg border border-rosa-claro bg-white text-marrom-forte placeholder:text-marrom-rosado/50 focus:outline-none focus:ring-2 focus:ring-rosa-blush"
+              />
+            </div>
+          </div>
+
+          {/* Categoria */}
+          <div>
+            <label htmlFor="categoria" className="block text-sm font-semibold text-marrom-forte mb-2">
+              Categoria
+            </label>
+            <select
+              id="categoria"
+              value={selectedCategoria}
+              onChange={(e) => {
+                setSelectedCategoria(e.target.value);
+                setSelectedSubcategoria(''); // Limpar subcategoria ao mudar categoria
+              }}
+              className="w-full px-4 py-2 rounded-lg border border-rosa-claro bg-white text-marrom-forte focus:outline-none focus:ring-2 focus:ring-rosa-blush"
+            >
+              <option value="">Todas as categorias</option>
+              {categorias.map(cat => (
+                <option key={cat} value={cat}>
+                  {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Subcategoria */}
+          <div>
+            <label htmlFor="subcategoria" className="block text-sm font-semibold text-marrom-forte mb-2">
+              Subcategoria
+            </label>
+            <select
+              id="subcategoria"
+              value={selectedSubcategoria}
+              onChange={(e) => setSelectedSubcategoria(e.target.value)}
+              disabled={!selectedCategoria}
+              className="w-full px-4 py-2 rounded-lg border border-rosa-claro bg-white text-marrom-forte focus:outline-none focus:ring-2 focus:ring-rosa-blush disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <option value="">Todas as subcategorias</option>
+              {subcategorias.map(subcat => (
+                <option key={subcat} value={subcat}>
+                  {subcat.charAt(0).toUpperCase() + subcat.slice(1)}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Botão limpar filtros */}
+        {(searchTerm || selectedCategoria || selectedSubcategoria) && (
+          <button
+            onClick={limparFiltros}
+            className="mt-4 text-sm text-marrom-rosado hover:text-marrom-forte transition-colors"
+          >
+            Limpar filtros
+          </button>
+        )}
+      </div>
+
+      {/* Lista de Cupons */}
+      {cuponsFiltrados.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-marrom-rosado text-lg">
-            Nenhum cupom disponível no momento. Volte em breve!
+          <Ticket className="w-16 h-16 text-marrom-rosado/30 mx-auto mb-4" />
+          <p className="text-lg text-marrom-rosado">
+            Nenhum cupom encontrado com os filtros selecionados.
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-          {cupons.map((cupom) => {
-            const lugar = getLugarByCupom(cupom.lugarId);
-            
-            if (!lugar) return null;
-            
-            // Determinar a categoria do lugar para o link correto
-            const categoriaBase = ['hamburgueria', 'italiano', 'japones', 'pizzaria', 'romantico'].includes(lugar.categoria)
-              ? 'restaurantes'
-              : 'cafes';
-            
-            return (
-              <div 
-                key={cupom.id}
-                className="bg-white rounded-card shadow-card hover:shadow-card-hover transition-shadow duration-300 overflow-hidden border-2 border-rosa-claro"
-              >
-                {/* Header do Card */}
-                <div className="bg-gradient-to-r from-rosa-blush to-rosa-claro p-4">
-                  <div className="flex items-start gap-2">
-                    <Tag className="w-5 h-5 text-marrom-forte mt-1 flex-shrink-0" />
-                    <div>
-                      <h3 className="font-display text-xl font-bold text-marrom-forte">
-                        {lugar.nome}
-                      </h3>
-                      <p className="text-sm text-marrom-rosado mt-1">
-                        {lugar.categoria.charAt(0).toUpperCase() + lugar.categoria.slice(1)}
-                      </p>
-                    </div>
-                  </div>
+        <div className="grid gap-6 md:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {cuponsFiltrados.map((cupom) => (
+            <div
+              key={cupom.id}
+              className="bg-white rounded-card shadow-card p-6 hover:shadow-card-hover transition-shadow"
+            >
+              {/* Header */}
+              <div className="flex items-start gap-3 mb-4">
+                <div className="flex-shrink-0 w-12 h-12 bg-rosa-blush rounded-full flex items-center justify-center">
+                  <Ticket className="w-6 h-6 text-marrom-forte" />
                 </div>
-                
-                {/* Conteúdo do Card */}
-                <div className="p-6">
-                  {/* Descrição do Desconto */}
-                  <p className="text-marrom-rosado text-base mb-4">
-                    {cupom.descricao}
+                <div className="flex-1">
+                  <h3 className="font-display text-xl text-marrom-forte mb-1">
+                    {cupom.lugarNome}
+                  </h3>
+                  <p className="text-sm text-marrom-rosado">
+                    {cupom.categoria.charAt(0).toUpperCase() + cupom.categoria.slice(1)}
                   </p>
-                  
-                  {/* Código do Cupom - Destacado */}
-                  <div className="bg-creme-claro border-2 border-dashed border-rosa-blush rounded-lg p-4 mb-4">
-                    <p className="text-xs text-marrom-rosado uppercase tracking-wide mb-1">
-                      Código do Cupom
-                    </p>
-                    <p className="font-display text-2xl font-bold text-marrom-forte tracking-wider text-center">
-                      {cupom.codigo}
-                    </p>
-                  </div>
-                  
-                  {/* Validade */}
-                  {cupom.validade && (
-                    <p className="text-sm text-marrom-rosado mb-2">
-                      <span className="font-semibold">Válido até:</span>{' '}
-                      {new Date(cupom.validade).toLocaleDateString('pt-BR')}
-                    </p>
-                  )}
-                  
-                  {/* Termos */}
-                  {cupom.termos && (
-                    <p className="text-xs text-marrom-rosado/70 mb-4 italic">
-                      {cupom.termos}
-                    </p>
-                  )}
-                  
-                  {/* Botão Ver Lugar */}
-                  <Link 
-                    href={`/${categoriaBase}/${lugar.id}`}
-                    className="flex items-center justify-center gap-2 w-full bg-marrom-rosado hover:bg-marrom-forte text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    Ver Lugar
-                  </Link>
                 </div>
               </div>
-            );
-          })}
+
+              {/* Desconto */}
+              <div className="mb-4 p-4 bg-rosa-claro/50 rounded-lg">
+                <p className="text-2xl font-bold text-marrom-forte text-center">
+                  {cupom.descricao}
+                </p>
+              </div>
+
+              {/* Código */}
+              <div className="mb-4">
+                <p className="text-sm font-semibold text-marrom-forte mb-2">Código:</p>
+                <div className="p-3 bg-creme-claro rounded-lg border-2 border-dashed border-rosa-blush">
+                  <p className="text-center font-mono font-bold text-marrom-forte">
+                    {cupom.codigo}
+                  </p>
+                </div>
+              </div>
+
+              {/* Termos */}
+              {cupom.termos && (
+                <div className="text-xs text-marrom-rosado">
+                  <p className="font-semibold mb-1">Termos:</p>
+                  <p>{cupom.termos}</p>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       )}
-      
-      {/* Informações Adicionais */}
-      <div className="mt-12 bg-rosa-claro rounded-card p-6 text-center">
-        <p className="text-marrom-rosado">
-          <span className="font-semibold">Dica:</span> Apresente o código do cupom no estabelecimento 
-          ou mencione que viu no Reviews por Isabel para garantir seu desconto!
-        </p>
-      </div>
     </Container>
   );
 }

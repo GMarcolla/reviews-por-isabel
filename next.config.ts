@@ -14,6 +14,22 @@ const nextConfig: NextConfig = {
   // Compressão
   compress: true,
 
+  // Redirects
+  async redirects() {
+    return [
+      {
+        source: '/passeios',
+        destination: '/lazer',
+        permanent: true,
+      },
+      {
+        source: '/passeios/:slug',
+        destination: '/lazer/:slug',
+        permanent: true,
+      },
+    ];
+  },
+
   // Headers de segurança
   async headers() {
     return [

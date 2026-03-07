@@ -3,50 +3,50 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { MapPin, Phone, Instagram, Globe, Clock, DollarSign, Ticket } from 'lucide-react';
-import { getCafes, getCafeBySlug } from '@/lib/data/cafes';
+import { getLojas, getLojaBySlug } from '@/lib/data/lojas';
 import { getCupomByLugarId } from '@/lib/data/cupons';
 import { Container } from '@/components/Container';
 
 // Generate static params for SSG
 export async function generateStaticParams() {
-  const cafes = getCafes();
-  return cafes.map((cafe) => ({
-    slug: cafe.id,
+  const lojas = getLojas();
+  return lojas.map((loja) => ({
+    slug: loja.id,
   }));
 }
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const cafe = getCafeBySlug(slug);
+  const loja = getLojaBySlug(slug);
   
-  if (!cafe) {
+  if (!loja) {
     return {
-      title: 'Café não encontrado - Reviews por Isabel',
+      title: 'Loja não encontrada - Reviews por Isabel',
     };
   }
 
   return {
-    title: `${cafe.nome} - Reviews por Isabel`,
-    description: cafe.descricaoCurta,
+    title: `${loja.nome} - Reviews por Isabel`,
+    description: loja.descricaoCurta,
     openGraph: {
-      title: cafe.nome,
-      description: cafe.descricaoCurta,
-      images: [cafe.imagem],
+      title: loja.nome,
+      description: loja.descricaoCurta,
+      images: [loja.imagem],
     },
   };
 }
 
-export default async function CafePage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function LojaPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const cafe = getCafeBySlug(slug);
+  const loja = getLojaBySlug(slug);
 
-  if (!cafe) {
+  if (!loja) {
     notFound();
   }
 
   // Verificar se tem cupom
-  const cupom = getCupomByLugarId(cafe.id);
+  const cupom = getCupomByLugarId(loja.id);
 
   // Helper function to render price range
   const renderPriceRange = (faixaPreco?: number) => {
@@ -58,45 +58,45 @@ export default async function CafePage({ params }: { params: Promise<{ slug: str
     <Container className="py-12">
       {/* Back button */}
       <Link 
-        href="/cafes" 
+        href="/lojas" 
         className="inline-flex items-center text-marrom-rosado hover:text-marrom-forte mb-6 transition-colors"
       >
-        ← Voltar para Cafés & Docerias
+        ← Voltar para Lojas
       </Link>
 
       {/* Main image */}
       <div className="relative w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden mb-8">
         <Image
-          src={cafe.imagem}
-          alt={cafe.imagemAlt}
+          src={loja.imagem}
+          alt={loja.imagemAlt}
           fill
           className="object-cover"
           priority
         />
       </div>
 
-      {/* Cafe info */}
+      {/* Loja info */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main content */}
         <div className="lg:col-span-2">
           <h1 className="font-display text-4xl md:text-5xl text-marrom-forte mb-4">
-            {cafe.nome}
+            {loja.nome}
           </h1>
           
           <p className="text-lg text-marrom-rosado mb-6">
-            {cafe.descricaoCompleta}
+            {loja.descricaoCompleta}
           </p>
 
           {/* Gallery */}
-          {cafe.galeria && cafe.galeria.length > 0 && (
+          {loja.galeria && loja.galeria.length > 0 && (
             <div className="mt-8">
               <h2 className="font-display text-2xl text-marrom-forte mb-4">Galeria</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {cafe.galeria.map((imagem, index) => (
+                {loja.galeria.map((imagem, index) => (
                   <div key={index} className="relative h-48 rounded-lg overflow-hidden">
                     <Image
                       src={imagem}
-                      alt={`${cafe.nome} - Imagem ${index + 1}`}
+                      alt={`${loja.nome} - Imagem ${index + 1}`}
                       fill
                       className="object-cover"
                     />
@@ -115,7 +115,7 @@ export default async function CafePage({ params }: { params: Promise<{ slug: str
             {/* Botão de Cupom */}
             {cupom && (
               <Link
-                href={`/cupons?lugar=${cafe.id}`}
+                href={`/cupons?lugar=${loja.id}`}
                 className="flex items-center justify-center gap-2 w-full mb-6 px-4 py-3 bg-rosa-blush text-marrom-forte font-semibold rounded-lg hover:bg-rosa-blush/80 transition-colors"
               >
                 <Ticket className="w-5 h-5" />
@@ -125,80 +125,80 @@ export default async function CafePage({ params }: { params: Promise<{ slug: str
             
             <div className="space-y-4">
               {/* Address */}
-              {cafe.endereco && (
+              {loja.endereco && (
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Endereço</p>
-                    <p className="text-sm text-marrom-rosado">{cafe.endereco}</p>
+                    <p className="text-sm text-marrom-rosado">{loja.endereco}</p>
                   </div>
                 </div>
               )}
 
               {/* Phone */}
-              {cafe.telefone && (
+              {loja.telefone && (
                 <div className="flex items-start gap-3">
                   <Phone className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Telefone</p>
                     <a 
-                      href={`tel:${cafe.telefone.replace(/\D/g, '')}`}
+                      href={`tel:${loja.telefone.replace(/\D/g, '')}`}
                       className="text-sm text-marrom-rosado hover:text-marrom-forte transition-colors"
                     >
-                      {cafe.telefone}
+                      {loja.telefone}
                     </a>
                   </div>
                 </div>
               )}
 
               {/* Hours */}
-              {cafe.horarioFuncionamento && (
+              {loja.horarioFuncionamento && (
                 <div className="flex items-start gap-3">
                   <Clock className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Horário</p>
-                    <p className="text-sm text-marrom-rosado">{cafe.horarioFuncionamento}</p>
+                    <p className="text-sm text-marrom-rosado">{loja.horarioFuncionamento}</p>
                   </div>
                 </div>
               )}
 
               {/* Price range */}
-              {cafe.faixaPreco && (
+              {loja.faixaPreco && (
                 <div className="flex items-start gap-3">
                   <DollarSign className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Faixa de preço</p>
-                    <p className="text-sm text-marrom-rosado">{renderPriceRange(cafe.faixaPreco)}</p>
+                    <p className="text-sm text-marrom-rosado">{renderPriceRange(loja.faixaPreco)}</p>
                   </div>
                 </div>
               )}
 
               {/* Instagram */}
-              {cafe.instagram && (
+              {loja.instagram && (
                 <div className="flex items-start gap-3">
                   <Instagram className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Instagram</p>
                     <a 
-                      href={cafe.instagram.startsWith('http') ? cafe.instagram : `https://instagram.com/${cafe.instagram.replace('@', '')}`}
+                      href={loja.instagram.startsWith('http') ? loja.instagram : `https://instagram.com/${loja.instagram.replace('@', '')}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm text-marrom-rosado hover:text-marrom-forte transition-colors"
                     >
-                      {cafe.instagram.startsWith('http') ? 'Ver perfil' : cafe.instagram}
+                      {loja.instagram.startsWith('http') ? 'Ver perfil' : loja.instagram}
                     </a>
                   </div>
                 </div>
               )}
 
               {/* Review */}
-              {cafe.instagramReview && (
+              {loja.instagramReview && (
                 <div className="flex items-start gap-3">
                   <Instagram className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Review</p>
                     <a 
-                      href={cafe.instagramReview}
+                      href={loja.instagramReview}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm text-marrom-rosado hover:text-marrom-forte transition-colors"
@@ -210,13 +210,13 @@ export default async function CafePage({ params }: { params: Promise<{ slug: str
               )}
 
               {/* Website */}
-              {cafe.website && (
+              {loja.website && (
                 <div className="flex items-start gap-3">
                   <Globe className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Website</p>
                     <a 
-                      href={cafe.website}
+                      href={loja.website}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm text-marrom-rosado hover:text-marrom-forte transition-colors break-all"

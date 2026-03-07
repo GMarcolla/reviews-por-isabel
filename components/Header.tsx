@@ -14,8 +14,10 @@ const menuItems = [
   { label: 'Home', href: '/' },
   { label: 'Restaurantes', href: '/restaurantes' },
   { label: 'Cafés & Docerias', href: '/cafes' },
-  { label: 'Passeios', href: '/passeios' },
-  { label: 'Roteiro em Blumenau', href: '/roteiro' },
+  { label: 'Lazer', href: '/lazer' },
+  { label: 'Prestadores', href: '/prestadores' },
+  { label: 'Lojas', href: '/lojas' },
+  { label: 'Roteiro', href: '/roteiro' },
   { label: 'Cupons', href: '/cupons' },
   { label: 'Contato', href: '/contato' },
 ];

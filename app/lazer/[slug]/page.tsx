@@ -2,51 +2,47 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { MapPin, Phone, Instagram, Globe, Clock, DollarSign, Ticket } from 'lucide-react';
-import { getCafes, getCafeBySlug } from '@/lib/data/cafes';
-import { getCupomByLugarId } from '@/lib/data/cupons';
+import { MapPin, Phone, Instagram, Globe, Clock, DollarSign } from 'lucide-react';
+import { getPasseios, getPasseioBySlug } from '@/lib/data/passeios';
 import { Container } from '@/components/Container';
 
 // Generate static params for SSG
 export async function generateStaticParams() {
-  const cafes = getCafes();
-  return cafes.map((cafe) => ({
-    slug: cafe.id,
+  const lazer = getPasseios();
+  return lazer.map((item) => ({
+    slug: item.id,
   }));
 }
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const cafe = getCafeBySlug(slug);
+  const lazer = getPasseioBySlug(slug);
   
-  if (!cafe) {
+  if (!lazer) {
     return {
-      title: 'Café não encontrado - Reviews por Isabel',
+      title: 'Lazer não encontrado - Reviews por Isabel',
     };
   }
 
   return {
-    title: `${cafe.nome} - Reviews por Isabel`,
-    description: cafe.descricaoCurta,
+    title: `${lazer.nome} - Reviews por Isabel`,
+    description: lazer.descricaoCurta,
     openGraph: {
-      title: cafe.nome,
-      description: cafe.descricaoCurta,
-      images: [cafe.imagem],
+      title: lazer.nome,
+      description: lazer.descricaoCurta,
+      images: [lazer.imagem],
     },
   };
 }
 
-export default async function CafePage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function LazerPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const cafe = getCafeBySlug(slug);
+  const lazer = getPasseioBySlug(slug);
 
-  if (!cafe) {
+  if (!lazer) {
     notFound();
   }
-
-  // Verificar se tem cupom
-  const cupom = getCupomByLugarId(cafe.id);
 
   // Helper function to render price range
   const renderPriceRange = (faixaPreco?: number) => {
@@ -58,45 +54,45 @@ export default async function CafePage({ params }: { params: Promise<{ slug: str
     <Container className="py-12">
       {/* Back button */}
       <Link 
-        href="/cafes" 
+        href="/lazer" 
         className="inline-flex items-center text-marrom-rosado hover:text-marrom-forte mb-6 transition-colors"
       >
-        ← Voltar para Cafés & Docerias
+        ← Voltar para Lazer
       </Link>
 
       {/* Main image */}
       <div className="relative w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden mb-8">
         <Image
-          src={cafe.imagem}
-          alt={cafe.imagemAlt}
+          src={lazer.imagem}
+          alt={lazer.imagemAlt}
           fill
           className="object-cover"
           priority
         />
       </div>
 
-      {/* Cafe info */}
+      {/* Lazer info */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main content */}
         <div className="lg:col-span-2">
           <h1 className="font-display text-4xl md:text-5xl text-marrom-forte mb-4">
-            {cafe.nome}
+            {lazer.nome}
           </h1>
           
           <p className="text-lg text-marrom-rosado mb-6">
-            {cafe.descricaoCompleta}
+            {lazer.descricaoCompleta}
           </p>
 
           {/* Gallery */}
-          {cafe.galeria && cafe.galeria.length > 0 && (
+          {lazer.galeria && lazer.galeria.length > 0 && (
             <div className="mt-8">
               <h2 className="font-display text-2xl text-marrom-forte mb-4">Galeria</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {cafe.galeria.map((imagem, index) => (
+                {lazer.galeria.map((imagem, index) => (
                   <div key={index} className="relative h-48 rounded-lg overflow-hidden">
                     <Image
                       src={imagem}
-                      alt={`${cafe.nome} - Imagem ${index + 1}`}
+                      alt={`${lazer.nome} - Imagem ${index + 1}`}
                       fill
                       className="object-cover"
                     />
@@ -112,93 +108,82 @@ export default async function CafePage({ params }: { params: Promise<{ slug: str
           <div className="bg-rosa-claro rounded-lg p-6 sticky top-24">
             <h2 className="font-display text-2xl text-marrom-forte mb-4">Informações</h2>
             
-            {/* Botão de Cupom */}
-            {cupom && (
-              <Link
-                href={`/cupons?lugar=${cafe.id}`}
-                className="flex items-center justify-center gap-2 w-full mb-6 px-4 py-3 bg-rosa-blush text-marrom-forte font-semibold rounded-lg hover:bg-rosa-blush/80 transition-colors"
-              >
-                <Ticket className="w-5 h-5" />
-                Ver Cupom de Desconto
-              </Link>
-            )}
-            
             <div className="space-y-4">
               {/* Address */}
-              {cafe.endereco && (
+              {lazer.endereco && (
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Endereço</p>
-                    <p className="text-sm text-marrom-rosado">{cafe.endereco}</p>
+                    <p className="text-sm text-marrom-rosado">{lazer.endereco}</p>
                   </div>
                 </div>
               )}
 
               {/* Phone */}
-              {cafe.telefone && (
+              {lazer.telefone && (
                 <div className="flex items-start gap-3">
                   <Phone className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Telefone</p>
                     <a 
-                      href={`tel:${cafe.telefone.replace(/\D/g, '')}`}
+                      href={`tel:${lazer.telefone.replace(/\D/g, '')}`}
                       className="text-sm text-marrom-rosado hover:text-marrom-forte transition-colors"
                     >
-                      {cafe.telefone}
+                      {lazer.telefone}
                     </a>
                   </div>
                 </div>
               )}
 
               {/* Hours */}
-              {cafe.horarioFuncionamento && (
+              {lazer.horarioFuncionamento && (
                 <div className="flex items-start gap-3">
                   <Clock className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Horário</p>
-                    <p className="text-sm text-marrom-rosado">{cafe.horarioFuncionamento}</p>
+                    <p className="text-sm text-marrom-rosado">{lazer.horarioFuncionamento}</p>
                   </div>
                 </div>
               )}
 
               {/* Price range */}
-              {cafe.faixaPreco && (
+              {lazer.faixaPreco && (
                 <div className="flex items-start gap-3">
                   <DollarSign className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Faixa de preço</p>
-                    <p className="text-sm text-marrom-rosado">{renderPriceRange(cafe.faixaPreco)}</p>
+                    <p className="text-sm text-marrom-rosado">{renderPriceRange(lazer.faixaPreco)}</p>
                   </div>
                 </div>
               )}
 
               {/* Instagram */}
-              {cafe.instagram && (
+              {lazer.instagram && (
                 <div className="flex items-start gap-3">
                   <Instagram className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Instagram</p>
                     <a 
-                      href={cafe.instagram.startsWith('http') ? cafe.instagram : `https://instagram.com/${cafe.instagram.replace('@', '')}`}
+                      href={lazer.instagram.startsWith('http') ? lazer.instagram : `https://instagram.com/${lazer.instagram.replace('@', '')}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm text-marrom-rosado hover:text-marrom-forte transition-colors"
                     >
-                      {cafe.instagram.startsWith('http') ? 'Ver perfil' : cafe.instagram}
+                      {lazer.instagram.startsWith('http') ? 'Ver perfil' : lazer.instagram}
                     </a>
                   </div>
                 </div>
               )}
 
               {/* Review */}
-              {cafe.instagramReview && (
+              {lazer.instagramReview && (
                 <div className="flex items-start gap-3">
                   <Instagram className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Review</p>
                     <a 
-                      href={cafe.instagramReview}
+                      href={lazer.instagramReview}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm text-marrom-rosado hover:text-marrom-forte transition-colors"
@@ -210,13 +195,13 @@ export default async function CafePage({ params }: { params: Promise<{ slug: str
               )}
 
               {/* Website */}
-              {cafe.website && (
+              {lazer.website && (
                 <div className="flex items-start gap-3">
                   <Globe className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Website</p>
                     <a 
-                      href={cafe.website}
+                      href={lazer.website}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm text-marrom-rosado hover:text-marrom-forte transition-colors break-all"

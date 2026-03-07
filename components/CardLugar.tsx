@@ -28,13 +28,22 @@ export function CardLugar({
 }: CardLugarProps) {
   // Determina a rota base baseada na categoria
   const getRoutePrefix = (categoria: string): string => {
-    if (['hamburgueria', 'italiano', 'japones', 'pizzaria', 'romantico'].includes(categoria)) {
+    if (['hamburgueria', 'esfirraria', 'padaria', 'gelateria', 'pastelaria', 'empadas', 'hotdog', 'germanico', 'buffet', 'bar', 'coreano', 'mexicano', 'italiano', 'japones', 'pizzaria', 'romantico'].includes(categoria)) {
       return 'restaurantes';
     }
-    if (['cafeteria', 'doceria', 'padaria', 'brunch'].includes(categoria)) {
+    if (['cafeteria', 'doceria', 'brunch'].includes(categoria)) {
       return 'cafes';
     }
-    return 'passeios';
+    if (['evento', 'concerto', 'festival', 'parque', 'lazer'].includes(categoria)) {
+      return 'lazer';
+    }
+    if (['dentista', 'arquiteta', 'unhas', 'beleza', 'servico'].includes(categoria)) {
+      return 'prestadores';
+    }
+    if (['moda', 'decoracao', 'livraria', 'loja'].includes(categoria)) {
+      return 'lojas';
+    }
+    return 'lazer';
   };
 
   const routePrefix = getRoutePrefix(lugar.categoria);
@@ -44,19 +53,38 @@ export function CardLugar({
   const getCategoryLabel = (categoria: string): string => {
     const labels: Record<string, string> = {
       hamburgueria: 'Hamburgueria',
+      esfirraria: 'Esfirraria',
+      padaria: 'Padaria',
+      gelateria: 'Gelateria',
+      pastelaria: 'Pastelaria',
+      empadas: 'Empadas',
+      hotdog: 'Hot Dog',
+      germanico: 'Germânico',
+      buffet: 'Buffet',
+      bar: 'Bar',
+      coreano: 'Coreano',
+      mexicano: 'Mexicano',
       italiano: 'Italiano',
       japones: 'Japonês',
       pizzaria: 'Pizzaria',
       romantico: 'Romântico',
       cafeteria: 'Cafeteria',
       doceria: 'Doceria',
-      padaria: 'Padaria',
       brunch: 'Brunch',
       evento: 'Evento',
       concerto: 'Concerto',
       festival: 'Festival',
       parque: 'Parque',
-      passeio: 'Passeio',
+      lazer: 'Lazer',
+      dentista: 'Dentista',
+      arquiteta: 'Arquiteta',
+      unhas: 'Unhas',
+      beleza: 'Beleza',
+      servico: 'Serviço',
+      moda: 'Moda',
+      decoracao: 'Decoração',
+      livraria: 'Livraria',
+      loja: 'Loja',
     };
     return labels[categoria] || categoria;
   };

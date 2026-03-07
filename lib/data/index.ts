@@ -3,15 +3,19 @@ export * from './restaurantes';
 export * from './cafes';
 export * from './passeios';
 export * from './cupons';
+export * from './prestadores';
+export * from './lojas';
 
 import { Lugar } from '../types';
 import { getRestaurantes } from './restaurantes';
 import { getCafes } from './cafes';
 import { getPasseios } from './passeios';
+import { getPrestadores } from './prestadores';
+import { getLojas } from './lojas';
 
 // Combined utility functions
 export function getTodosLugares(): Lugar[] {
-  return [...getRestaurantes(), ...getCafes(), ...getPasseios()];
+  return [...getRestaurantes(), ...getCafes(), ...getPasseios(), ...getPrestadores(), ...getLojas()];
 }
 
 export function getLugarById(id: string): Lugar | undefined {

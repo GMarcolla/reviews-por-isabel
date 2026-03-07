@@ -2,19 +2,38 @@
 
 export type CategoriaLugar = 
   | 'hamburgueria'
+  | 'esfirraria'
+  | 'padaria'
+  | 'gelateria'
+  | 'pastelaria'
+  | 'empadas'
+  | 'hotdog'
+  | 'germanico'
+  | 'buffet'
+  | 'bar'
+  | 'coreano'
+  | 'mexicano'
   | 'italiano'
   | 'japones'
   | 'pizzaria'
   | 'romantico'
   | 'cafeteria'
   | 'doceria'
-  | 'padaria'
   | 'brunch'
   | 'evento'
   | 'concerto'
   | 'festival'
   | 'parque'
-  | 'passeio';
+  | 'lazer'
+  | 'dentista'
+  | 'arquiteta'
+  | 'unhas'
+  | 'beleza'
+  | 'servico'
+  | 'moda'
+  | 'decoracao'
+  | 'livraria'
+  | 'loja';
 
 export interface Lugar {
   id: string;                    // Unique identifier (slug)
@@ -28,7 +47,8 @@ export interface Lugar {
   galeria?: string[];            // Imagens adicionais
   endereco?: string;             // Endereço completo
   telefone?: string;             // Telefone de contato
-  instagram?: string;            // Handle do Instagram
+  instagram?: string;            // Handle/URL do Instagram do estabelecimento
+  instagramReview?: string;      // URL do vídeo de review no Instagram
   website?: string;              // URL do website
   horarioFuncionamento?: string; // Horário de funcionamento
   faixaPreco?: 1 | 2 | 3 | 4;   // Faixa de preço ($ a $$$$)
@@ -39,6 +59,9 @@ export interface Lugar {
 export interface Cupom {
   id: string;                    // Unique identifier
   lugarId: string;               // ID do lugar relacionado
+  lugarNome: string;             // Nome do lugar
+  categoria: string;             // Categoria (restaurantes, cafes, lojas, prestadores)
+  subcategoria: string;          // Subcategoria específica
   codigo: string;                // Código do cupom
   descricao: string;             // Descrição do desconto
   validade?: string;             // Data de validade (ISO string)

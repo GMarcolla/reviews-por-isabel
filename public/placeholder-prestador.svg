@@ -1,0 +1,9 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#FFF8F6"/>
+  <text x="400" y="300" font-family="Arial, sans-serif" font-size="24" fill="#6B4F4F" text-anchor="middle">
+    Imagem em breve
+  </text>
+  <path d="M350 250 L450 250 L450 350 L350 350 Z" stroke="#E8B4B8" stroke-width="2" fill="none"/>
+  <circle cx="380" cy="280" r="15" fill="#E8B4B8"/>
+  <path d="M350 330 L380 300 L420 320 L450 290" stroke="#E8B4B8" stroke-width="2" fill="none"/>
+</svg>

@@ -3,50 +3,50 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { MapPin, Phone, Instagram, Globe, Clock, DollarSign, Ticket } from 'lucide-react';
-import { getCafes, getCafeBySlug } from '@/lib/data/cafes';
+import { getPrestadores, getPrestadorBySlug } from '@/lib/data/prestadores';
 import { getCupomByLugarId } from '@/lib/data/cupons';
 import { Container } from '@/components/Container';
 
 // Generate static params for SSG
 export async function generateStaticParams() {
-  const cafes = getCafes();
-  return cafes.map((cafe) => ({
-    slug: cafe.id,
+  const prestadores = getPrestadores();
+  return prestadores.map((prestador) => ({
+    slug: prestador.id,
   }));
 }
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const cafe = getCafeBySlug(slug);
+  const prestador = getPrestadorBySlug(slug);
   
-  if (!cafe) {
+  if (!prestador) {
     return {
-      title: 'Café não encontrado - Reviews por Isabel',
+      title: 'Prestador não encontrado - Reviews por Isabel',
     };
   }
 
   return {
-    title: `${cafe.nome} - Reviews por Isabel`,
-    description: cafe.descricaoCurta,
+    title: `${prestador.nome} - Reviews por Isabel`,
+    description: prestador.descricaoCurta,
     openGraph: {
-      title: cafe.nome,
-      description: cafe.descricaoCurta,
-      images: [cafe.imagem],
+      title: prestador.nome,
+      description: prestador.descricaoCurta,
+      images: [prestador.imagem],
     },
   };
 }
 
-export default async function CafePage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function PrestadorPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const cafe = getCafeBySlug(slug);
+  const prestador = getPrestadorBySlug(slug);
 
-  if (!cafe) {
+  if (!prestador) {
     notFound();
   }
 
   // Verificar se tem cupom
-  const cupom = getCupomByLugarId(cafe.id);
+  const cupom = getCupomByLugarId(prestador.id);
 
   // Helper function to render price range
   const renderPriceRange = (faixaPreco?: number) => {
@@ -58,45 +58,45 @@ export default async function CafePage({ params }: { params: Promise<{ slug: str
     <Container className="py-12">
       {/* Back button */}
       <Link 
-        href="/cafes" 
+        href="/prestadores" 
         className="inline-flex items-center text-marrom-rosado hover:text-marrom-forte mb-6 transition-colors"
       >
-        ← Voltar para Cafés & Docerias
+        ← Voltar para Prestadores de Serviços
       </Link>
 
       {/* Main image */}
       <div className="relative w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden mb-8">
         <Image
-          src={cafe.imagem}
-          alt={cafe.imagemAlt}
+          src={prestador.imagem}
+          alt={prestador.imagemAlt}
           fill
           className="object-cover"
           priority
         />
       </div>
 
-      {/* Cafe info */}
+      {/* Prestador info */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main content */}
         <div className="lg:col-span-2">
           <h1 className="font-display text-4xl md:text-5xl text-marrom-forte mb-4">
-            {cafe.nome}
+            {prestador.nome}
           </h1>
           
           <p className="text-lg text-marrom-rosado mb-6">
-            {cafe.descricaoCompleta}
+            {prestador.descricaoCompleta}
           </p>
 
           {/* Gallery */}
-          {cafe.galeria && cafe.galeria.length > 0 && (
+          {prestador.galeria && prestador.galeria.length > 0 && (
             <div className="mt-8">
               <h2 className="font-display text-2xl text-marrom-forte mb-4">Galeria</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {cafe.galeria.map((imagem, index) => (
+                {prestador.galeria.map((imagem, index) => (
                   <div key={index} className="relative h-48 rounded-lg overflow-hidden">
                     <Image
                       src={imagem}
-                      alt={`${cafe.nome} - Imagem ${index + 1}`}
+                      alt={`${prestador.nome} - Imagem ${index + 1}`}
                       fill
                       className="object-cover"
                     />
@@ -115,7 +115,7 @@ export default async function CafePage({ params }: { params: Promise<{ slug: str
             {/* Botão de Cupom */}
             {cupom && (
               <Link
-                href={`/cupons?lugar=${cafe.id}`}
+                href={`/cupons?lugar=${prestador.id}`}
                 className="flex items-center justify-center gap-2 w-full mb-6 px-4 py-3 bg-rosa-blush text-marrom-forte font-semibold rounded-lg hover:bg-rosa-blush/80 transition-colors"
               >
                 <Ticket className="w-5 h-5" />
@@ -125,80 +125,80 @@ export default async function CafePage({ params }: { params: Promise<{ slug: str
             
             <div className="space-y-4">
               {/* Address */}
-              {cafe.endereco && (
+              {prestador.endereco && (
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Endereço</p>
-                    <p className="text-sm text-marrom-rosado">{cafe.endereco}</p>
+                    <p className="text-sm text-marrom-rosado">{prestador.endereco}</p>
                   </div>
                 </div>
               )}
 
               {/* Phone */}
-              {cafe.telefone && (
+              {prestador.telefone && (
                 <div className="flex items-start gap-3">
                   <Phone className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Telefone</p>
                     <a 
-                      href={`tel:${cafe.telefone.replace(/\D/g, '')}`}
+                      href={`tel:${prestador.telefone.replace(/\D/g, '')}`}
                       className="text-sm text-marrom-rosado hover:text-marrom-forte transition-colors"
                     >
-                      {cafe.telefone}
+                      {prestador.telefone}
                     </a>
                   </div>
                 </div>
               )}
 
               {/* Hours */}
-              {cafe.horarioFuncionamento && (
+              {prestador.horarioFuncionamento && (
                 <div className="flex items-start gap-3">
                   <Clock className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Horário</p>
-                    <p className="text-sm text-marrom-rosado">{cafe.horarioFuncionamento}</p>
+                    <p className="text-sm text-marrom-rosado">{prestador.horarioFuncionamento}</p>
                   </div>
                 </div>
               )}
 
               {/* Price range */}
-              {cafe.faixaPreco && (
+              {prestador.faixaPreco && (
                 <div className="flex items-start gap-3">
                   <DollarSign className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Faixa de preço</p>
-                    <p className="text-sm text-marrom-rosado">{renderPriceRange(cafe.faixaPreco)}</p>
+                    <p className="text-sm text-marrom-rosado">{renderPriceRange(prestador.faixaPreco)}</p>
                   </div>
                 </div>
               )}
 
               {/* Instagram */}
-              {cafe.instagram && (
+              {prestador.instagram && (
                 <div className="flex items-start gap-3">
                   <Instagram className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Instagram</p>
                     <a 
-                      href={cafe.instagram.startsWith('http') ? cafe.instagram : `https://instagram.com/${cafe.instagram.replace('@', '')}`}
+                      href={prestador.instagram.startsWith('http') ? prestador.instagram : `https://instagram.com/${prestador.instagram.replace('@', '')}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm text-marrom-rosado hover:text-marrom-forte transition-colors"
                     >
-                      {cafe.instagram.startsWith('http') ? 'Ver perfil' : cafe.instagram}
+                      {prestador.instagram.startsWith('http') ? 'Ver perfil' : prestador.instagram}
                     </a>
                   </div>
                 </div>
               )}
 
               {/* Review */}
-              {cafe.instagramReview && (
+              {prestador.instagramReview && (
                 <div className="flex items-start gap-3">
                   <Instagram className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Review</p>
                     <a 
-                      href={cafe.instagramReview}
+                      href={prestador.instagramReview}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm text-marrom-rosado hover:text-marrom-forte transition-colors"
@@ -210,13 +210,13 @@ export default async function CafePage({ params }: { params: Promise<{ slug: str
               )}
 
               {/* Website */}
-              {cafe.website && (
+              {prestador.website && (
                 <div className="flex items-start gap-3">
                   <Globe className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-marrom-forte">Website</p>
                     <a 
-                      href={cafe.website}
+                      href={prestador.website}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm text-marrom-rosado hover:text-marrom-forte transition-colors break-all"
