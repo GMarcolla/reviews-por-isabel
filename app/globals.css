@@ -17,3 +17,26 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-playfair);
   color: #4A2F2F;
 }
+
+/* Leaflet Map Styles */
+.leaflet-container {
+  font-family: var(--font-inter);
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+}
+
+.leaflet-popup-content {
+  margin: 0;
+}
+
+.custom-marker {
+  background: transparent;
+  border: none;
+}
+
+/* Fix para ícones do Leaflet */
+.leaflet-default-icon-path {
+  background-image: url(https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png);
+}

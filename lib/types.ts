@@ -99,3 +99,16 @@ export interface ContatoFormErrors {
   email?: string;
   mensagem?: string;
 }
+
+// Interface para o mapa interativo
+export interface Place {
+  nome: string;              // Nome do lugar (ex: "Cafehaus - Centro")
+  categoria: string;         // Categoria principal (ex: "Cafés e docerias")
+  subcategoria: string;      // Subcategoria (ex: "Cafeteria")
+  regiao: string;            // Região (ex: "Blumenau-SC")
+  avaliacao: string;         // Avaliação da Isabel
+  cupom?: string;            // Cupom de desconto (opcional)
+  mapsLink: string;          // Link do Google Maps
+  lat: number;               // Latitude
+  lng: number;               // Longitude
+}
