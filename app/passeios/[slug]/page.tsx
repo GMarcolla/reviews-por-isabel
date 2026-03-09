@@ -55,7 +55,7 @@ export default async function PasseioPage({ params }: { params: Promise<{ slug: 
       {/* Back button */}
       <Link 
         href="/passeios" 
-        className="inline-flex items-center text-marrom-rosado hover:text-marrom-forte mb-6 transition-colors"
+        className="inline-flex items-center text-rosa-tulipa hover:text-rosa-tulipa-claro mb-6 transition-colors"
       >
         ← Voltar para Passeios
       </Link>
@@ -75,18 +75,18 @@ export default async function PasseioPage({ params }: { params: Promise<{ slug: 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main content */}
         <div className="lg:col-span-2">
-          <h1 className="font-display text-4xl md:text-5xl text-marrom-forte mb-4">
+          <h1 className="font-display text-4xl md:text-5xl text-marrom-escuro mb-4">
             {passeio.nome}
           </h1>
           
-          <p className="text-lg text-marrom-rosado mb-6">
+          <p className="text-lg text-marrom-escuro/80 mb-6">
             {passeio.descricaoCompleta}
           </p>
 
           {/* Gallery */}
           {passeio.galeria && passeio.galeria.length > 0 && (
             <div className="mt-8">
-              <h2 className="font-display text-2xl text-marrom-forte mb-4">Galeria</h2>
+              <h2 className="font-display text-2xl text-marrom-escuro mb-4">Galeria</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {passeio.galeria.map((imagem, index) => (
                   <div key={index} className="relative h-48 rounded-lg overflow-hidden">

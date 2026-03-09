@@ -30,11 +30,11 @@ export function SectionTitle({
 
   return (
     <div className={cn('mb-8 md:mb-12', alignClasses[align])}>
-      <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-marrom-forte mb-2">
+      <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-marrom-escuro mb-2">
         {title}
       </h2>
       {subtitle && (
-        <p className="text-base md:text-lg text-marrom-rosado mt-2">
+        <p className="text-base md:text-lg text-marrom-escuro/80 mt-2">
           {subtitle}
         </p>
       )}

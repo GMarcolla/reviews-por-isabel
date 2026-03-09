@@ -9,13 +9,36 @@
 
 body {
   font-family: var(--font-inter);
-  color: #6B4F4F;
-  background-color: #FFF8F6;
+  color: #4a2f2f; /* marrom-escuro */
+  background-color: #fff8f6; /* off-white-rosado */
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-playfair);
-  color: #4A2F2F;
+  color: #4a2f2f; /* marrom-escuro */
+}
+
+/* Links globais */
+a {
+  color: #c80c66; /* rosa-tulipa */
+  transition: color 200ms ease-in-out;
+}
+
+a:hover {
+  color: #c21a6a; /* rosa-tulipa-claro - ajustado para contraste */
+}
+
+/* Focus states para acessibilidade */
+*:focus-visible {
+  outline: 2px solid #c80c66; /* rosa-tulipa */
+  outline-offset: 2px;
+}
+
+/* Focus state para elementos em fundos escuros */
+.bg-verde-tulipa *:focus-visible,
+.bg-verde-tulipa-claro *:focus-visible,
+.bg-verde-tulipa-escuro *:focus-visible {
+  outline-color: #fff8f6; /* off-white-rosado para melhor contraste */
 }
 
 /* Leaflet Map Styles */

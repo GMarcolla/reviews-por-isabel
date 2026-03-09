@@ -59,7 +59,7 @@ export default async function PrestadorPage({ params }: { params: Promise<{ slug
       {/* Back button */}
       <Link 
         href="/prestadores" 
-        className="inline-flex items-center text-marrom-rosado hover:text-marrom-forte mb-6 transition-colors"
+        className="inline-flex items-center text-rosa-tulipa hover:text-rosa-tulipa-claro mb-6 transition-colors"
       >
         ← Voltar para Prestadores de Serviços
       </Link>
@@ -79,18 +79,18 @@ export default async function PrestadorPage({ params }: { params: Promise<{ slug
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main content */}
         <div className="lg:col-span-2">
-          <h1 className="font-display text-4xl md:text-5xl text-marrom-forte mb-4">
+          <h1 className="font-display text-4xl md:text-5xl text-marrom-escuro mb-4">
             {prestador.nome}
           </h1>
           
-          <p className="text-lg text-marrom-rosado mb-6">
+          <p className="text-lg text-marrom-escuro/80 mb-6">
             {prestador.descricaoCompleta}
           </p>
 
           {/* Gallery */}
           {prestador.galeria && prestador.galeria.length > 0 && (
             <div className="mt-8">
-              <h2 className="font-display text-2xl text-marrom-forte mb-4">Galeria</h2>
+              <h2 className="font-display text-2xl text-marrom-escuro mb-4">Galeria</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {prestador.galeria.map((imagem, index) => (
                   <div key={index} className="relative h-48 rounded-lg overflow-hidden">
@@ -109,8 +109,8 @@ export default async function PrestadorPage({ params }: { params: Promise<{ slug
           {/* Cupons Section */}
           {cupons.length > 0 && (
             <div className="mt-12">
-              <div className="border-t-2 border-rosa-claro pt-8 mb-6">
-                <h2 className="font-display text-3xl text-marrom-forte">
+              <div className="border-t-2 border-beje-tulipa pt-8 mb-6">
+                <h2 className="font-display text-3xl text-marrom-escuro">
                   Cupons de Desconto
                 </h2>
               </div>
@@ -120,22 +120,22 @@ export default async function PrestadorPage({ params }: { params: Promise<{ slug
                   <div key={cupom.id} className="bg-white rounded-card shadow-card p-6 hover:shadow-card-hover transition-shadow">
                     {/* Header */}
                     <div className="flex items-start gap-3 mb-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-rosa-blush rounded-full flex items-center justify-center">
-                        <Ticket className="w-6 h-6 text-marrom-forte" />
+                      <div className="flex-shrink-0 w-12 h-12 bg-rosa-tulipa rounded-full flex items-center justify-center">
+                        <Ticket className="w-6 h-6 text-white" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-display text-xl text-marrom-forte mb-1">
+                        <h3 className="font-display text-xl text-marrom-escuro mb-1">
                           Cupom de Desconto
                         </h3>
-                        <p className="text-sm text-marrom-rosado">
+                        <p className="text-sm text-marrom-escuro/80">
                           Oferta exclusiva
                         </p>
                       </div>
                     </div>
 
                     {/* Desconto */}
-                    <div className="mb-4 p-4 bg-rosa-claro/50 rounded-lg">
-                      <p className="text-2xl font-bold text-marrom-forte text-center">
+                    <div className="mb-4 p-4 bg-beje-tulipa/30 rounded-lg">
+                      <p className="text-2xl font-bold text-marrom-escuro text-center">
                         {cupom.descricao}
                       </p>
                     </div>
@@ -143,9 +143,9 @@ export default async function PrestadorPage({ params }: { params: Promise<{ slug
                     {/* Código */}
                     {cupom.codigo && (
                       <div className="mb-4">
-                        <p className="text-sm font-semibold text-marrom-forte mb-2">Código:</p>
-                        <div className="p-3 bg-creme-claro rounded-lg border-2 border-dashed border-rosa-blush">
-                          <p className="text-center font-mono font-bold text-marrom-forte">
+                        <p className="text-sm font-semibold text-marrom-escuro mb-2">Código:</p>
+                        <div className="p-3 bg-off-white-rosado rounded-lg border-2 border-dashed border-rosa-tulipa">
+                          <p className="text-center font-mono font-bold text-marrom-escuro">
                             {cupom.codigo}
                           </p>
                         </div>
@@ -154,7 +154,7 @@ export default async function PrestadorPage({ params }: { params: Promise<{ slug
 
                     {/* Termos */}
                     {cupom.termos && (
-                      <div className="text-xs text-marrom-rosado">
+                      <div className="text-xs text-marrom-escuro/80">
                         <p className="font-semibold mb-1">Termos:</p>
                         <p>{cupom.termos}</p>
                       </div>
@@ -168,8 +168,8 @@ export default async function PrestadorPage({ params }: { params: Promise<{ slug
 
         {/* Sidebar with details */}
         <div className="lg:col-span-1">
-          <div className="bg-rosa-claro rounded-lg p-6 sticky top-24">
-            <h2 className="font-display text-2xl text-marrom-forte mb-4">Informações</h2>
+          <div className="bg-beje-tulipa/30 rounded-lg p-6 sticky top-24">
+            <h2 className="font-display text-2xl text-marrom-escuro mb-4">Informações</h2>
             
             <div className="space-y-4">
               {/* Address */}

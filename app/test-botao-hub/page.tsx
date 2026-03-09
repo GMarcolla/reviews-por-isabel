@@ -16,7 +16,7 @@ import {
  */
 export default function TestBotaoHubPage() {
   return (
-    <main className="min-h-screen py-12 bg-creme-claro">
+    <main className="min-h-screen py-12 bg-off-white-rosado">
       <Container>
         <SectionTitle 
           title="Teste do Componente BotaoHub" 

@@ -75,43 +75,43 @@ function CuponsContent() {
     <Container size="xl" className="py-8 md:py-12">
       {/* Hero Section */}
       <div className="mb-12 md:mb-16 text-center">
-        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-marrom-forte mb-4">
+        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-marrom-escuro mb-4">
           Cupons de Desconto
         </h1>
-        <p className="text-lg md:text-xl text-marrom-rosado max-w-2xl mx-auto">
+        <p className="text-lg md:text-xl text-marrom-escuro/80 max-w-2xl mx-auto">
           Aproveite descontos exclusivos nos melhores lugares de Blumenau e região!
         </p>
       </div>
 
       {/* Filtros */}
-      <div className="mb-8 bg-rosa-claro/50 rounded-card p-6">
+      <div className="mb-8 bg-beje-tulipa/20 rounded-card p-6">
         <div className="flex items-center gap-2 mb-4">
-          <Filter className="w-5 h-5 text-marrom-forte" />
-          <h2 className="font-display text-xl text-marrom-forte">Filtros</h2>
+          <Filter className="w-5 h-5 text-marrom-escuro" />
+          <h2 className="font-display text-xl text-marrom-escuro">Filtros</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Busca por nome */}
           <div>
-            <label htmlFor="search" className="block text-sm font-semibold text-marrom-forte mb-2">
+            <label htmlFor="search" className="block text-sm font-semibold text-marrom-escuro mb-2">
               Buscar por nome
             </label>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-marrom-rosado" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-marrom-escuro/60" />
               <input
                 id="search"
                 type="text"
                 placeholder="Digite o nome do lugar..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 rounded-lg border border-rosa-claro bg-white text-marrom-forte placeholder:text-marrom-rosado/50 focus:outline-none focus:ring-2 focus:ring-rosa-blush"
+                className="w-full pl-10 pr-4 py-2 rounded-lg border border-beje-tulipa bg-white text-marrom-escuro placeholder:text-marrom-escuro/50 focus:outline-none focus:ring-2 focus:ring-rosa-tulipa transition-all duration-200"
               />
             </div>
           </div>
 
           {/* Categoria */}
           <div>
-            <label htmlFor="categoria" className="block text-sm font-semibold text-marrom-forte mb-2">
+            <label htmlFor="categoria" className="block text-sm font-semibold text-marrom-escuro mb-2">
               Categoria
             </label>
             <select
@@ -121,7 +121,7 @@ function CuponsContent() {
                 setSelectedCategoria(e.target.value);
                 setSelectedSubcategoria(''); // Limpar subcategoria ao mudar categoria
               }}
-              className="w-full px-4 py-2 rounded-lg border border-rosa-claro bg-white text-marrom-forte focus:outline-none focus:ring-2 focus:ring-rosa-blush"
+              className="w-full px-4 py-2 rounded-lg border border-beje-tulipa bg-white text-marrom-escuro focus:outline-none focus:ring-2 focus:ring-rosa-tulipa transition-all duration-200"
             >
               <option value="">Todas as categorias</option>
               {categorias.map(cat => (
@@ -134,7 +134,7 @@ function CuponsContent() {
 
           {/* Subcategoria */}
           <div>
-            <label htmlFor="subcategoria" className="block text-sm font-semibold text-marrom-forte mb-2">
+            <label htmlFor="subcategoria" className="block text-sm font-semibold text-marrom-escuro mb-2">
               Subcategoria
             </label>
             <select
@@ -142,7 +142,7 @@ function CuponsContent() {
               value={selectedSubcategoria}
               onChange={(e) => setSelectedSubcategoria(e.target.value)}
               disabled={!selectedCategoria}
-              className="w-full px-4 py-2 rounded-lg border border-rosa-claro bg-white text-marrom-forte focus:outline-none focus:ring-2 focus:ring-rosa-blush disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-4 py-2 rounded-lg border border-beje-tulipa bg-white text-marrom-escuro focus:outline-none focus:ring-2 focus:ring-rosa-tulipa transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <option value="">Todas as subcategorias</option>
               {subcategorias.map(subcat => (
@@ -158,7 +158,7 @@ function CuponsContent() {
         {(searchTerm || selectedCategoria || selectedSubcategoria) && (
           <button
             onClick={limparFiltros}
-            className="mt-4 text-sm text-marrom-rosado hover:text-marrom-forte transition-colors"
+            className="mt-4 text-sm text-rosa-tulipa hover:text-rosa-tulipa-claro transition-colors duration-200"
           >
             Limpar filtros
           </button>
@@ -168,8 +168,8 @@ function CuponsContent() {
       {/* Lista de Cupons */}
       {cuponsFiltrados.length === 0 ? (
         <div className="text-center py-12">
-          <Ticket className="w-16 h-16 text-marrom-rosado/30 mx-auto mb-4" />
-          <p className="text-lg text-marrom-rosado">
+          <Ticket className="w-16 h-16 text-marrom-escuro/30 mx-auto mb-4" />
+          <p className="text-lg text-marrom-escuro/80">
             Nenhum cupom encontrado com os filtros selecionados.
           </p>
         </div>
@@ -178,35 +178,35 @@ function CuponsContent() {
           {cuponsFiltrados.map((cupom) => (
             <div
               key={cupom.id}
-              className="bg-white rounded-card shadow-card p-6 hover:shadow-card-hover transition-shadow"
+              className="bg-white rounded-card shadow-card-tulipa p-6 hover:shadow-card-tulipa-hover transition-shadow duration-200"
             >
               {/* Header */}
               <div className="flex items-start gap-3 mb-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-rosa-blush rounded-full flex items-center justify-center">
-                  <Ticket className="w-6 h-6 text-marrom-forte" />
+                <div className="flex-shrink-0 w-12 h-12 bg-rosa-tulipa rounded-full flex items-center justify-center">
+                  <Ticket className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-display text-xl text-marrom-forte mb-1">
+                  <h3 className="font-display text-xl text-marrom-escuro mb-1">
                     {cupom.lugarNome}
                   </h3>
-                  <p className="text-sm text-marrom-rosado">
+                  <p className="text-sm text-marrom-escuro/70">
                     {cupom.categoria.charAt(0).toUpperCase() + cupom.categoria.slice(1)}
                   </p>
                 </div>
               </div>
 
               {/* Desconto */}
-              <div className="mb-4 p-4 bg-rosa-claro/50 rounded-lg">
-                <p className="text-2xl font-bold text-marrom-forte text-center">
+              <div className="mb-4 p-4 bg-beje-tulipa/20 rounded-lg">
+                <p className="text-2xl font-bold text-marrom-escuro text-center">
                   {cupom.descricao}
                 </p>
               </div>
 
               {/* Código */}
               <div className="mb-4">
-                <p className="text-sm font-semibold text-marrom-forte mb-2">Código:</p>
-                <div className="p-3 bg-creme-claro rounded-lg border-2 border-dashed border-rosa-blush">
-                  <p className="text-center font-mono font-bold text-marrom-forte">
+                <p className="text-sm font-semibold text-marrom-escuro mb-2">Código:</p>
+                <div className="p-3 bg-off-white-rosado rounded-lg border-2 border-dashed border-rosa-tulipa">
+                  <p className="text-center font-mono font-bold text-marrom-escuro">
                     {cupom.codigo}
                   </p>
                 </div>
@@ -214,7 +214,7 @@ function CuponsContent() {
 
               {/* Termos */}
               {cupom.termos && (
-                <div className="text-xs text-marrom-rosado">
+                <div className="text-xs text-marrom-escuro/70">
                   <p className="font-semibold mb-1">Termos:</p>
                   <p>{cupom.termos}</p>
                 </div>

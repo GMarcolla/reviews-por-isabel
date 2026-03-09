@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Lugar } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { categoryColors } from '@/lib/design-tokens';
 
 interface CardLugarProps {
   lugar: Lugar;
@@ -96,8 +97,8 @@ export function CardLugar({
   return (
     <article 
       className={cn(
-        'group bg-white rounded-card overflow-hidden shadow-card',
-        'transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1',
+        'group bg-white rounded-card overflow-hidden shadow-card-tulipa',
+        'transition-all duration-300 hover:shadow-card-tulipa-hover hover:-translate-y-1',
         'flex flex-col'
       )}
     >
@@ -113,29 +114,39 @@ export function CardLugar({
         />
         
         {/* Badge de categoria (opcional) */}
-        {showCategory && (
-          <div className="absolute top-3 left-3 bg-rosa-blush/90 backdrop-blur-sm px-3 py-1 rounded-full">
-            <span className="text-xs font-medium text-marrom-forte">
-              {getCategoryLabel(lugar.categoria)}
-            </span>
-          </div>
-        )}
+        {showCategory && (() => {
+          const categoryKey = routePrefix as keyof typeof categoryColors;
+          const colors = categoryColors[categoryKey] || categoryColors.lazer;
+          return (
+            <div 
+              className="absolute top-3 left-3 backdrop-blur-sm px-3 py-1 rounded-full"
+              style={{ backgroundColor: colors.badge }}
+            >
+              <span 
+                className="text-xs font-medium"
+                style={{ color: colors.badgeText }}
+              >
+                {getCategoryLabel(lugar.categoria)}
+              </span>
+            </div>
+          );
+        })()}
       </div>
 
       {/* Conteúdo */}
       <div className="flex flex-col flex-grow p-4 md:p-5">
         {/* Nome do lugar */}
-        <h3 className="text-xl md:text-2xl font-display font-bold text-marrom-forte mb-2 line-clamp-2">
+        <h3 className="text-xl md:text-2xl font-display font-bold text-marrom-escuro mb-2 line-clamp-2">
           {lugar.nome}
           {showSubcategoria && lugar.subcategoria && (
-            <span className="text-base md:text-lg font-normal text-marrom-rosado ml-2">
+            <span className="text-base md:text-lg font-normal text-marrom-escuro/80 ml-2">
               ({lugar.subcategoria})
             </span>
           )}
         </h3>
 
         {/* Descrição curta */}
-        <p className="text-sm md:text-base text-marrom-rosado mb-4 line-clamp-3 flex-grow">
+        <p className="text-sm md:text-base text-marrom-escuro/80 mb-4 line-clamp-3 flex-grow">
           {lugar.descricaoCurta}
         </p>
 
@@ -145,9 +156,9 @@ export function CardLugar({
           className={cn(
             'inline-flex items-center justify-center',
             'px-5 py-2.5 rounded-lg',
-            'bg-rosa-blush text-marrom-forte font-medium text-sm',
+            'bg-rosa-tulipa text-white font-medium text-sm',
             'transition-colors duration-200',
-            'hover:bg-rosa-blush/80 focus:outline-none focus:ring-2 focus:ring-rosa-blush focus:ring-offset-2',
+            'hover:bg-rosa-tulipa-claro focus:outline-none focus:ring-2 focus:ring-rosa-tulipa focus:ring-offset-2',
             'self-start'
           )}
           aria-label={`Ver mais sobre ${lugar.nome}`}

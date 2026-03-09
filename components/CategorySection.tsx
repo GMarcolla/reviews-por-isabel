@@ -47,7 +47,7 @@ export function CategorySection({
         </div>
       ) : (
         <div className="text-center py-12 px-4">
-          <p className="text-lg text-marrom-rosado">
+          <p className="text-lg text-marrom-escuro/80">
             Nenhum lugar encontrado nesta categoria ainda.
           </p>
         </div>

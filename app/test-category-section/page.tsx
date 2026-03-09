@@ -14,7 +14,7 @@ export default function TestCategorySectionPage() {
   return (
     <Container size="xl">
       <div className="py-12">
-        <h1 className="text-4xl font-display font-bold text-marrom-forte mb-8">
+        <h1 className="text-4xl font-display font-bold text-marrom-escuro mb-8">
           Teste do CategorySection
         </h1>
 

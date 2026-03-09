@@ -61,7 +61,7 @@ export default function ContatoPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-rosa-claro/30 via-creme-claro to-white">
+    <main className="min-h-screen bg-gradient-to-br from-beje-tulipa/20 via-off-white-rosado to-white">
       <Container size="md" className="py-16 md:py-24">
         {/* Header */}
         <div className="text-center mb-12">
@@ -80,7 +80,7 @@ export default function ContatoPage() {
               <div>
                 <label 
                   htmlFor="nome" 
-                  className="block text-sm font-medium text-marrom-forte mb-2"
+                  className="block text-sm font-medium text-marrom-escuro mb-2"
                 >
                   Nome
                 </label>
@@ -93,8 +93,8 @@ export default function ContatoPage() {
                   className={`w-full px-4 py-3 rounded-lg border ${
                     errors.nome 
                       ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
-                      : 'border-rosa-blush/30 focus:ring-rosa-blush focus:border-rosa-blush'
-                  } focus:ring-2 focus:outline-none transition-colors`}
+                      : 'border-beje-tulipa focus:ring-rosa-tulipa focus:border-rosa-tulipa'
+                  } focus:ring-2 focus:outline-none transition-all duration-200`}
                   placeholder="Seu nome"
                 />
                 {errors.nome && (
@@ -109,7 +109,7 @@ export default function ContatoPage() {
               <div>
                 <label 
                   htmlFor="email" 
-                  className="block text-sm font-medium text-marrom-forte mb-2"
+                  className="block text-sm font-medium text-marrom-escuro mb-2"
                 >
                   Email
                 </label>
@@ -122,8 +122,8 @@ export default function ContatoPage() {
                   className={`w-full px-4 py-3 rounded-lg border ${
                     errors.email 
                       ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
-                      : 'border-rosa-blush/30 focus:ring-rosa-blush focus:border-rosa-blush'
-                  } focus:ring-2 focus:outline-none transition-colors`}
+                      : 'border-beje-tulipa focus:ring-rosa-tulipa focus:border-rosa-tulipa'
+                  } focus:ring-2 focus:outline-none transition-all duration-200`}
                   placeholder="seu@email.com"
                 />
                 {errors.email && (
@@ -138,7 +138,7 @@ export default function ContatoPage() {
               <div>
                 <label 
                   htmlFor="mensagem" 
-                  className="block text-sm font-medium text-marrom-forte mb-2"
+                  className="block text-sm font-medium text-marrom-escuro mb-2"
                 >
                   Mensagem
                 </label>
@@ -151,8 +151,8 @@ export default function ContatoPage() {
                   className={`w-full px-4 py-3 rounded-lg border ${
                     errors.mensagem 
                       ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
-                      : 'border-rosa-blush/30 focus:ring-rosa-blush focus:border-rosa-blush'
-                  } focus:ring-2 focus:outline-none transition-colors resize-none`}
+                      : 'border-beje-tulipa focus:ring-rosa-tulipa focus:border-rosa-tulipa'
+                  } focus:ring-2 focus:outline-none transition-all duration-200 resize-none`}
                   placeholder="Escreva sua mensagem aqui..."
                 />
                 {errors.mensagem && (
@@ -167,7 +167,7 @@ export default function ContatoPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-rosa-blush hover:bg-rosa-blush/90 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-rosa-tulipa hover:bg-rosa-tulipa-claro text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Send className="w-5 h-5" />
                 {isSubmitting ? 'Enviando...' : 'Enviar mensagem'}
@@ -178,7 +178,7 @@ export default function ContatoPage() {
           {/* Informações de Contato */}
           <div className="space-y-8">
             <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h3 className="text-2xl font-display text-marrom-forte mb-6">
+              <h3 className="text-2xl font-display text-marrom-escuro mb-6">
                 Outras formas de contato
               </h3>
               
@@ -188,19 +188,19 @@ export default function ContatoPage() {
                   href="https://instagram.com/reviewsporisabel"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-start gap-4 p-4 rounded-lg hover:bg-rosa-claro/30 transition-colors group"
+                  className="flex items-start gap-4 p-4 rounded-lg hover:bg-beje-tulipa/20 transition-all duration-200 group"
                 >
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-rosa-blush to-rosa-claro rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Instagram className="w-6 h-6 text-marrom-forte" />
+                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-rosa-tulipa to-rosa-tulipa-claro rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                    <Instagram className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="font-medium text-marrom-forte mb-1">
+                    <h4 className="font-medium text-marrom-escuro mb-1">
                       Instagram
                     </h4>
-                    <p className="text-sm text-marrom-rosado">
+                    <p className="text-sm text-marrom-escuro/70">
                       @reviewsporisabel
                     </p>
-                    <p className="text-xs text-marrom-rosado/70 mt-1">
+                    <p className="text-xs text-marrom-escuro/60 mt-1">
                       Me siga para ver mais dicas e novidades!
                     </p>
                   </div>
@@ -209,19 +209,19 @@ export default function ContatoPage() {
                 {/* Email */}
                 <a
                   href="mailto:contato@reviewsporisabel.com.br"
-                  className="flex items-start gap-4 p-4 rounded-lg hover:bg-rosa-claro/30 transition-colors group"
+                  className="flex items-start gap-4 p-4 rounded-lg hover:bg-beje-tulipa/20 transition-all duration-200 group"
                 >
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-rosa-blush to-rosa-claro rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Mail className="w-6 h-6 text-marrom-forte" />
+                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-rosa-tulipa to-rosa-tulipa-claro rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                    <Mail className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="font-medium text-marrom-forte mb-1">
+                    <h4 className="font-medium text-marrom-escuro mb-1">
                       Email
                     </h4>
-                    <p className="text-sm text-marrom-rosado break-all">
+                    <p className="text-sm text-marrom-escuro/70 break-all">
                       contato@reviewsporisabel.com.br
                     </p>
-                    <p className="text-xs text-marrom-rosado/70 mt-1">
+                    <p className="text-xs text-marrom-escuro/60 mt-1">
                       Respondo em até 48 horas
                     </p>
                   </div>
@@ -230,8 +230,8 @@ export default function ContatoPage() {
             </div>
 
             {/* Mensagem adicional */}
-            <div className="bg-gradient-to-br from-rosa-claro/50 to-creme-claro rounded-2xl p-8">
-              <p className="text-marrom-rosado leading-relaxed">
+            <div className="bg-gradient-to-br from-beje-tulipa/30 to-off-white-rosado rounded-2xl p-8">
+              <p className="text-marrom-escuro/80 leading-relaxed">
                 <span className="text-2xl mb-2 block">💕</span>
                 Fico muito feliz com cada mensagem que recebo! Seja para sugerir 
                 um lugar novo, compartilhar sua experiência ou apenas bater um papo 

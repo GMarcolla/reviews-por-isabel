@@ -50,7 +50,7 @@ export function Header({ currentPath }: HeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white border-b border-rosa-claro shadow-sm">
+    <header className="sticky top-0 z-50 w-full bg-white border-b border-beje-tulipa shadow-sm">
       <nav className="mx-auto max-w-7xl px-6 md:px-8 lg:px-12">
         <div className="flex h-16 items-center justify-between">
           {/* Logo/Título */}
@@ -77,10 +77,10 @@ export function Header({ currentPath }: HeaderProps) {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'px-3 py-2 rounded-md text-sm font-medium transition-colors',
+                  'px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200',
                   isActive(item.href)
-                    ? 'bg-rosa-claro text-marrom-forte'
-                    : 'text-marrom-rosado hover:bg-rosa-claro/50 hover:text-marrom-forte'
+                    ? 'bg-beje-tulipa text-verde-tulipa'
+                    : 'text-marrom-escuro hover:bg-beje-tulipa/30'
                 )}
               >
                 {item.label}
@@ -91,7 +91,7 @@ export function Header({ currentPath }: HeaderProps) {
           {/* Botão Menu Mobile */}
           <button
             type="button"
-            className="lg:hidden inline-flex items-center justify-center p-2 rounded-md text-marrom-rosado hover:bg-rosa-claro hover:text-marrom-forte transition-colors"
+            className="lg:hidden inline-flex items-center justify-center p-2 rounded-md text-marrom-escuro hover:bg-beje-tulipa/30 transition-colors duration-200"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Menu"
             aria-expanded={mobileMenuOpen}
@@ -113,10 +113,10 @@ export function Header({ currentPath }: HeaderProps) {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'px-3 py-2 rounded-md text-base font-medium transition-colors',
+                    'px-3 py-2 rounded-md text-base font-medium transition-colors duration-200',
                     isActive(item.href)
-                      ? 'bg-rosa-claro text-marrom-forte'
-                      : 'text-marrom-rosado hover:bg-rosa-claro/50 hover:text-marrom-forte'
+                      ? 'bg-beje-tulipa text-verde-tulipa'
+                      : 'text-marrom-escuro hover:bg-beje-tulipa/30'
                   )}
                   onClick={() => setMobileMenuOpen(false)}
                 >

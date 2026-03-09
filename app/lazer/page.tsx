@@ -24,10 +24,10 @@ export default function LazerPage() {
     <Container size="xl" className="py-8 md:py-12">
       {/* Hero Section */}
       <div className="mb-12 md:mb-16 text-center">
-        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-marrom-forte mb-4">
+        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-marrom-escuro mb-4">
           Lazer
         </h1>
-        <p className="text-lg md:text-xl text-marrom-rosado max-w-2xl mx-auto">
+        <p className="text-lg md:text-xl text-marrom-escuro/80 max-w-2xl mx-auto">
           Descubra experiências incríveis e opções de lazer inesquecíveis 
           em Blumenau e região.
         </p>

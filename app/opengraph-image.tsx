@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og';
+import { colors } from '@/lib/design-tokens';
 
 // Configuração da imagem
 export const runtime = 'edge';
@@ -21,10 +22,10 @@ export default async function Image() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#FFF8F6',
+          backgroundColor: colors.offWhiteRosado,
         }}
       >
-        {/* Header com fundo rosa */}
+        {/* Header com fundo verde tulipa */}
         <div
           style={{
             position: 'absolute',
@@ -32,7 +33,7 @@ export default async function Image() {
             left: 0,
             right: 0,
             height: '150px',
-            backgroundColor: '#E8B4B8',
+            backgroundColor: colors.verdeTulipa,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -42,7 +43,7 @@ export default async function Image() {
             style={{
               fontSize: 60,
               fontWeight: 'bold',
-              color: '#4A2F2F',
+              color: colors.offWhiteRosado,
               margin: 0,
               fontFamily: 'serif',
             }}
@@ -64,7 +65,7 @@ export default async function Image() {
           <p
             style={{
               fontSize: 40,
-              color: '#6B4F4F',
+              color: colors.marromEscuro,
               margin: 0,
               marginBottom: '20px',
               fontFamily: 'sans-serif',
@@ -75,7 +76,7 @@ export default async function Image() {
           <p
             style={{
               fontSize: 40,
-              color: '#6B4F4F',
+              color: colors.marromEscuro,
               margin: 0,
               fontFamily: 'sans-serif',
             }}
@@ -99,12 +100,12 @@ export default async function Image() {
               width: 60,
               height: 60,
               borderRadius: '50%',
-              backgroundColor: '#E8B4B8',
+              backgroundColor: colors.rosaTulipa,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: 40,
-              color: '#4A2F2F',
+              color: colors.branco,
               fontWeight: 'bold',
               fontFamily: 'serif',
             }}
@@ -114,7 +115,7 @@ export default async function Image() {
           <span
             style={{
               fontSize: 28,
-              color: '#6B4F4F',
+              color: colors.marromEscuro,
               fontFamily: 'sans-serif',
             }}
           >

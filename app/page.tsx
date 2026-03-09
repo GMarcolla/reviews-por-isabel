@@ -1,33 +1,33 @@
 import { BotaoHub } from '@/components/BotaoHub';
-import { Map, Ticket, Mail, Store } from 'lucide-react';
+import { Mail } from 'lucide-react';
 
 export default function Home() {
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-rosa-claro via-creme-claro to-white py-20 px-6 md:py-32">
+      <section className="relative bg-gradient-to-br from-beje-tulipa/30 via-off-white-rosado to-white py-20 px-6 md:py-32">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Text Content */}
             <div className="text-center md:text-left space-y-6">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-display text-marrom-forte leading-tight">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-display text-marrom-escuro leading-tight">
                 Reviews por Isabel
               </h1>
-              <p className="text-xl md:text-2xl text-marrom-rosado font-light">
+              <p className="text-xl md:text-2xl text-marrom-escuro font-light">
                 Um guia de lugares e experiências em Blumenau e região
               </p>
-              <p className="text-base md:text-lg text-marrom-rosado/80 max-w-lg mx-auto md:mx-0">
+              <p className="text-base md:text-lg text-marrom-escuro/80 max-w-lg mx-auto md:mx-0">
                 Descubra os melhores restaurantes, cafés, passeios e experiências com curadoria especial
               </p>
             </div>
 
             {/* Image Placeholder */}
             <div className="relative">
-              <div className="aspect-square rounded-2xl bg-gradient-to-br from-rosa-blush/30 to-rosa-claro/50 shadow-lg flex items-center justify-center overflow-hidden">
+              <div className="aspect-square rounded-2xl bg-gradient-to-br from-rosa-tulipa/20 to-beje-tulipa/40 shadow-lg flex items-center justify-center overflow-hidden">
                 <div className="text-center p-8">
-                  <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-rosa-blush/40 flex items-center justify-center">
+                  <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-rosa-tulipa/30 flex items-center justify-center">
                     <svg 
-                      className="w-16 h-16 text-marrom-rosado/60" 
+                      className="w-16 h-16 text-marrom-escuro/60" 
                       fill="none" 
                       stroke="currentColor" 
                       viewBox="0 0 24 24"
@@ -40,14 +40,14 @@ export default function Home() {
                       />
                     </svg>
                   </div>
-                  <p className="text-sm text-marrom-rosado/60 font-medium">
+                  <p className="text-sm text-marrom-escuro/60 font-medium">
                     Imagem em breve
                   </p>
                 </div>
               </div>
               {/* Decorative elements */}
-              <div className="absolute -top-4 -right-4 w-24 h-24 bg-rosa-blush/20 rounded-full blur-2xl"></div>
-              <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-rosa-claro/30 rounded-full blur-2xl"></div>
+              <div className="absolute -top-4 -right-4 w-24 h-24 bg-rosa-tulipa/20 rounded-full blur-2xl"></div>
+              <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-verde-tulipa/20 rounded-full blur-2xl"></div>
             </div>
           </div>
         </div>
@@ -62,20 +62,13 @@ export default function Home() {
               description="Descubra os melhores sabores"
               imageSrc="/img-botoes/restaurantes.PNG"
               href="/restaurantes"
-              variant="primary"
+              variant="secondary"
             />
             <BotaoHub
               title="Cafés & Docerias"
               description="Momentos doces e especiais"
               imageSrc="/img-botoes/cafes-docerias.PNG"
               href="/cafes"
-              variant="secondary"
-            />
-            <BotaoHub
-              title="Lazer"
-              description="Experiências inesquecíveis"
-              imageSrc="/img-botoes/lazer.PNG"
-              href="/lazer"
               variant="primary"
             />
             <BotaoHub
@@ -86,24 +79,24 @@ export default function Home() {
               variant="secondary"
             />
             <BotaoHub
-              title="Lojas"
-              description="Compras especiais"
-              icon={Store}
-              href="/lojas"
+              title="Lazer"
+              description="Experiências inesquecíveis"
+              imageSrc="/img-botoes/lazer.PNG"
+              href="/lazer"
               variant="primary"
-            />
-            <BotaoHub
-              title="Roteiro em Blumenau"
-              description="Um dia perfeito na cidade"
-              icon={Map}
-              href="/roteiro"
-              variant="secondary"
             />
             <BotaoHub
               title="Cupons"
               description="Descontos exclusivos"
-              icon={Ticket}
+              imageSrc="/img-botoes/cupons.png"
               href="/cupons"
+              variant="secondary"
+            />
+            <BotaoHub
+              title="Lojas"
+              description="Compras especiais"
+              imageSrc="/img-botoes/lojas.png"
+              href="/lojas"
               variant="primary"
             />
             <BotaoHub
@@ -113,21 +106,28 @@ export default function Home() {
               href="/contato"
               variant="secondary"
             />
+            <BotaoHub
+              title="Roteiro em Blumenau"
+              description="Um dia perfeito na cidade"
+              imageSrc="/img-botoes/roteiro.png"
+              href="/roteiro"
+              variant="primary"
+            />
           </div>
         </div>
       </section>
 
       {/* Sobre a Isa Section */}
-      <section className="py-16 px-6 md:py-24 bg-gradient-to-br from-rosa-claro/50 to-creme-claro">
+      <section className="py-16 px-6 md:py-24 bg-gradient-to-br from-beje-tulipa/20 to-off-white-rosado">
         <div className="max-w-4xl mx-auto">
           <div className="grid md:grid-cols-[auto,1fr] gap-8 md:gap-12 items-center">
             {/* Foto circular */}
             <div className="flex justify-center md:justify-start">
               <div className="relative">
-                <div className="w-48 h-48 md:w-56 md:h-56 rounded-full bg-gradient-to-br from-rosa-blush/40 to-rosa-claro/60 shadow-lg flex items-center justify-center overflow-hidden">
+                <div className="w-48 h-48 md:w-56 md:h-56 rounded-full bg-gradient-to-br from-rosa-tulipa/30 to-beje-tulipa/50 shadow-lg flex items-center justify-center overflow-hidden">
                   <div className="text-center">
                     <svg 
-                      className="w-20 h-20 text-marrom-rosado/50" 
+                      className="w-20 h-20 text-marrom-escuro/50" 
                       fill="none" 
                       stroke="currentColor" 
                       viewBox="0 0 24 24"
@@ -142,16 +142,16 @@ export default function Home() {
                   </div>
                 </div>
                 {/* Decorative ring */}
-                <div className="absolute inset-0 rounded-full border-4 border-rosa-blush/30 -z-10 scale-110"></div>
+                <div className="absolute inset-0 rounded-full border-4 border-rosa-tulipa/30 -z-10 scale-110"></div>
               </div>
             </div>
 
             {/* Texto de apresentação */}
             <div className="text-center md:text-left space-y-4">
-              <h2 className="text-4xl md:text-5xl font-display text-marrom-forte">
+              <h2 className="text-4xl md:text-5xl font-display text-marrom-escuro">
                 Oi! Eu sou a Isa
               </h2>
-              <div className="space-y-3 text-marrom-rosado text-base md:text-lg leading-relaxed">
+              <div className="space-y-3 text-marrom-escuro text-base md:text-lg leading-relaxed">
                 <p>
                   Bem-vinda ao meu cantinho especial! Sou apaixonada por descobrir lugares incríveis, 
                   sabores únicos e experiências que tornam cada momento especial.

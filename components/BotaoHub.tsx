@@ -37,12 +37,14 @@ export function BotaoHub({
 }: BotaoHubProps) {
   const variantClasses = {
     primary: cn(
-      'bg-rosa-blush text-marrom-forte',
-      'hover:bg-rosa-blush/90 active:bg-rosa-blush/80'
+      'bg-rosa-tulipa text-white',
+      'hover:bg-rosa-tulipa-claro active:bg-rosa-tulipa-escuro',
+      'transition-colors duration-300'
     ),
     secondary: cn(
-      'bg-creme-claro text-marrom-forte',
-      'hover:bg-creme-claro/90 active:bg-creme-claro/80'
+      'bg-verde-tulipa text-white',
+      'hover:bg-verde-tulipa-claro active:bg-verde-tulipa-escuro',
+      'transition-colors duration-300'
     ),
   };
 
@@ -54,7 +56,7 @@ export function BotaoHub({
         className={cn(
           'group relative block overflow-visible',
           'transition-all duration-300',
-          'hover:shadow-none hover:-translate-y-1',
+          'hover:-translate-y-1',
           'focus:outline-none',
           'w-full aspect-[16/9]'
         )}
@@ -89,7 +91,7 @@ export function BotaoHub({
         'p-6 md:p-8 rounded-card',
         'transition-all duration-300',
         'hover:shadow-card-hover hover:-translate-y-1',
-        'focus:outline-none focus:ring-2 focus:ring-rosa-blush focus:ring-offset-2',
+        'focus:outline-none focus:ring-2 focus:ring-rosa-tulipa focus:ring-offset-2',
         'text-center aspect-[16/9]',
         variantClasses[variant]
       )}
