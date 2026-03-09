@@ -16,7 +16,7 @@ const config: Config = {
         'beje-tulipa': '#cec683',
         'beje-tulipa-claro': '#ddd69a',
         'beje-tulipa-escuro': '#e8e0a8',        // Para links no footer
-        'rosa-tulipa': '#c80c66',
+        'rosa-tulipa': '#af0054',
         'rosa-tulipa-claro': '#c21a6a',         // Ajustado para contraste 4.5:1
         'rosa-tulipa-escuro': '#a00a52',
         'off-white-rosado': '#fff8f6',
