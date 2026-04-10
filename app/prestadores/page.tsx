@@ -13,7 +13,7 @@ import { getPrestadores } from '@/lib/data/prestadores';
 
 export const metadata: Metadata = {
   title: 'Prestadores de Serviços',
-  description: 'Descubra os melhores prestadores de serviços de Blumenau e região.',
+  description: 'É sempre bom ter com quem contar',
 };
 
 export default function PrestadoresPage() {
@@ -28,8 +28,7 @@ export default function PrestadoresPage() {
           Prestadores de Serviços
         </h1>
         <p className="text-lg md:text-xl text-marrom-escuro/80 max-w-2xl mx-auto">
-          Descubra os melhores profissionais de Blumenau e região, 
-          cuidadosamente selecionados para você.
+          É sempre bom ter com quem contar
         </p>
       </div>
 

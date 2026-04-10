@@ -13,7 +13,7 @@ import { getLojas } from '@/lib/data/lojas';
 
 export const metadata: Metadata = {
   title: 'Lojas',
-  description: 'Descubra as melhores lojas de Blumenau e região.',
+  description: 'Pra render boas comprinhas',
 };
 
 export default function LojasPage() {
@@ -28,8 +28,7 @@ export default function LojasPage() {
           Lojas
         </h1>
         <p className="text-lg md:text-xl text-marrom-escuro/80 max-w-2xl mx-auto">
-          Descubra as melhores lojas de Blumenau e região, 
-          cuidadosamente selecionadas para você.
+          Pra render boas comprinhas
         </p>
       </div>
 

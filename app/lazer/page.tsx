@@ -13,7 +13,7 @@ import { getPasseios } from '@/lib/data/passeios';
 
 export const metadata: Metadata = {
   title: 'Lazer',
-  description: 'Descubra opções de lazer e experiências incríveis em Blumenau e região.',
+  description: 'Por que a vida também pede pausas',
 };
 
 export default function LazerPage() {
@@ -28,8 +28,7 @@ export default function LazerPage() {
           Lazer
         </h1>
         <p className="text-lg md:text-xl text-marrom-escuro/80 max-w-2xl mx-auto">
-          Descubra experiências incríveis e opções de lazer inesquecíveis 
-          em Blumenau e região.
+          Por que a vida também pede pausas
         </p>
       </div>
 

@@ -4,21 +4,33 @@ import { Mail } from 'lucide-react';
 export default function Home() {
   return (
     <main className="min-h-screen">
-      {/* Hero Section */}
+      {/* Hero Section - Reviews por Isabel */}
       <section className="relative bg-gradient-to-br from-beje-tulipa/30 via-off-white-rosado to-white py-20 px-6 md:py-32">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Text Content */}
             <div className="text-center md:text-left space-y-6">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-display text-marrom-escuro leading-tight">
-                Reviews por Isabel
+                Oie! Eu sou a Isa!
               </h1>
               <p className="text-xl md:text-2xl text-marrom-escuro font-light">
                 Um guia de lugares e experiências em Blumenau e região
               </p>
-              <p className="text-base md:text-lg text-marrom-escuro/80 max-w-lg mx-auto md:mx-0">
-                Descubra os melhores restaurantes, cafés, passeios e experiências com curadoria especial
-              </p>
+              <div className="space-y-3 text-marrom-escuro text-base md:text-lg leading-relaxed max-w-lg mx-auto md:mx-0">
+                <p className="text-marrom-escuro/80">
+                  Descubra os melhores restaurantes, cafés, passeios e experiências com curadoria especial
+                </p>
+                <p>
+                  O Reviews por Isabel nasceu da minha vontade de compartilhar lugares que realmente valem a visita em Blumenau e região.
+                </p>
+                <p>
+                  Por aqui você encontra restaurantes, cafés, passeios e experiências que eu já conheci e recomendo. 
+                  Tudo baseado nas minhas próprias visitas. 
+                </p>
+                <p>
+                  Espero te ajudar a descobrir lugares legais e ter novas experiências pela região!
+                </p>
+              </div>
             </div>
 
             {/* Image Placeholder */}
@@ -117,59 +129,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Sobre a Isa Section */}
-      <section className="py-16 px-6 md:py-24 bg-gradient-to-br from-beje-tulipa/20 to-off-white-rosado">
-        <div className="max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-[auto,1fr] gap-8 md:gap-12 items-center">
-            {/* Foto circular */}
-            <div className="flex justify-center md:justify-start">
-              <div className="relative">
-                <div className="w-48 h-48 md:w-56 md:h-56 rounded-full bg-gradient-to-br from-rosa-tulipa/30 to-beje-tulipa/50 shadow-lg flex items-center justify-center overflow-hidden">
-                  <div className="text-center">
-                    <svg 
-                      className="w-20 h-20 text-marrom-escuro/50" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
-                    >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={1.5} 
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" 
-                      />
-                    </svg>
-                  </div>
-                </div>
-                {/* Decorative ring */}
-                <div className="absolute inset-0 rounded-full border-4 border-rosa-tulipa/30 -z-10 scale-110"></div>
-              </div>
-            </div>
 
-            {/* Texto de apresentação */}
-            <div className="text-center md:text-left space-y-4">
-              <h2 className="text-4xl md:text-5xl font-display text-marrom-escuro">
-                Oi! Eu sou a Isa
-              </h2>
-              <div className="space-y-3 text-marrom-escuro text-base md:text-lg leading-relaxed">
-                <p>
-                  Bem-vinda ao meu cantinho especial! Sou apaixonada por descobrir lugares incríveis, 
-                  sabores únicos e experiências que tornam cada momento especial.
-                </p>
-                <p>
-                  Aqui você encontra minhas recomendações pessoais de restaurantes, cafés e passeios 
-                  em Blumenau e região. Cada lugar foi cuidadosamente visitado e escolhido por mim, 
-                  pensando em criar memórias inesquecíveis.
-                </p>
-                <p>
-                  Espero que você se inspire e descubra novos lugares favoritos através das minhas dicas! 
-                  Vamos juntas nessa jornada gastronômica e cultural? 💕
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </main>
   );
 }

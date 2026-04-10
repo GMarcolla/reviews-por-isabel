@@ -18,7 +18,7 @@ import { Lugar } from '@/lib/types';
 
 export const metadata: Metadata = {
   title: 'Cafés & Docerias',
-  description: 'Descubra os melhores cafés e docerias de Blumenau e região, organizados por categoria.',
+  description: 'Porque um docinho sempre vai bem',
 };
 
 // Mapeamento de categorias para títulos em português
@@ -62,8 +62,7 @@ export default function CafesPage() {
           Cafés & Docerias
         </h1>
         <p className="text-lg md:text-xl text-marrom-escuro/80 max-w-2xl mx-auto">
-          Descubra os melhores cafés e docerias de Blumenau e região, 
-          cuidadosamente selecionados para você.
+          Porque um docinho sempre vai bem
         </p>
       </div>
 

@@ -19,7 +19,7 @@ import { Lugar } from '@/lib/types';
 
 export const metadata: Metadata = {
   title: 'Restaurantes',
-  description: 'Descubra os melhores restaurantes de Blumenau e região, organizados por categoria.',
+  description: 'Descubra os melhores sabores',
 };
 
 // Mapeamento de categorias para títulos em português
@@ -87,8 +87,7 @@ export default function RestaurantesPage() {
           Restaurantes
         </h1>
         <p className="text-lg md:text-xl text-marrom-escuro/80 max-w-2xl mx-auto">
-          Descubra os melhores restaurantes de Blumenau e região, 
-          cuidadosamente selecionados para você.
+          Descubra os melhores sabores
         </p>
       </div>
 

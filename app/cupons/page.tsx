@@ -79,7 +79,7 @@ function CuponsContent() {
           Cupons de Desconto
         </h1>
         <p className="text-lg md:text-xl text-marrom-escuro/80 max-w-2xl mx-auto">
-          Aproveite descontos exclusivos nos melhores lugares de Blumenau e região!
+          Nada melhor do que um desconto, né?
         </p>
       </div>
 

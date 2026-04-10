@@ -18,7 +18,7 @@ const menuItems = [
   { label: 'Lazer', href: '/lazer' },
   { label: 'Prestadores', href: '/prestadores' },
   { label: 'Lojas', href: '/lojas' },
-  { label: 'Roteiro', href: '/roteiro' },
+  { label: '1 dia em Blumenau', href: '/roteiro' },
   { label: 'Cupons', href: '/cupons' },
   { label: 'Contato', href: '/contato' },
 ];
