@@ -37,14 +37,14 @@ const categoriaOrdem = [
   'brunch',
 ];
 
-export default function CafesPage() {
+export default async function () {
   // Buscar todos os cafés
-  const todosCafes = getCafes();
+  const todosCafes = await getCafes();
 
   // Agrupar cafés por categoria
   const cafesPorCategoria = categoriaOrdem.reduce((acc, categoria) => {
     const cafesCategoria = todosCafes.filter(
-      (c) => c.categoria === categoria
+      (c) => c.categoria.toLowerCase() === categoria.toLowerCase() || c.subcategoria?.toLowerCase().trim() === categoria.toLowerCase().trim()
     );
     
     if (cafesCategoria.length > 0) {

@@ -12,23 +12,24 @@ import { getCafes } from './cafes';
 import { getPasseios } from './passeios';
 import { getPrestadores } from './prestadores';
 import { getLojas } from './lojas';
+import { prisma } from '../prisma';
 
 // Combined utility functions
-export function getTodosLugares(): Lugar[] {
-  return [...getRestaurantes(), ...getCafes(), ...getPasseios(), ...getPrestadores(), ...getLojas()];
+export async function getTodosLugares(): Promise<Lugar[]> {
+  return await prisma.lugar.findMany({ orderBy: { ordem: 'desc' } });
 }
 
-export function getLugarById(id: string): Lugar | undefined {
-  const todosLugares = getTodosLugares();
-  return todosLugares.find(l => l.id === id);
+export async function getLugarById(id: string): Promise<Lugar | undefined> {
+  const lugar = await prisma.lugar.findUnique({ where: { slug: id } });
+  return lugar || undefined;
 }
 
-export function getLugaresPorCategoria(categoria: string): Lugar[] {
-  const todosLugares = getTodosLugares();
-  return todosLugares.filter(l => l.categoria === categoria);
+export async function getLugaresPorCategoria(categoria: string): Promise<Lugar[]> {
+  const todosLugares = await getTodosLugares();
+  return todosLugares.filter(l => (l.subcategoria?.toLowerCase().trim() || l.categoria.toLowerCase().trim()) === categoria.toLowerCase().trim());
 }
 
-export function getLugaresDestaque(): Lugar[] {
-  const todosLugares = getTodosLugares();
+export async function getLugaresDestaque(): Promise<Lugar[]> {
+  const todosLugares = await getTodosLugares();
   return todosLugares.filter(l => l.destaque === true);
 }

@@ -44,9 +44,9 @@ const categoriaOrdem = [
   'passeio',
 ];
 
-export default function PasseiosPage() {
+export default async function () {
   // Buscar todos os passeios
-  const todosPasseios = getPasseios();
+  const todosPasseios = await getPasseios();
 
   // Agrupar passeios por categoria
   const passeiosPorCategoria = categoriaOrdem.reduce((acc, categoria) => {

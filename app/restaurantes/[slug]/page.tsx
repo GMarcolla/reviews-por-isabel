@@ -9,7 +9,7 @@ import { Container } from '@/components/Container';
 
 // Generate static params for SSG
 export async function generateStaticParams() {
-  const restaurantes = getRestaurantes();
+  const restaurantes = await getRestaurantes();
   return restaurantes.map((restaurante) => ({
     slug: restaurante.id,
   }));
@@ -18,7 +18,7 @@ export async function generateStaticParams() {
 // Generate metadata for SEO
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const restaurante = getRestauranteBySlug(slug);
+  const restaurante = await getRestauranteBySlug(slug);
   
   if (!restaurante) {
     return {
@@ -39,14 +39,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function RestaurantePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const restaurante = getRestauranteBySlug(slug);
+  const restaurante = await getRestauranteBySlug(slug);
 
   if (!restaurante) {
     notFound();
   }
 
   // Verificar se tem cupons
-  const cupons = getCuponsByLugarId(restaurante.id);
+  const cupons = await getCuponsByLugarId(restaurante.id);
 
   // Helper function to render price range
   const renderPriceRange = (faixaPreco?: number) => {
@@ -88,24 +88,6 @@ export default async function RestaurantePage({ params }: { params: Promise<{ sl
           </p>
 
           {/* Gallery */}
-          {restaurante.galeria && restaurante.galeria.length > 0 && (
-            <div className="mt-8">
-              <h2 className="font-display text-2xl text-marrom-escuro mb-4">Galeria</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {restaurante.galeria.map((imagem, index) => (
-                  <div key={index} className="relative h-48 rounded-lg overflow-hidden">
-                    <Image
-                      src={imagem}
-                      alt={`${restaurante.nome} - Imagem ${index + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Cupons Section */}
           {cupons.length > 0 && (
             <div className="mt-12">

@@ -5,7 +5,7 @@ import { getPasseios } from '@/lib/data/passeios';
 import { getPrestadores } from '@/lib/data/prestadores';
 import { getLojas } from '@/lib/data/lojas';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://reviewsporisabel.com.br';
   
   // Páginas estáticas
@@ -67,7 +67,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   // Páginas dinâmicas de restaurantes
-  const restaurantes = getRestaurantes();
+  const restaurantes = await getRestaurantes();
   const restaurantePages = restaurantes.map((restaurante) => ({
     url: `${baseUrl}/restaurantes/${restaurante.id}`,
     lastModified: new Date(),
@@ -76,7 +76,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // Páginas dinâmicas de cafés
-  const cafes = getCafes();
+  const cafes = await getCafes();
   const cafePages = cafes.map((cafe) => ({
     url: `${baseUrl}/cafes/${cafe.id}`,
     lastModified: new Date(),
@@ -85,7 +85,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // Páginas dinâmicas de lazer
-  const lazer = getPasseios();
+  const lazer = await getPasseios();
   const lazerPages = lazer.map((item) => ({
     url: `${baseUrl}/lazer/${item.id}`,
     lastModified: new Date(),
@@ -94,7 +94,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // Páginas dinâmicas de prestadores
-  const prestadores = getPrestadores();
+  const prestadores = await getPrestadores();
   const prestadorPages = prestadores.map((prestador) => ({
     url: `${baseUrl}/prestadores/${prestador.id}`,
     lastModified: new Date(),
@@ -103,7 +103,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // Páginas dinâmicas de lojas
-  const lojas = getLojas();
+  const lojas = await getLojas();
   const lojaPages = lojas.map((loja) => ({
     url: `${baseUrl}/lojas/${loja.id}`,
     lastModified: new Date(),

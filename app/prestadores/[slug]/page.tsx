@@ -9,7 +9,7 @@ import { Container } from '@/components/Container';
 
 // Generate static params for SSG
 export async function generateStaticParams() {
-  const prestadores = getPrestadores();
+  const prestadores = await getPrestadores();
   return prestadores.map((prestador) => ({
     slug: prestador.id,
   }));
@@ -18,7 +18,7 @@ export async function generateStaticParams() {
 // Generate metadata for SEO
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const prestador = getPrestadorBySlug(slug);
+  const prestador = await getPrestadorBySlug(slug);
   
   if (!prestador) {
     return {
@@ -39,14 +39,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function PrestadorPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const prestador = getPrestadorBySlug(slug);
+  const prestador = await getPrestadorBySlug(slug);
 
   if (!prestador) {
     notFound();
   }
 
   // Verificar se tem cupons
-  const cupons = getCuponsByLugarId(prestador.id);
+  const cupons = await getCuponsByLugarId(prestador.id);
 
   // Helper function to render price range
   const renderPriceRange = (faixaPreco?: number) => {
@@ -88,24 +88,6 @@ export default async function PrestadorPage({ params }: { params: Promise<{ slug
           </p>
 
           {/* Gallery */}
-          {prestador.galeria && prestador.galeria.length > 0 && (
-            <div className="mt-8">
-              <h2 className="font-display text-2xl text-marrom-escuro mb-4">Galeria</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {prestador.galeria.map((imagem, index) => (
-                  <div key={index} className="relative h-48 rounded-lg overflow-hidden">
-                    <Image
-                      src={imagem}
-                      alt={`${prestador.nome} - Imagem ${index + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Cupons Section */}
           {cupons.length > 0 && (
             <div className="mt-12">

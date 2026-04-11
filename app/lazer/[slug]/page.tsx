@@ -8,7 +8,7 @@ import { Container } from '@/components/Container';
 
 // Generate static params for SSG
 export async function generateStaticParams() {
-  const lazer = getPasseios();
+  const lazer = await getPasseios();
   return lazer.map((item) => ({
     slug: item.id,
   }));
@@ -17,7 +17,7 @@ export async function generateStaticParams() {
 // Generate metadata for SEO
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const lazer = getPasseioBySlug(slug);
+  const lazer = await getPasseioBySlug(slug);
   
   if (!lazer) {
     return {
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function LazerPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const lazer = getPasseioBySlug(slug);
+  const lazer = await getPasseioBySlug(slug);
 
   if (!lazer) {
     notFound();
@@ -83,24 +83,7 @@ export default async function LazerPage({ params }: { params: Promise<{ slug: st
             {lazer.descricaoCompleta}
           </p>
 
-          {/* Gallery */}
-          {lazer.galeria && lazer.galeria.length > 0 && (
-            <div className="mt-8">
-              <h2 className="font-display text-2xl text-marrom-forte mb-4">Galeria</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {lazer.galeria.map((imagem, index) => (
-                  <div key={index} className="relative h-48 rounded-lg overflow-hidden">
-                    <Image
-                      src={imagem}
-                      alt={`${lazer.nome} - Imagem ${index + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+
         </div>
 
         {/* Sidebar with details */}

@@ -16,9 +16,9 @@ export const metadata: Metadata = {
   description: 'Por que a vida também pede pausas',
 };
 
-export default function LazerPage() {
+export default async function () {
   // Buscar todos os itens de lazer
-  const todosLazer = getPasseios();
+  const todosLazer = await getPasseios();
 
   return (
     <Container size="xl" className="py-8 md:py-12">

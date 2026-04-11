@@ -16,9 +16,9 @@ export const metadata: Metadata = {
   description: 'É sempre bom ter com quem contar',
 };
 
-export default function PrestadoresPage() {
+export default async function () {
   // Buscar todos os prestadores
-  const todosPrestadores = getPrestadores();
+  const todosPrestadores = await getPrestadores();
 
   return (
     <Container size="xl" className="py-8 md:py-12">

@@ -38,26 +38,26 @@ export type CategoriaLugar =
 export interface Lugar {
   id: string;                    // Unique identifier (slug)
   nome: string;                  // Nome do lugar
-  categoria: CategoriaLugar;     // Categoria do lugar
-  subcategoria?: string;         // Subcategoria opcional
+  categoria: string;             // Categoria do lugar
+  subcategoria?: string | null;         // Subcategoria opcional
   descricaoCurta: string;        // Descrição para card (max 150 chars)
   descricaoCompleta: string;     // Descrição detalhada
   imagem: string;                // Path da imagem principal
   imagemAlt: string;             // Alt text da imagem
-  galeria?: string[];            // Imagens adicionais
-  endereco?: string;             // Endereço completo
-  enderecoGoogleMaps?: string;   // Link do Google Maps (endereço 1)
-  enderecoGoogleMapsLabel?: string; // Descrição do endereço 1 (ex: "Hamburgueria")
-  enderecoGoogleMaps2?: string;  // Link do Google Maps (endereço 2)
-  enderecoGoogleMaps2Label?: string; // Descrição do endereço 2 (ex: "Pizzaria")
-  telefone?: string;             // Telefone de contato
-  instagram?: string;            // Handle/URL do Instagram do estabelecimento
-  instagramReview?: string;      // URL do vídeo de review no Instagram
-  website?: string;              // URL do website
-  horarioFuncionamento?: string; // Horário de funcionamento
-  faixaPreco?: 1 | 2 | 3 | 4;   // Faixa de preço ($ a $$$$)
-  destaque?: boolean;            // Se é destaque na home
-  ordem?: number;                // Ordem de exibição
+  galeria?: string[] | null;            // Imagens adicionais
+  endereco?: string | null;             // Endereço completo
+  enderecoGoogleMaps?: string | null;   // Link do Google Maps (endereço 1)
+  enderecoGoogleMapsLabel?: string | null; // Descrição do endereço 1 (ex: "Hamburgueria")
+  enderecoGoogleMaps2?: string | null;  // Link do Google Maps (endereço 2)
+  enderecoGoogleMaps2Label?: string | null; // Descrição do endereço 2 (ex: "Pizzaria")
+  telefone?: string | null;             // Telefone de contato
+  instagram?: string | null;            // Handle/URL do Instagram do estabelecimento
+  instagramReview?: string | null;      // URL do vídeo de review no Instagram
+  website?: string | null;              // URL do website
+  horarioFuncionamento?: string | null; // Horário de funcionamento
+  faixaPreco?: number | null;   // Faixa de preço ($ a $$$$)
+  destaque?: boolean | null;            // Se é destaque na home
+  ordem?: number | null;                // Ordem de exibição
 }
 
 export interface Cupom {

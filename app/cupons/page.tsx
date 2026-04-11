@@ -6,15 +6,13 @@ import { Container } from '@/components/Container';
 import { getCupons } from '@/lib/data/cupons';
 import { Ticket, Search, Filter } from 'lucide-react';
 
-function CuponsContent() {
+function CuponsContent({ todosCupons }: { todosCupons: any[] }) {
   const searchParams = useSearchParams();
   const lugarIdParam = searchParams.get('lugar');
   
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategoria, setSelectedCategoria] = useState('');
   const [selectedSubcategoria, setSelectedSubcategoria] = useState('');
-
-  const todosCupons = getCupons();
 
   // Filtrar cupons
   const cuponsFiltrados = useMemo(() => {
@@ -125,8 +123,8 @@ function CuponsContent() {
             >
               <option value="">Todas as categorias</option>
               {categorias.map(cat => (
-                <option key={cat} value={cat}>
-                  {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                <option key={String(cat)} value={String(cat)}>
+                  {String(cat).charAt(0).toUpperCase() + String(cat).slice(1)}
                 </option>
               ))}
             </select>
@@ -146,8 +144,8 @@ function CuponsContent() {
             >
               <option value="">Todas as subcategorias</option>
               {subcategorias.map(subcat => (
-                <option key={subcat} value={subcat}>
-                  {subcat.charAt(0).toUpperCase() + subcat.slice(1)}
+                <option key={String(subcat)} value={String(subcat)}>
+                  {String(subcat).charAt(0).toUpperCase() + String(subcat).slice(1)}
                 </option>
               ))}
             </select>
@@ -227,7 +225,8 @@ function CuponsContent() {
   );
 }
 
-export default function CuponsPage() {
+export default async function CuponsPage() {
+  const todosCupons = await getCupons();
   return (
     <Suspense fallback={
       <Container size="xl" className="py-8 md:py-12">
@@ -236,7 +235,7 @@ export default function CuponsPage() {
         </div>
       </Container>
     }>
-      <CuponsContent />
+      <CuponsContent todosCupons={todosCupons} />
     </Suspense>
   );
 }

@@ -9,7 +9,7 @@ import { Container } from '@/components/Container';
 
 // Generate static params for SSG
 export async function generateStaticParams() {
-  const lojas = getLojas();
+  const lojas = await getLojas();
   return lojas.map((loja) => ({
     slug: loja.id,
   }));
@@ -18,7 +18,7 @@ export async function generateStaticParams() {
 // Generate metadata for SEO
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const loja = getLojaBySlug(slug);
+  const loja = await getLojaBySlug(slug);
   
   if (!loja) {
     return {
@@ -39,14 +39,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function LojaPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const loja = getLojaBySlug(slug);
+  const loja = await getLojaBySlug(slug);
 
   if (!loja) {
     notFound();
   }
 
   // Verificar se tem cupons
-  const cupons = getCuponsByLugarId(loja.id);
+  const cupons = await getCuponsByLugarId(loja.id);
 
   // Helper function to render price range
   const renderPriceRange = (faixaPreco?: number) => {
@@ -88,24 +88,6 @@ export default async function LojaPage({ params }: { params: Promise<{ slug: str
           </p>
 
           {/* Gallery */}
-          {loja.galeria && loja.galeria.length > 0 && (
-            <div className="mt-8">
-              <h2 className="font-display text-2xl text-marrom-forte mb-4">Galeria</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {loja.galeria.map((imagem, index) => (
-                  <div key={index} className="relative h-48 rounded-lg overflow-hidden">
-                    <Image
-                      src={imagem}
-                      alt={`${loja.nome} - Imagem ${index + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Cupons Section */}
           {cupons.length > 0 && (
             <div className="mt-12">

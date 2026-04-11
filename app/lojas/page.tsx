@@ -16,9 +16,9 @@ export const metadata: Metadata = {
   description: 'Pra render boas comprinhas',
 };
 
-export default function LojasPage() {
+export default async function () {
   // Buscar todas as lojas
-  const todasLojas = getLojas();
+  const todasLojas = await getLojas();
 
   return (
     <Container size="xl" className="py-8 md:py-12">

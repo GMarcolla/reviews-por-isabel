@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Lugar } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { categoryColors } from '@/lib/design-tokens';
+import { getCategoriaRota, getCategoriaLabel } from '@/lib/categorias';
 
 interface CardLugarProps {
   lugar: Lugar;
@@ -11,91 +11,21 @@ interface CardLugarProps {
   showSubcategoria?: boolean;
 }
 
-/**
- * CardLugar Component
- * 
- * Componente de card para exibir lugares (restaurantes, cafés, passeios).
- * Inclui imagem otimizada, informações do lugar e link para detalhes.
- * 
- * @param lugar - Objeto com dados do lugar
- * @param variant - Variante do card (default ou large para imagens maiores)
- * @param showCategory - Se deve exibir a categoria do lugar
- * 
- * Requirements: 12.1, 3.2, 4.2, 5.2, 9.3, 9.4
- */
-export function CardLugar({ 
-  lugar, 
+export function CardLugar({
+  lugar,
   variant = 'default',
   showCategory = false,
-  showSubcategoria = false
+  showSubcategoria = false,
 }: CardLugarProps) {
-  // Determina a rota base baseada na categoria
-  const getRoutePrefix = (categoria: string): string => {
-    if (['hamburgueria', 'esfirraria', 'padaria', 'gelateria', 'pastelaria', 'empadas', 'hotdog', 'germanico', 'buffet', 'bar', 'coreano', 'mexicano', 'italiano', 'japones', 'pizzaria', 'romantico'].includes(categoria)) {
-      return 'restaurantes';
-    }
-    if (['cafeteria', 'doceria', 'brunch'].includes(categoria)) {
-      return 'cafes';
-    }
-    if (['evento', 'concerto', 'festival', 'parque', 'lazer'].includes(categoria)) {
-      return 'lazer';
-    }
-    if (['dentista', 'arquiteta', 'unhas', 'beleza', 'servico'].includes(categoria)) {
-      return 'prestadores';
-    }
-    if (['moda', 'decoracao', 'livraria', 'loja'].includes(categoria)) {
-      return 'lojas';
-    }
-    return 'lazer';
-  };
-
-  const routePrefix = getRoutePrefix(lugar.categoria);
+  const routePrefix = getCategoriaRota(lugar.categoria);
   const detailsUrl = `/${routePrefix}/${lugar.id}`;
-
-  // Tradução de categorias para exibição
-  const getCategoryLabel = (categoria: string): string => {
-    const labels: Record<string, string> = {
-      hamburgueria: 'Hamburgueria',
-      esfirraria: 'Esfirraria',
-      padaria: 'Padaria',
-      gelateria: 'Gelateria',
-      pastelaria: 'Pastelaria',
-      empadas: 'Empadas',
-      hotdog: 'Hot Dog',
-      germanico: 'Germânico',
-      buffet: 'Buffet',
-      bar: 'Bar',
-      coreano: 'Coreano',
-      mexicano: 'Mexicano',
-      italiano: 'Italiano',
-      japones: 'Japonês',
-      pizzaria: 'Pizzaria',
-      romantico: 'Romântico',
-      cafeteria: 'Cafeteria',
-      doceria: 'Doceria',
-      brunch: 'Brunch',
-      evento: 'Evento',
-      concerto: 'Concerto',
-      festival: 'Festival',
-      parque: 'Parque',
-      lazer: 'Lazer',
-      dentista: 'Dentista',
-      arquiteta: 'Arquiteta',
-      unhas: 'Unhas',
-      beleza: 'Beleza',
-      servico: 'Serviço',
-      moda: 'Moda',
-      decoracao: 'Decoração',
-      livraria: 'Livraria',
-      loja: 'Loja',
-    };
-    return labels[categoria] || categoria;
-  };
-
   const imageHeight = variant === 'large' ? 'h-64 md:h-80' : 'h-48 md:h-56';
 
+  // Label para exibição: usa subcategoria se disponível, senão a categoria
+  const displayLabel = lugar.subcategoria || getCategoriaLabel(lugar.categoria);
+
   return (
-    <article 
+    <article
       className={cn(
         'group bg-white rounded-card overflow-hidden shadow-card-tulipa',
         'transition-all duration-300 hover:shadow-card-tulipa-hover hover:-translate-y-1',
@@ -110,27 +40,15 @@ export function CardLugar({
           fill
           className="object-cover transition-transform duration-300 group-hover:scale-105"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          priority={lugar.destaque}
+          priority={lugar.destaque || false}
         />
-        
+
         {/* Badge de categoria (opcional) */}
-        {showCategory && (() => {
-          const categoryKey = routePrefix as keyof typeof categoryColors;
-          const colors = categoryColors[categoryKey] || categoryColors.lazer;
-          return (
-            <div 
-              className="absolute top-3 left-3 backdrop-blur-sm px-3 py-1 rounded-full"
-              style={{ backgroundColor: colors.badge }}
-            >
-              <span 
-                className="text-xs font-medium"
-                style={{ color: colors.badgeText }}
-              >
-                {getCategoryLabel(lugar.categoria)}
-              </span>
-            </div>
-          );
-        })()}
+        {showCategory && (
+          <div className="absolute top-3 left-3 bg-black/40 backdrop-blur-sm px-3 py-1 rounded-full">
+            <span className="text-xs font-medium text-white">{displayLabel}</span>
+          </div>
+        )}
       </div>
 
       {/* Conteúdo */}
@@ -151,7 +69,7 @@ export function CardLugar({
         </p>
 
         {/* Botão "ver mais" */}
-        <Link 
+        <Link
           href={detailsUrl}
           className={cn(
             'inline-flex items-center justify-center',

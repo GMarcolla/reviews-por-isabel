@@ -27,8 +27,11 @@ const periodoIcons = {
   noite: '🌙',
 };
 
-export default function RoteiroPage() {
+export default async function RoteiroPage() {
   const roteiro = getRoteiro();
+  const lugares = await Promise.all(
+    roteiro.periodos.map(p => p.lugarId ? getRestauranteBySlug(p.lugarId) : Promise.resolve(null))
+  );
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-white via-off-white-rosado to-beje-tulipa/10">
@@ -132,7 +135,7 @@ export default function RoteiroPage() {
                   {periodo.lugarId && (
                     <div className="bg-gradient-to-r from-beje-tulipa/30 to-off-white-rosado rounded-xl p-6 border border-rosa-tulipa/20">
                       {(() => {
-                        const lugar = getRestauranteBySlug(periodo.lugarId);
+                        const lugar = lugares[index];
                         if (!lugar) return null;
                         
                         return (

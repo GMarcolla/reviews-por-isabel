@@ -62,14 +62,14 @@ const categoriaOrdem = [
   'romantico',
 ];
 
-export default function RestaurantesPage() {
+export default async function () {
   // Buscar todos os restaurantes
-  const todosRestaurantes = getRestaurantes();
+  const todosRestaurantes = await getRestaurantes();
 
   // Agrupar restaurantes por categoria
   const restaurantesPorCategoria = categoriaOrdem.reduce((acc, categoria) => {
     const restaurantesCategoria = todosRestaurantes.filter(
-      (r) => r.categoria === categoria
+      (r) => r.categoria.toLowerCase() === categoria.toLowerCase() || r.subcategoria?.toLowerCase().trim() === categoria.toLowerCase().trim()
     );
     
     if (restaurantesCategoria.length > 0) {
