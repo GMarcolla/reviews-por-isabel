@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description: 'Pra render boas comprinhas',
 };
 
-export default async function () {
+export default async function LojasPage() {
   // Buscar todas as lojas
   const todasLojas = await getLojas();
 

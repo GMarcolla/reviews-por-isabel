@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { LayoutDashboard, MapPin, Ticket, LogOut } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -9,20 +10,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <span className="text-lg font-bold text-gray-900">Isabel Admin</span>
         </div>
         <nav className="flex-1 px-4 py-6 space-y-2">
-          <a href="/admin" className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+          <Link href="/admin" className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
             <LayoutDashboard className="w-5 h-5 mr-3" />
             Dashboard
-          </a>
-          <a href="/admin/lugares" className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+          </Link>
+          <Link href="/admin/lugares" className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
             <MapPin className="w-5 h-5 mr-3" />
             Lugares
-          </a>
-          <a href="/admin/cupons" className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+          </Link>
+          <Link href="/admin/cupons" className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
             <Ticket className="w-5 h-5 mr-3" />
             Cupons
-          </a>
+          </Link>
         </nav>
         <div className="p-4 border-t border-gray-200">
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
           <a href="/api/auth/signout" className="flex items-center px-4 py-3 text-red-600 rounded-lg hover:bg-red-50 transition-colors">
             <LogOut className="w-5 h-5 mr-3" />
             Sair
@@ -35,6 +37,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Mobile Header */}
         <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:hidden">
             <span className="text-lg font-bold text-gray-900">Isabel Admin</span>
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
             <a href="/api/auth/signout" className="text-gray-500">Sair</a>
         </header>
 

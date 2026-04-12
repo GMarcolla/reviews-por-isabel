@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default async function EditarLugarPage({ params }: { params: { id: string } }) {
+export default async function EditarLugarPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   
   const lugar = await prisma.lugar.findUnique({

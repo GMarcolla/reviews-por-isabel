@@ -37,7 +37,7 @@ const categoriaOrdem = [
   'brunch',
 ];
 
-export default async function () {
+export default async function CafesPage() {
   // Buscar todos os cafés
   const todosCafes = await getCafes();
 

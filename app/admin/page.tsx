@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default async function AdminDashboard() {
   const session = await getServerSession(authOptions);
@@ -18,13 +19,13 @@ export default async function AdminDashboard() {
         <div className="p-6 bg-white rounded-lg shadow border border-gray-200">
           <h2 className="text-xl font-semibold mb-2">Lugares</h2>
           <p className="text-gray-600 mb-4">Gerencie os restaurantes, cafés, e passeios cadastrados.</p>
-          <a href="/admin/lugares" className="text-blue-600 hover:underline font-medium">Ver todos &rarr;</a>
+          <Link href="/admin/lugares" className="text-blue-600 hover:underline font-medium">Ver todos &rarr;</Link>
         </div>
         
         <div className="p-6 bg-white rounded-lg shadow border border-gray-200">
           <h2 className="text-xl font-semibold mb-2">Cupons</h2>
           <p className="text-gray-600 mb-4">Gerencie os códigos de desconto oferecidos pelos parceiros.</p>
-          <a href="/admin/cupons" className="text-blue-600 hover:underline font-medium">Ver todos &rarr;</a>
+          <Link href="/admin/cupons" className="text-blue-600 hover:underline font-medium">Ver todos &rarr;</Link>
         </div>
       </div>
     </div>

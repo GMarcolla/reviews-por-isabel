@@ -6,7 +6,7 @@ import { getRestaurantesByCategoria } from '@/lib/data/restaurantes';
  * Página de teste para o componente CategorySection
  * Valida: Requirements 3.1, 3.5, 4.1, 4.5, 5.1
  */
-export default async function () {
+export default async function TestCategorySectionPage() {
   const hamburguerias = await getRestaurantesByCategoria('hamburgueria');
   const italianos = await getRestaurantesByCategoria('italiano');
   const emptyCategory: any[] = [];

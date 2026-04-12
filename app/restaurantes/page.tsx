@@ -62,7 +62,7 @@ const categoriaOrdem = [
   'romantico',
 ];
 
-export default async function () {
+export default async function RestaurantesPage() {
   // Buscar todos os restaurantes
   const todosRestaurantes = await getRestaurantes();
 

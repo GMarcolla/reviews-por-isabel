@@ -44,7 +44,7 @@ const categoriaOrdem = [
   'passeio',
 ];
 
-export default async function () {
+export default async function PasseiosPage() {
   // Buscar todos os passeios
   const todosPasseios = await getPasseios();
 
