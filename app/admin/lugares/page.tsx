@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { PlusCircle, Search, Edit, Trash2 } from "lucide-react";
+import { PlusCircle, Search, Edit } from "lucide-react";
+import AdminDeleteButton from "@/components/AdminDeleteButton";
 
 export const dynamic = "force-dynamic";
 
@@ -83,9 +84,10 @@ export default async function LugaresAdminPage() {
                       >
                         <Edit className="w-4 h-4" />
                       </Link>
-                      <button className="p-2 text-red-600 hover:bg-red-50 rounded hidden">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <AdminDeleteButton 
+                        id={lugar.id}
+                        nome={lugar.nome}
+                      />
                     </td>
                   </tr>
                 ))

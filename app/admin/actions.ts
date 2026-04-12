@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { deleteImageFromCloudinary } from "@/lib/cloudinary-server";
 
 export async function createLugar(data: any) {
   // Remove campos gerenciados pelo Prisma
@@ -46,6 +47,18 @@ export async function updateLugar(id: string, data: any) {
   const { id: _id, slug: _slug, createdAt: _createdAt, updatedAt: _updatedAt, ...cleanData } = data;
 
   try {
+    // 1. Busca o lugar atual para verificar a imagem antiga
+    const currentLugar = await prisma.lugar.findUnique({
+      where: { id },
+      select: { imagem: true }
+    });
+
+    // 2. Se a imagem mudou, deleta a antiga do Cloudinary
+    if (currentLugar && currentLugar.imagem !== cleanData.imagem) {
+      await deleteImageFromCloudinary(currentLugar.imagem);
+    }
+
+    // 3. Atualiza no banco
     await prisma.lugar.update({
       where: { id },
       data: cleanData
@@ -62,6 +75,18 @@ export async function updateLugar(id: string, data: any) {
 
 export async function deleteLugar(id: string) {
   try {
+    // 1. Busca o lugar para obter a URL da imagem
+    const currentLugar = await prisma.lugar.findUnique({
+      where: { id },
+      select: { imagem: true }
+    });
+
+    // 2. Se existe, deleta do Cloudinary
+    if (currentLugar?.imagem) {
+      await deleteImageFromCloudinary(currentLugar.imagem);
+    }
+
+    // 3. Deleta do banco
     await prisma.lugar.delete({
       where: { id }
     });

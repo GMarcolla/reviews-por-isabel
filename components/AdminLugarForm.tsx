@@ -5,8 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState, useEffect } from "react";
 import { createLugar, updateLugar } from "@/app/admin/actions";
-import { Loader2, AlertCircle, X } from "lucide-react";
+import { Loader2, AlertCircle, X, Image as ImageIcon, Upload, Lock, Unlock } from "lucide-react";
 import { CATEGORIAS, SUBCATEGORIAS, getCanonicalCategoria, getCanonicalSubcategoria } from "@/lib/categorias";
+import { CldUploadWidget } from "next-cloudinary";
 
 
 const schema = z.object({
@@ -42,6 +43,7 @@ export default function AdminLugarForm({ initialData }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [subcategoriasDisponiveis, setSubcategoriasDisponiveis] = useState<string[]>([]);
+  const [isManualUrlEdit, setIsManualUrlEdit] = useState(false);
 
   const {
     register,
@@ -242,39 +244,87 @@ export default function AdminLugarForm({ initialData }: Props) {
 
         <div className="md:col-span-2">
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            URL da Imagem *
+            Imagem *
           </label>
-          <div className="flex gap-3">
-            <input
-              {...register("imagem")}
-              placeholder="https://res.cloudinary.com/... ou qualquer URL de imagem"
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none font-mono text-sm"
-            />
-            {imagemUrl && (
-              <button
-                type="button"
-                onClick={() => setValue("imagem", "")}
-                className="p-2 text-gray-400 hover:text-red-500 transition-colors"
-                title="Remover imagem"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            )}
+          
+          <div className="space-y-4">
+            {/* Botão de Upload */}
+            <CldUploadWidget 
+              uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "ml_default_reviews"}
+              onSuccess={(result: any) => {
+                if (result.info && typeof result.info !== "string") {
+                  setValue("imagem", result.info.secure_url);
+                }
+              }}
+              options={{
+                maxFiles: 1,
+                resourceType: "image",
+                clientAllowedFormats: ["jpg", "png", "jpeg", "webp"],
+                maxFileSize: 5000000, // 5MB
+              }}
+            >
+              {({ open }) => (
+                <button
+                  type="button"
+                  onClick={() => open()}
+                  className="flex items-center justify-center gap-2 w-full md:w-auto px-6 py-3 border-2 border-dashed border-gray-300 rounded-xl text-gray-600 hover:border-blue-500 hover:text-blue-600 transition-all bg-gray-50"
+                >
+                  <Upload className="w-5 h-5" />
+                  <span>Fazer Upload de Nova Imagem</span>
+                </button>
+              )}
+            </CldUploadWidget>
+
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <ImageIcon className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                {...register("imagem")}
+                readOnly={!isManualUrlEdit}
+                placeholder="A URL aparecerá aqui após o upload"
+                className={`w-full pl-10 pr-24 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none font-mono text-sm ${!isManualUrlEdit ? 'bg-gray-50 text-gray-500 cursor-not-allowed' : 'bg-white'}`}
+              />
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsManualUrlEdit(!isManualUrlEdit)}
+                  className={`p-1.5 rounded transition-colors ${isManualUrlEdit ? 'text-orange-500 bg-orange-50' : 'text-gray-400 hover:text-gray-600'}`}
+                  title={isManualUrlEdit ? "Bloquear edição manual" : "Habilitar edição manual"}
+                >
+                  {isManualUrlEdit ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+                </button>
+                {imagemUrl && (
+                  <button
+                    type="button"
+                    onClick={() => setValue("imagem", "")}
+                    className="p-1.5 text-gray-400 hover:text-red-500 transition-colors"
+                    title="Limpar campo"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
+
           {errors.imagem && (
             <p className="text-red-500 text-xs mt-1">{errors.imagem.message}</p>
           )}
+          
           {imagemUrl && (
-            <div className="mt-3">
-              <p className="text-xs text-gray-500 mb-2">Preview:</p>
-              <img
-                src={imagemUrl}
-                alt="Preview"
-                className="h-40 w-auto object-cover rounded-lg border border-gray-200"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = "none";
-                }}
-              />
+            <div className="mt-4 p-4 bg-gray-50 rounded-xl border border-gray-100 inline-block">
+              <p className="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-wider">Preview da Imagem:</p>
+              <div className="relative group">
+                <img
+                  src={imagemUrl}
+                  alt="Preview"
+                  className="h-48 md:h-64 w-auto object-cover rounded-lg shadow-sm border border-gray-200"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = "none";
+                  }}
+                />
+              </div>
             </div>
           )}
         </div>
