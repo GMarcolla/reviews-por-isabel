@@ -167,7 +167,7 @@ export default async function RestaurantePage({ params }: { params: Promise<{ sl
                           href={restaurante.enderecoGoogleMaps}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block text-xs text-white bg-verde-tulipa hover:bg-verde-tulipa-claro px-3 py-2 rounded-md transition-colors text-center"
+                          className="block text-xs !text-white bg-terracota hover:bg-terracota-claro px-3 py-2 rounded-md transition-colors text-center"
                         >
                           📍 {restaurante.enderecoGoogleMapsLabel || 'Ver no Google Maps'}
                         </a>
@@ -177,7 +177,7 @@ export default async function RestaurantePage({ params }: { params: Promise<{ sl
                           href={restaurante.enderecoGoogleMaps2}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block text-xs text-white bg-verde-tulipa hover:bg-verde-tulipa-claro px-3 py-2 rounded-md transition-colors text-center"
+                          className="block text-xs !text-white bg-terracota hover:bg-terracota-claro px-3 py-2 rounded-md transition-colors text-center"
                         >
                           📍 {restaurante.enderecoGoogleMaps2Label || 'Ver endereço 2'}
                         </a>

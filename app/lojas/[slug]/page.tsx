@@ -160,7 +160,7 @@ export default async function LojaPage({ params }: { params: Promise<{ slug: str
                           href={loja.enderecoGoogleMaps}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block text-xs text-white bg-marrom-rosado hover:bg-marrom-forte px-3 py-2 rounded-md transition-colors text-center"
+                          className="block text-xs !text-white bg-terracota hover:bg-terracota-claro px-3 py-2 rounded-md transition-colors text-center"
                         >
                           📍 {loja.enderecoGoogleMapsLabel || 'Ver no Google Maps'}
                         </a>
@@ -170,7 +170,7 @@ export default async function LojaPage({ params }: { params: Promise<{ slug: str
                           href={loja.enderecoGoogleMaps2}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block text-xs text-white bg-marrom-rosado hover:bg-marrom-forte px-3 py-2 rounded-md transition-colors text-center"
+                          className="block text-xs !text-white bg-terracota hover:bg-terracota-claro px-3 py-2 rounded-md transition-colors text-center"
                         >
                           📍 {loja.enderecoGoogleMaps2Label || 'Ver endereço 2'}
                         </a>

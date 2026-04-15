@@ -1,5 +1,16 @@
 import { ImageResponse } from 'next/og';
-import { colors } from '@/lib/design-tokens';
+
+// Cores inline para compatibilidade com Edge Runtime
+const colors = {
+  terracota: '#742615',
+  backgroundPrincipal: '#f6f4f0',
+  branco: '#ffffff',
+  // Aliases para compatibilidade
+  verdeTulipa: '#742615',
+  offWhiteRosado: '#f6f4f0',
+  rosaTulipa: '#742615',
+  marromEscuro: '#742615',
+};
 
 // Configuração da imagem
 export const runtime = 'edge';

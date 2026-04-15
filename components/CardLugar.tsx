@@ -74,9 +74,9 @@ export function CardLugar({
           className={cn(
             'inline-flex items-center justify-center',
             'px-5 py-2.5 rounded-lg',
-            'bg-rosa-tulipa text-white font-medium text-sm',
+            'bg-terracota !text-white font-medium text-sm',
             'transition-colors duration-200',
-            'hover:bg-rosa-tulipa-claro focus:outline-none focus:ring-2 focus:ring-rosa-tulipa focus:ring-offset-2',
+            'hover:bg-terracota-claro hover:!text-white focus:outline-none focus:ring-2 focus:ring-terracota focus:ring-offset-2',
             'self-start'
           )}
           aria-label={`Ver mais sobre ${lugar.nome}`}

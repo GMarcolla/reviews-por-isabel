@@ -105,7 +105,7 @@ export default async function LazerPage({ params }: { params: Promise<{ slug: st
                           href={lazer.enderecoGoogleMaps}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block text-xs text-white bg-marrom-rosado hover:bg-marrom-forte px-3 py-2 rounded-md transition-colors text-center"
+                          className="block text-xs !text-white bg-terracota hover:bg-terracota-claro px-3 py-2 rounded-md transition-colors text-center"
                         >
                           📍 {lazer.enderecoGoogleMapsLabel || 'Ver no Google Maps'}
                         </a>
@@ -115,7 +115,7 @@ export default async function LazerPage({ params }: { params: Promise<{ slug: st
                           href={lazer.enderecoGoogleMaps2}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block text-xs text-white bg-marrom-rosado hover:bg-marrom-forte px-3 py-2 rounded-md transition-colors text-center"
+                          className="block text-xs !text-white bg-terracota hover:bg-terracota-claro px-3 py-2 rounded-md transition-colors text-center"
                         >
                           📍 {lazer.enderecoGoogleMaps2Label || 'Ver endereço 2'}
                         </a>

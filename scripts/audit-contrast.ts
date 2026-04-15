@@ -8,7 +8,69 @@
  */
 
 import { getContrast } from 'color2k';
-import { colors, semanticColors, categoryColors } from '../lib/design-tokens';
+
+// Import inline para evitar problemas de módulo
+const colors = {
+  terracota: '#742615',
+  terracotaClaro: '#8d3319',
+  terracotaEscuro: '#5f1f11',
+  areia: '#c89e82',
+  areiaClara: '#d4b09a',
+  areiaEscura: '#b88a6a',
+  backgroundPrincipal: '#f6f4f0',
+  branco: '#ffffff',
+  preto: '#000000',
+  verdeTulipa: '#742615',
+  verdeTulipaClaro: '#8d3319',
+  verdeTulipaEscuro: '#5f1f11',
+  bejeTulipa: '#c89e82',
+  bejeTulipaClaro: '#d4b09a',
+  bejeTulipaEscuro: '#b88a6a',
+  rosaTulipa: '#742615',
+  rosaTulipaClaro: '#8d3319',
+  rosaTulipaEscuro: '#5f1f11',
+  offWhiteRosado: '#f6f4f0',
+  marromEscuro: '#742615',
+};
+
+const semanticColors = {
+  headerBg: colors.branco,
+  headerText: colors.terracota,
+  headerTextActive: colors.terracota,
+  headerBorder: colors.areia,
+  btnPrimaryBg: colors.terracota,
+  btnPrimaryText: colors.branco,
+  btnPrimaryHover: colors.terracotaClaro,
+  btnPrimaryActive: colors.terracotaEscuro,
+  btnSecondaryBg: colors.areia,
+  btnSecondaryText: colors.branco,
+  btnSecondaryHover: colors.areiaClara,
+  btnSecondaryActive: colors.areiaEscura,
+  cardBg: colors.branco,
+  cardText: colors.terracota,
+  cardBorder: colors.areia,
+  badgeBg: colors.areia,
+  badgeText: colors.branco,
+  sectionBgPrimary: colors.backgroundPrincipal,
+  sectionBgSecondary: colors.branco,
+  linkText: colors.terracota,
+  linkHover: colors.terracotaClaro,
+  footerBg: colors.terracota,
+  footerText: colors.backgroundPrincipal,
+  footerLink: colors.areiaEscura,
+  focusRing: colors.terracota,
+  focusRingOnDark: colors.backgroundPrincipal,
+};
+
+const categoryColors = {
+  restaurantes: { badge: colors.terracota, badgeText: colors.branco },
+  cafes: { badge: colors.areia, badgeText: colors.branco },
+  lazer: { badge: colors.terracota, badgeText: colors.branco },
+  prestadores: { badge: colors.terracotaEscuro, badgeText: colors.branco },
+  lojas: { badge: colors.terracota, badgeText: colors.branco },
+  passeios: { badge: colors.terracota, badgeText: colors.branco },
+};
+
 
 // WCAG AA contrast requirements
 const WCAG_AA_NORMAL_TEXT = 4.5;

@@ -167,7 +167,7 @@ export default async function PrestadorPage({ params }: { params: Promise<{ slug
                           href={prestador.enderecoGoogleMaps}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block text-xs text-white bg-marrom-rosado hover:bg-marrom-forte px-3 py-2 rounded-md transition-colors text-center"
+                          className="block text-xs !text-white bg-terracota hover:bg-terracota-claro px-3 py-2 rounded-md transition-colors text-center"
                         >
                           📍 {prestador.enderecoGoogleMapsLabel || 'Ver no Google Maps'}
                         </a>
@@ -177,7 +177,7 @@ export default async function PrestadorPage({ params }: { params: Promise<{ slug
                           href={prestador.enderecoGoogleMaps2}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block text-xs text-white bg-marrom-rosado hover:bg-marrom-forte px-3 py-2 rounded-md transition-colors text-center"
+                          className="block text-xs !text-white bg-terracota hover:bg-terracota-claro px-3 py-2 rounded-md transition-colors text-center"
                         >
                           📍 {prestador.enderecoGoogleMaps2Label || 'Ver endereço 2'}
                         </a>
