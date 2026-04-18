@@ -18,7 +18,7 @@ export function CardLugar({
   showSubcategoria = false,
 }: CardLugarProps) {
   const routePrefix = getCategoriaRota(lugar.categoria);
-  const detailsUrl = `/${routePrefix}/${lugar.id}`;
+  const detailsUrl = `/${routePrefix}/${lugar.slug}`;
   const imageHeight = variant === 'large' ? 'h-64 md:h-80' : 'h-48 md:h-56';
 
   // Label para exibição: usa subcategoria se disponível, senão a categoria

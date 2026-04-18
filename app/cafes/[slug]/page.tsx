@@ -11,7 +11,7 @@ import { Container } from '@/components/Container';
 export async function generateStaticParams() {
   const cafes = await getCafes();
   return cafes.map((cafe) => ({
-    slug: cafe.id,
+    slug: cafe.slug,
   }));
 }
 

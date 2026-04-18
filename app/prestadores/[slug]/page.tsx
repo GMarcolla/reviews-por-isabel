@@ -11,7 +11,7 @@ import { Container } from '@/components/Container';
 export async function generateStaticParams() {
   const prestadores = await getPrestadores();
   return prestadores.map((prestador) => ({
-    slug: prestador.id,
+    slug: prestador.slug,
   }));
 }
 

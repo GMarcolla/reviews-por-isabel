@@ -10,7 +10,7 @@ import { Container } from '@/components/Container';
 export async function generateStaticParams() {
   const passeios = await getPasseios();
   return passeios.map((passeio) => ({
-    slug: passeio.id,
+    slug: passeio.slug,
   }));
 }
 

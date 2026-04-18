@@ -2,17 +2,14 @@ import { Metadata } from 'next';
 import { Container } from '@/components/Container';
 import { CategorySection } from '@/components/CategorySection';
 import { getCafes } from '@/lib/data/cafes';
-import { Lugar } from '@/lib/types';
+import { CATEGORIAS, SUBCATEGORIAS } from '@/lib/categorias';
 
 /**
  * Página de Cafés & Docerias
- * 
- * Exibe cafés e docerias organizados por categoria:
- * - Cafeterias
- * - Docerias
- * - Padarias Especiais
- * - Brunch
- * 
+ *
+ * Exibe cafés e docerias agrupados dinamicamente por subcategoria.
+ * As seções são renderizadas apenas para subcategorias com registros no banco.
+ *
  * Requirements: 4.1, 4.4, 4.5
  */
 
@@ -21,38 +18,26 @@ export const metadata: Metadata = {
   description: 'Porque um docinho sempre vai bem',
 };
 
-// Mapeamento de categorias para títulos em português
-const categoriaTitulos: Record<string, string> = {
-  cafeteria: 'Cafeterias',
-  doceria: 'Docerias',
-  padaria: 'Padarias Especiais',
-  brunch: 'Brunch',
-};
-
-// Ordem de exibição das categorias
-const categoriaOrdem = [
-  'cafeteria',
-  'doceria',
-  'padaria',
-  'brunch',
-];
-
 export default async function CafesPage() {
-  // Buscar todos os cafés
   const todosCafes = await getCafes();
 
-  // Agrupar cafés por categoria
-  const cafesPorCategoria = categoriaOrdem.reduce((acc, categoria) => {
-    const cafesCategoria = todosCafes.filter(
-      (c) => c.categoria.toLowerCase() === categoria.toLowerCase() || c.subcategoria?.toLowerCase().trim() === categoria.toLowerCase().trim()
-    );
-    
-    if (cafesCategoria.length > 0) {
-      acc[categoria] = cafesCategoria;
-    }
-    
+  // Agrupar dinamicamente por subcategoria
+  const porSubcategoria = todosCafes.reduce((acc, cafe) => {
+    const key = cafe.subcategoria?.trim() || 'Outro';
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(cafe);
     return acc;
-  }, {} as Record<string, Lugar[]>);
+  }, {} as Record<string, typeof todosCafes>);
+
+  // Ordenar: subcategorias conhecidas primeiro (na ordem de SUBCATEGORIAS),
+  // depois as desconhecidas em ordem alfabética
+  const ordemPreferida = SUBCATEGORIAS[CATEGORIAS.CAFES] ?? [];
+  const subcategoriasOrdenadas = [
+    ...ordemPreferida.filter((s) => porSubcategoria[s]),
+    ...Object.keys(porSubcategoria)
+      .filter((s) => !ordemPreferida.includes(s))
+      .sort(),
+  ];
 
   return (
     <Container size="xl" className="py-8 md:py-12">
@@ -66,24 +51,15 @@ export default async function CafesPage() {
         </p>
       </div>
 
-      {/* Seções de Categorias */}
-      {categoriaOrdem.map((categoria) => {
-        const cafes = cafesPorCategoria[categoria];
-        
-        // Só renderiza a seção se houver cafés nessa categoria
-        if (!cafes || cafes.length === 0) {
-          return null;
-        }
-
-        return (
-          <CategorySection
-            key={categoria}
-            title={categoriaTitulos[categoria]}
-            lugares={cafes}
-            columns={3}
-          />
-        );
-      })}
+      {/* Seções dinâmicas por subcategoria */}
+      {subcategoriasOrdenadas.map((subcategoria) => (
+        <CategorySection
+          key={subcategoria}
+          title={subcategoria}
+          lugares={porSubcategoria[subcategoria]}
+          columns={3}
+        />
+      ))}
     </Container>
   );
 }

@@ -1,6 +1,6 @@
 // Types and Interfaces for Reviews por Isabel
 
-export type CategoriaLugar = 
+export type CategoriaLugar =
   | 'hamburgueria'
   | 'esfirraria'
   | 'padaria'
@@ -37,7 +37,8 @@ export type CategoriaLugar =
 
 export interface Lugar {
   id: string;                    // Unique identifier (slug)
-  nome: string;                  // Nome do lugar
+  nome: string;
+  slug: string;                  // Nome do lugar
   categoria: string;             // Categoria do lugar
   subcategoria?: string | null;         // Subcategoria opcional
   descricaoCurta: string;        // Descrição para card (max 150 chars)

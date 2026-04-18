@@ -10,7 +10,7 @@ import { Container } from '@/components/Container';
 export async function generateStaticParams() {
   const lazer = await getPasseios();
   return lazer.map((item) => ({
-    slug: item.id,
+    slug: item.slug,
   }));
 }
 

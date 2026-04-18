@@ -2,18 +2,14 @@ import { Metadata } from 'next';
 import { Container } from '@/components/Container';
 import { CategorySection } from '@/components/CategorySection';
 import { getRestaurantes } from '@/lib/data/restaurantes';
-import { Lugar } from '@/lib/types';
+import { CATEGORIAS, SUBCATEGORIAS } from '@/lib/categorias';
 
 /**
  * Página de Restaurantes
- * 
- * Exibe restaurantes organizados por categoria:
- * - Hamburguerias
- * - Italianos
- * - Japoneses
- * - Pizzarias
- * - Restaurantes Românticos
- * 
+ *
+ * Exibe restaurantes agrupados dinamicamente por subcategoria.
+ * As seções são renderizadas apenas para subcategorias com registros no banco.
+ *
  * Requirements: 3.1, 3.4, 3.5
  */
 
@@ -22,62 +18,26 @@ export const metadata: Metadata = {
   description: 'Descubra os melhores sabores',
 };
 
-// Mapeamento de categorias para títulos em português
-const categoriaTitulos: Record<string, string> = {
-  hamburgueria: 'Hamburguerias',
-  esfirraria: 'Esfirrarias',
-  padaria: 'Padarias',
-  gelateria: 'Gelaterias',
-  pastelaria: 'Pastelarias',
-  empadas: 'Empadas',
-  hotdog: 'Hot Dogs',
-  germanico: 'Restaurantes Germânicos',
-  buffet: 'Buffets',
-  bar: 'Bares e Restaurantes',
-  coreano: 'Culinária Coreana',
-  mexicano: 'Culinária Mexicana',
-  italiano: 'Italianos',
-  japones: 'Japoneses',
-  pizzaria: 'Pizzarias',
-  romantico: 'Restaurantes Românticos',
-};
-
-// Ordem de exibição das categorias
-const categoriaOrdem = [
-  'hamburgueria',
-  'esfirraria',
-  'padaria',
-  'gelateria',
-  'pastelaria',
-  'empadas',
-  'hotdog',
-  'germanico',
-  'buffet',
-  'bar',
-  'coreano',
-  'mexicano',
-  'italiano',
-  'japones',
-  'pizzaria',
-  'romantico',
-];
-
 export default async function RestaurantesPage() {
-  // Buscar todos os restaurantes
   const todosRestaurantes = await getRestaurantes();
 
-  // Agrupar restaurantes por categoria
-  const restaurantesPorCategoria = categoriaOrdem.reduce((acc, categoria) => {
-    const restaurantesCategoria = todosRestaurantes.filter(
-      (r) => r.categoria.toLowerCase() === categoria.toLowerCase() || r.subcategoria?.toLowerCase().trim() === categoria.toLowerCase().trim()
-    );
-    
-    if (restaurantesCategoria.length > 0) {
-      acc[categoria] = restaurantesCategoria;
-    }
-    
+  // Agrupar dinamicamente por subcategoria
+  const porSubcategoria = todosRestaurantes.reduce((acc, restaurante) => {
+    const key = restaurante.subcategoria?.trim() || 'Outro';
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(restaurante);
     return acc;
-  }, {} as Record<string, Lugar[]>);
+  }, {} as Record<string, typeof todosRestaurantes>);
+
+  // Ordenar: subcategorias conhecidas primeiro (na ordem de SUBCATEGORIAS),
+  // depois as desconhecidas em ordem alfabética
+  const ordemPreferida = SUBCATEGORIAS[CATEGORIAS.RESTAURANTES] ?? [];
+  const subcategoriasOrdenadas = [
+    ...ordemPreferida.filter((s) => porSubcategoria[s]),
+    ...Object.keys(porSubcategoria)
+      .filter((s) => !ordemPreferida.includes(s))
+      .sort(),
+  ];
 
   return (
     <Container size="xl" className="py-8 md:py-12">
@@ -91,24 +51,15 @@ export default async function RestaurantesPage() {
         </p>
       </div>
 
-      {/* Seções de Categorias */}
-      {categoriaOrdem.map((categoria) => {
-        const restaurantes = restaurantesPorCategoria[categoria];
-        
-        // Só renderiza a seção se houver restaurantes nessa categoria
-        if (!restaurantes || restaurantes.length === 0) {
-          return null;
-        }
-
-        return (
-          <CategorySection
-            key={categoria}
-            title={categoriaTitulos[categoria]}
-            lugares={restaurantes}
-            columns={3}
-          />
-        );
-      })}
+      {/* Seções dinâmicas por subcategoria */}
+      {subcategoriasOrdenadas.map((subcategoria) => (
+        <CategorySection
+          key={subcategoria}
+          title={subcategoria}
+          lugares={porSubcategoria[subcategoria]}
+          columns={3}
+        />
+      ))}
     </Container>
   );
 }

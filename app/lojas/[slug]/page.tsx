@@ -11,7 +11,7 @@ import { Container } from '@/components/Container';
 export async function generateStaticParams() {
   const lojas = await getLojas();
   return lojas.map((loja) => ({
-    slug: loja.id,
+    slug: loja.slug,
   }));
 }
 
