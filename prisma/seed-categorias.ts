@@ -279,62 +279,7 @@ async function main() {
     console.log(`✅ Categoria "${catData.nome}" com ${subcategorias.length} subcategorias`);
   }
 
-  // 2. Migrar lugares existentes
-  console.log('\n🔄 Migrando lugares existentes...');
 
-  const lugares = await prisma.lugar.findMany({
-    select: {
-      id: true,
-      nome: true,
-      categoriaLegado: true,
-      subcategoriaLegado: true,
-      categoriaId: true,
-      subcategoriaId: true,
-    },
-  });
-
-  let migrados = 0;
-  let semCategoria = 0;
-  let semSubcategoria = 0;
-
-  for (const lugar of lugares) {
-    // Pular apenas se já está totalmente migrado (tem categoria e subcategoria ou não tem subcategoria legada)
-    if (lugar.categoriaId && (lugar.subcategoriaId || !lugar.subcategoriaLegado)) continue;
-
-    const categoriaId = lugar.categoriaId ?? resolveCategoria(lugar.categoriaLegado);
-
-    if (!categoriaId) {
-      console.warn(`  ⚠️  [SEM CATEGORIA] "${lugar.nome}" — valor legado: "${lugar.categoriaLegado}"`);
-      semCategoria++;
-      continue;
-    }
-
-    const subcategoriaId = resolveSubcategoria(categoriaId, lugar.subcategoriaLegado);
-
-    if (lugar.subcategoriaLegado && !subcategoriaId) {
-      console.warn(`  ⚠️  [SEM SUBCATEGORIA] "${lugar.nome}" — legado: "${lugar.subcategoriaLegado}" (categoriaId: ${categoriaId})`);
-      semSubcategoria++;
-    }
-
-    await prisma.lugar.update({
-      where: { id: lugar.id },
-      data: {
-        categoriaId,
-        subcategoriaId: subcategoriaId ?? undefined,
-      },
-    });
-
-    migrados++;
-  }
-
-  console.log(`\n📊 Resultado da migração:`);
-  console.log(`  ✅ Lugares migrados: ${migrados}`);
-  console.log(`  ⚠️  Sem categoria mapeada: ${semCategoria}`);
-  console.log(`  ⚠️  Sem subcategoria mapeada: ${semSubcategoria}`);
-
-  if (semCategoria > 0 || semSubcategoria > 0) {
-    console.log('\n  💡 Revise os avisos acima e atualize o script de migração se necessário.');
-  }
 
   console.log('\n✨ Seed concluído!');
 }
