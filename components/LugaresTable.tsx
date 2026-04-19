@@ -8,8 +8,8 @@ import AdminDeleteButton from '@/components/AdminDeleteButton';
 interface Lugar {
   id: string;
   nome: string;
-  categoria: string;
-  subcategoria: string | null;
+  categoria?: { nome: string } | null;
+  subcategoria?: { nome: string } | null;
   destaque: boolean;
 }
 
@@ -73,7 +73,7 @@ export default function LugaresTable({ lugares }: LugaresTableProps) {
                   </td>
                   <td className="px-6 py-4">
                     <span className="px-2 py-1 bg-gray-100 rounded-md text-xs font-medium text-gray-600">
-                      {lugar.subcategoria || lugar.categoria}
+                      {lugar.subcategoria?.nome || lugar.categoria?.nome || 'Sem Categoria'}
                     </span>
                   </td>
                   <td className="px-6 py-4">

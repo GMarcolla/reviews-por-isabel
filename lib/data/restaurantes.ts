@@ -1,25 +1,33 @@
 import { prisma } from '../prisma';
-import { getCategoriaRota } from '../categorias';
+import { CATEGORIA_IDS } from '../categorias';
 
 export async function getRestaurantes() {
-  const lugares = await prisma.lugar.findMany({
-    orderBy: { ordem: 'desc' }
+  return prisma.lugar.findMany({
+    where: { categoriaId: CATEGORIA_IDS.RESTAURANTES },
+    include: { categoria: true, subcategoria: true },
+    orderBy: { ordem: 'desc' },
   });
-  return lugares.filter(l => getCategoriaRota(l.categoria) === 'restaurantes');
 }
 
 export async function getRestauranteBySlug(slug: string) {
-  return prisma.lugar.findUnique({ where: { slug } });
+  return prisma.lugar.findUnique({
+    where: { slug },
+    include: { categoria: true, subcategoria: true },
+  });
 }
 
-export async function getRestaurantesByCategoria(categoria: string) {
-  const todos = await getRestaurantes();
-  return todos.filter(r =>
-    r.subcategoria?.toLowerCase().trim() === categoria.toLowerCase().trim()
-  );
+export async function getRestaurantesBySubcategoria(subcategoriaId: string) {
+  return prisma.lugar.findMany({
+    where: { categoriaId: CATEGORIA_IDS.RESTAURANTES, subcategoriaId },
+    include: { categoria: true, subcategoria: true },
+    orderBy: { ordem: 'desc' },
+  });
 }
 
 export async function getRestaurantesDestaque() {
-  const todos = await getRestaurantes();
-  return todos.filter(r => r.destaque === true);
+  return prisma.lugar.findMany({
+    where: { categoriaId: CATEGORIA_IDS.RESTAURANTES, destaque: true },
+    include: { categoria: true, subcategoria: true },
+    orderBy: { ordem: 'desc' },
+  });
 }

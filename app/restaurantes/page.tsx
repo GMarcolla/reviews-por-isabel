@@ -2,16 +2,7 @@ import { Metadata } from 'next';
 import { Container } from '@/components/Container';
 import { CategorySection } from '@/components/CategorySection';
 import { getRestaurantes } from '@/lib/data/restaurantes';
-import { CATEGORIAS, SUBCATEGORIAS } from '@/lib/categorias';
-
-/**
- * Página de Restaurantes
- *
- * Exibe restaurantes agrupados dinamicamente por subcategoria.
- * As seções são renderizadas apenas para subcategorias com registros no banco.
- *
- * Requirements: 3.1, 3.4, 3.5
- */
+import { getCategoriaByRota } from '@/lib/categorias';
 
 export const metadata: Metadata = {
   title: 'Restaurantes',
@@ -19,25 +10,29 @@ export const metadata: Metadata = {
 };
 
 export default async function RestaurantesPage() {
-  const todosRestaurantes = await getRestaurantes();
+  const [todosRestaurantes, categoriaData] = await Promise.all([
+    getRestaurantes(),
+    getCategoriaByRota('restaurantes'),
+  ]);
 
-  // Agrupar dinamicamente por subcategoria
+  // Subcategorias ordenadas pelo campo `ordem` do banco
+  const subcategoriasOrdenadas = categoriaData?.subcategorias ?? [];
+
+  // Agrupar por subcategoriaId
   const porSubcategoria = todosRestaurantes.reduce((acc, restaurante) => {
-    const key = restaurante.subcategoria?.trim() || 'Outro';
+    const key = restaurante.subcategoriaId ?? 'sem-subcategoria';
     if (!acc[key]) acc[key] = [];
     acc[key].push(restaurante);
     return acc;
   }, {} as Record<string, typeof todosRestaurantes>);
 
-  // Ordenar: subcategorias conhecidas primeiro (na ordem de SUBCATEGORIAS),
-  // depois as desconhecidas em ordem alfabética
-  const ordemPreferida = SUBCATEGORIAS[CATEGORIAS.RESTAURANTES] ?? [];
-  const subcategoriasOrdenadas = [
-    ...ordemPreferida.filter((s) => porSubcategoria[s]),
-    ...Object.keys(porSubcategoria)
-      .filter((s) => !ordemPreferida.includes(s))
-      .sort(),
-  ];
+  // Subcategorias que têm lugares, na ordem definida no banco
+  const subcategoriasComLugares = subcategoriasOrdenadas.filter(
+    (s) => porSubcategoria[s.id]
+  );
+
+  // Lugares sem subcategoria (edge case)
+  const semSubcategoria = porSubcategoria['sem-subcategoria'];
 
   return (
     <Container size="xl" className="py-8 md:py-12">
@@ -51,15 +46,24 @@ export default async function RestaurantesPage() {
         </p>
       </div>
 
-      {/* Seções dinâmicas por subcategoria */}
-      {subcategoriasOrdenadas.map((subcategoria) => (
+      {/* Seções dinâmicas por subcategoria (ordem do banco) */}
+      {subcategoriasComLugares.map((subcategoria) => (
         <CategorySection
-          key={subcategoria}
-          title={subcategoria}
-          lugares={porSubcategoria[subcategoria]}
+          key={subcategoria.id}
+          title={subcategoria.nome}
+          lugares={porSubcategoria[subcategoria.id]}
           columns={3}
         />
       ))}
+
+      {/* Lugares sem subcategoria */}
+      {semSubcategoria && semSubcategoria.length > 0 && (
+        <CategorySection
+          title="Outros"
+          lugares={semSubcategoria}
+          columns={3}
+        />
+      )}
     </Container>
   );
 }

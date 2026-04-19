@@ -1,25 +1,33 @@
 import { prisma } from '../prisma';
-import { getCategoriaRota } from '../categorias';
+import { CATEGORIA_IDS } from '../categorias';
 
 export async function getPrestadores() {
-  const lugares = await prisma.lugar.findMany({
-    orderBy: { ordem: 'desc' }
+  return prisma.lugar.findMany({
+    where: { categoriaId: CATEGORIA_IDS.SERVICOS },
+    include: { categoria: true, subcategoria: true },
+    orderBy: { ordem: 'desc' },
   });
-  return lugares.filter(l => getCategoriaRota(l.categoria) === 'prestadores');
 }
 
 export async function getPrestadorBySlug(slug: string) {
-  return prisma.lugar.findUnique({ where: { slug } });
+  return prisma.lugar.findUnique({
+    where: { slug },
+    include: { categoria: true, subcategoria: true },
+  });
 }
 
-export async function getPrestadoresByCategoria(categoria: string) {
-  const todos = await getPrestadores();
-  return todos.filter(p =>
-    p.subcategoria?.toLowerCase().trim() === categoria.toLowerCase().trim()
-  );
+export async function getPrestadoresBySubcategoria(subcategoriaId: string) {
+  return prisma.lugar.findMany({
+    where: { categoriaId: CATEGORIA_IDS.SERVICOS, subcategoriaId },
+    include: { categoria: true, subcategoria: true },
+    orderBy: { ordem: 'desc' },
+  });
 }
 
 export async function getPrestadoresDestaque() {
-  const todos = await getPrestadores();
-  return todos.filter(p => p.destaque === true);
+  return prisma.lugar.findMany({
+    where: { categoriaId: CATEGORIA_IDS.SERVICOS, destaque: true },
+    include: { categoria: true, subcategoria: true },
+    orderBy: { ordem: 'desc' },
+  });
 }

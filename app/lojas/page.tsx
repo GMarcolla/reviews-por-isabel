@@ -1,15 +1,8 @@
 import { Metadata } from 'next';
 import { Container } from '@/components/Container';
-import { CardLugar } from '@/components/CardLugar';
+import { CategorySection } from '@/components/CategorySection';
 import { getLojas } from '@/lib/data/lojas';
-
-/**
- * Página de Lojas
- * 
- * Exibe lojas de Blumenau e região
- * 
- * Requirements: 3.1, 3.4, 3.5
- */
+import { getCategoriaByRota } from '@/lib/categorias';
 
 export const metadata: Metadata = {
   title: 'Lojas',
@@ -17,12 +10,28 @@ export const metadata: Metadata = {
 };
 
 export default async function LojasPage() {
-  // Buscar todas as lojas
-  const todasLojas = await getLojas();
+  const [todasLojas, categoriaData] = await Promise.all([
+    getLojas(),
+    getCategoriaByRota('lojas'),
+  ]);
+
+  const subcategoriasOrdenadas = categoriaData?.subcategorias ?? [];
+
+  const porSubcategoria = todasLojas.reduce((acc, loja) => {
+    const key = loja.subcategoriaId ?? 'sem-subcategoria';
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(loja);
+    return acc;
+  }, {} as Record<string, typeof todasLojas>);
+
+  const subcategoriasComLugares = subcategoriasOrdenadas.filter(
+    (s) => porSubcategoria[s.id]
+  );
+
+  const semSubcategoria = porSubcategoria['sem-subcategoria'];
 
   return (
     <Container size="xl" className="py-8 md:py-12">
-      {/* Hero Section */}
       <div className="mb-12 md:mb-16 text-center">
         <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-marrom-escuro mb-4">
           Lojas
@@ -32,15 +41,18 @@ export default async function LojasPage() {
         </p>
       </div>
 
-      {/* Grid de cards */}
-      <div className="grid gap-6 md:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {todasLojas.map((loja) => (
-          <CardLugar 
-            key={loja.id} 
-            lugar={loja}
-          />
-        ))}
-      </div>
+      {subcategoriasComLugares.map((subcategoria) => (
+        <CategorySection
+          key={subcategoria.id}
+          title={subcategoria.nome}
+          lugares={porSubcategoria[subcategoria.id]}
+          columns={3}
+        />
+      ))}
+
+      {semSubcategoria && semSubcategoria.length > 0 && (
+        <CategorySection title="Outros" lugares={semSubcategoria} columns={3} />
+      )}
     </Container>
   );
 }

@@ -3,17 +3,17 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createLugar, updateLugar } from "@/app/admin/actions";
 import { Loader2, AlertCircle, X, Image as ImageIcon, Upload, Lock, Unlock } from "lucide-react";
-import { CATEGORIAS, SUBCATEGORIAS, getCanonicalCategoria, getCanonicalSubcategoria } from "@/lib/categorias";
+import { CategoriaComSubcategorias } from "@/lib/types";
 import { CldUploadWidget } from "next-cloudinary";
 
 
 const schema = z.object({
   nome: z.string().min(2, "O nome é obrigatório"),
-  categoria: z.string().min(2, "Selecione uma categoria"),
-  subcategoria: z.string().optional(),
+  categoriaId: z.string().min(1, "Selecione uma categoria"),
+  subcategoriaId: z.string().optional(),
   descricaoCurta: z.string().min(5, "A descrição curta é obrigatória"),
   descricaoCompleta: z.string().min(10, "A descrição completa é obrigatória"),
   imagem: z.string().min(1, "A URL da imagem é obrigatória"),
@@ -37,12 +37,13 @@ type FormData = z.infer<typeof schema>;
 
 interface Props {
   initialData?: any;
+  categorias: CategoriaComSubcategorias[];
 }
 
-export default function AdminLugarForm({ initialData }: Props) {
+export default function AdminLugarForm({ initialData, categorias }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [subcategoriasDisponiveis, setSubcategoriasDisponiveis] = useState<string[]>([]);
+  const [subcategoriasDisponiveis, setSubcategoriasDisponiveis] = useState<{id: string; nome: string}[]>([]);
   const [isManualUrlEdit, setIsManualUrlEdit] = useState(false);
 
   const {
@@ -56,8 +57,8 @@ export default function AdminLugarForm({ initialData }: Props) {
     defaultValues: initialData
       ? {
           nome: initialData.nome || "",
-          categoria: getCanonicalCategoria(initialData.categoria) || initialData.categoria || "",
-          subcategoria: initialData.subcategoria || getCanonicalSubcategoria(initialData.categoria) || "",
+          categoriaId: initialData.categoriaId || "",
+          subcategoriaId: initialData.subcategoriaId || "",
           descricaoCurta: initialData.descricaoCurta || "",
           descricaoCompleta: initialData.descricaoCompleta || "",
           imagem: initialData.imagem || "",
@@ -83,17 +84,22 @@ export default function AdminLugarForm({ initialData }: Props) {
         },
   });
 
-  const categoriaWatch = watch("categoria");
+  const categoriaIdWatch = watch("categoriaId");
   const imagemUrl = watch("imagem");
+
+  const previousCategoriaRef = useRef(categoriaIdWatch);
 
   // Atualiza subcategorias quando a categoria muda
   useEffect(() => {
-    if (categoriaWatch && SUBCATEGORIAS[categoriaWatch]) {
-      setSubcategoriasDisponiveis(SUBCATEGORIAS[categoriaWatch]);
-    } else {
-      setSubcategoriasDisponiveis([]);
+    const cat = categorias.find(c => c.id === categoriaIdWatch);
+    setSubcategoriasDisponiveis(cat?.subcategorias ?? []);
+    
+    // Limpa a subcategoria ao trocar de categoria (mas não na carga inicial)
+    if (previousCategoriaRef.current !== categoriaIdWatch) {
+      setValue("subcategoriaId", "");
+      previousCategoriaRef.current = categoriaIdWatch;
     }
-  }, [categoriaWatch]);
+  }, [categoriaIdWatch, categorias, setValue]);
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
@@ -154,16 +160,16 @@ export default function AdminLugarForm({ initialData }: Props) {
             Categoria *
           </label>
           <select
-            {...register("categoria")}
+            {...register("categoriaId")}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-white"
           >
             <option value="">Selecione...</option>
-            {Object.values(CATEGORIAS).map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
+            {categorias.map(cat => (
+              <option key={cat.id} value={cat.id}>{cat.nome}</option>
             ))}
           </select>
-          {errors.categoria && (
-            <p className="text-red-500 text-xs mt-1">{errors.categoria.message}</p>
+          {errors.categoriaId && (
+            <p className="text-red-500 text-xs mt-1">{errors.categoriaId.message}</p>
           )}
         </div>
 
@@ -173,19 +179,18 @@ export default function AdminLugarForm({ initialData }: Props) {
           </label>
           {subcategoriasDisponiveis.length > 0 ? (
             <select
-              {...register("subcategoria")}
+              {...register("subcategoriaId")}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-white"
             >
               <option value="">Selecione uma subcategoria...</option>
               {subcategoriasDisponiveis.map(sub => (
-                <option key={sub} value={sub}>{sub}</option>
+                <option key={sub.id} value={sub.id}>{sub.nome}</option>
               ))}
             </select>
           ) : (
             <input
-              {...register("subcategoria")}
+              disabled
               placeholder="Selecione primeiro uma categoria acima"
-              disabled={!categoriaWatch}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none disabled:bg-gray-50 disabled:text-gray-400"
             />
           )}

@@ -1,25 +1,33 @@
 import { prisma } from '../prisma';
-import { getCategoriaRota } from '../categorias';
+import { CATEGORIA_IDS } from '../categorias';
 
 export async function getLojas() {
-  const lugares = await prisma.lugar.findMany({
-    orderBy: { ordem: 'desc' }
+  return prisma.lugar.findMany({
+    where: { categoriaId: CATEGORIA_IDS.LOJAS },
+    include: { categoria: true, subcategoria: true },
+    orderBy: { ordem: 'desc' },
   });
-  return lugares.filter(l => getCategoriaRota(l.categoria) === 'lojas');
 }
 
 export async function getLojaBySlug(slug: string) {
-  return prisma.lugar.findUnique({ where: { slug } });
+  return prisma.lugar.findUnique({
+    where: { slug },
+    include: { categoria: true, subcategoria: true },
+  });
 }
 
-export async function getLojasByCategoria(categoria: string) {
-  const todos = await getLojas();
-  return todos.filter(l =>
-    l.subcategoria?.toLowerCase().trim() === categoria.toLowerCase().trim()
-  );
+export async function getLojasBySubcategoria(subcategoriaId: string) {
+  return prisma.lugar.findMany({
+    where: { categoriaId: CATEGORIA_IDS.LOJAS, subcategoriaId },
+    include: { categoria: true, subcategoria: true },
+    orderBy: { ordem: 'desc' },
+  });
 }
 
 export async function getLojasDestaque() {
-  const todos = await getLojas();
-  return todos.filter(l => l.destaque === true);
+  return prisma.lugar.findMany({
+    where: { categoriaId: CATEGORIA_IDS.LOJAS, destaque: true },
+    include: { categoria: true, subcategoria: true },
+    orderBy: { ordem: 'desc' },
+  });
 }

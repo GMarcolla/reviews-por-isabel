@@ -155,14 +155,16 @@ export default async function RestaurantePage({ params }: { params: Promise<{ sl
             
             <div className="space-y-4">
               {/* Address */}
-              {restaurante.endereco && (
+              {(restaurante.endereco || restaurante.enderecoGoogleMaps) && (
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-verde-tulipa flex-shrink-0 mt-1" />
                   <div className="flex-1">
                     <p className="text-sm font-semibold text-marrom-escuro">Endereço</p>
-                    <p className="text-sm text-marrom-escuro/80 mb-2">{restaurante.endereco}</p>
+                    {restaurante.endereco && (
+                      <p className="text-sm text-marrom-escuro/80 mb-2">{restaurante.endereco}</p>
+                    )}
                     <div className="space-y-2">
-                      {restaurante.enderecoGoogleMaps && (
+                      {restaurante.enderecoGoogleMaps ? (
                         <a 
                           href={restaurante.enderecoGoogleMaps}
                           target="_blank"
@@ -170,6 +172,15 @@ export default async function RestaurantePage({ params }: { params: Promise<{ sl
                           className="block text-xs !text-white bg-terracota hover:bg-terracota-claro px-3 py-2 rounded-md transition-colors text-center"
                         >
                           📍 {restaurante.enderecoGoogleMapsLabel || 'Ver no Google Maps'}
+                        </a>
+                      ) : (
+                        <a 
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${restaurante.nome}, ${restaurante.endereco}`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block text-xs !text-white bg-terracota hover:bg-terracota-claro px-3 py-2 rounded-md transition-colors text-center"
+                        >
+                          📍 Ver no Google Maps
                         </a>
                       )}
                       {restaurante.enderecoGoogleMaps2 && (

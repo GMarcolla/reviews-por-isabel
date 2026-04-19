@@ -1,25 +1,33 @@
 import { prisma } from '../prisma';
-import { getCategoriaRota } from '../categorias';
+import { CATEGORIA_IDS } from '../categorias';
 
 export async function getPasseios() {
-  const lugares = await prisma.lugar.findMany({
-    orderBy: { ordem: 'desc' }
+  return prisma.lugar.findMany({
+    where: { categoriaId: CATEGORIA_IDS.PASSEIOS },
+    include: { categoria: true, subcategoria: true },
+    orderBy: { ordem: 'desc' },
   });
-  return lugares.filter(l => getCategoriaRota(l.categoria) === 'lazer');
 }
 
 export async function getPasseioBySlug(slug: string) {
-  return prisma.lugar.findUnique({ where: { slug } });
+  return prisma.lugar.findUnique({
+    where: { slug },
+    include: { categoria: true, subcategoria: true },
+  });
 }
 
-export async function getPasseiosByCategoria(categoria: string) {
-  const todos = await getPasseios();
-  return todos.filter(p =>
-    p.subcategoria?.toLowerCase().trim() === categoria.toLowerCase().trim()
-  );
+export async function getPasseiosBySubcategoria(subcategoriaId: string) {
+  return prisma.lugar.findMany({
+    where: { categoriaId: CATEGORIA_IDS.PASSEIOS, subcategoriaId },
+    include: { categoria: true, subcategoria: true },
+    orderBy: { ordem: 'desc' },
+  });
 }
 
 export async function getPasseiosDestaque() {
-  const todos = await getPasseios();
-  return todos.filter(p => p.destaque === true);
+  return prisma.lugar.findMany({
+    where: { categoriaId: CATEGORIA_IDS.PASSEIOS, destaque: true },
+    include: { categoria: true, subcategoria: true },
+    orderBy: { ordem: 'desc' },
+  });
 }

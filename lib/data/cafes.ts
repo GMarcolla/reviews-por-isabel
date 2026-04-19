@@ -1,25 +1,33 @@
 import { prisma } from '../prisma';
-import { getCategoriaRota } from '../categorias';
+import { CATEGORIA_IDS } from '../categorias';
 
 export async function getCafes() {
-  const lugares = await prisma.lugar.findMany({
-    orderBy: { ordem: 'desc' }
+  return prisma.lugar.findMany({
+    where: { categoriaId: CATEGORIA_IDS.CAFES },
+    include: { categoria: true, subcategoria: true },
+    orderBy: { ordem: 'desc' },
   });
-  return lugares.filter(l => getCategoriaRota(l.categoria) === 'cafes');
 }
 
 export async function getCafeBySlug(slug: string) {
-  return prisma.lugar.findUnique({ where: { slug } });
+  return prisma.lugar.findUnique({
+    where: { slug },
+    include: { categoria: true, subcategoria: true },
+  });
 }
 
-export async function getCafesByCategoria(categoria: string) {
-  const todos = await getCafes();
-  return todos.filter(c =>
-    c.subcategoria?.toLowerCase().trim() === categoria.toLowerCase().trim()
-  );
+export async function getCafesBySubcategoria(subcategoriaId: string) {
+  return prisma.lugar.findMany({
+    where: { categoriaId: CATEGORIA_IDS.CAFES, subcategoriaId },
+    include: { categoria: true, subcategoria: true },
+    orderBy: { ordem: 'desc' },
+  });
 }
 
 export async function getCafesDestaque() {
-  const todos = await getCafes();
-  return todos.filter(c => c.destaque === true);
+  return prisma.lugar.findMany({
+    where: { categoriaId: CATEGORIA_IDS.CAFES, destaque: true },
+    include: { categoria: true, subcategoria: true },
+    orderBy: { ordem: 'desc' },
+  });
 }

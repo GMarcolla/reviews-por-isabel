@@ -19,8 +19,8 @@ export default function Home() {
                   O Reviews por Isabel nasceu da minha vontade de compartilhar lugares que realmente valem a visita em Blumenau e região.
                 </p>
                 <p>
-                  Por aqui você encontra restaurantes, cafés, passeios e experiências que eu já conheci e recomendo. 
-                  Tudo baseado nas minhas próprias visitas. 
+                  Por aqui você encontra restaurantes, cafés, passeios e experiências que eu já conheci e recomendo.
+                  Tudo baseado nas minhas próprias visitas.
                 </p>
                 <p>
                   Espero te ajudar a descobrir lugares legais e ter novas experiências pela região!
@@ -67,13 +67,6 @@ export default function Home() {
               variant="primary"
             />
             <BotaoHub
-              title="Prestadores de Serviços"
-              description="Profissionais de confiança"
-              imageSrc="/img-botoes/prestadores.PNG"
-              href="/prestadores"
-              variant="secondary"
-            />
-            <BotaoHub
               title="Lazer"
               description="Experiências inesquecíveis"
               imageSrc="/img-botoes/lazer.PNG"
@@ -81,10 +74,10 @@ export default function Home() {
               variant="primary"
             />
             <BotaoHub
-              title="Cupons"
-              description="Descontos exclusivos"
-              imageSrc="/img-botoes/cupons.png"
-              href="/cupons"
+              title="Prestadores de Serviços"
+              description="Profissionais de confiança"
+              imageSrc="/img-botoes/prestadores.PNG"
+              href="/prestadores"
               variant="secondary"
             />
             <BotaoHub
@@ -95,10 +88,10 @@ export default function Home() {
               variant="primary"
             />
             <BotaoHub
-              title="Contato"
-              description="Fale comigo"
-              icon={Mail}
-              href="/contato"
+              title="Cupons"
+              description="Descontos exclusivos"
+              imageSrc="/img-botoes/cupons.png"
+              href="/cupons"
               variant="secondary"
             />
             <BotaoHub
@@ -107,6 +100,20 @@ export default function Home() {
               imageSrc="/img-botoes/roteiro.png"
               href="/roteiro"
               variant="primary"
+            />
+            <BotaoHub
+              title="Favoritos da Isa"
+              description="Descubra os meus lugares preferidos"
+              imageSrc="/img-botoes/favoritos.png"
+              href="/favoritos-da-isa"
+              variant="secondary"
+            />
+            <BotaoHub
+              title="Contato"
+              description="Fale comigo"
+              imageSrc="/img-botoes/fale-comigo.png"
+              href="/contato"
+              variant="secondary"
             />
           </div>
         </div>

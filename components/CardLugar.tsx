@@ -1,8 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Lugar } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { getCategoriaRota, getCategoriaLabel } from '@/lib/categorias';
+import { Lugar } from '@/lib/types';
 
 interface CardLugarProps {
   lugar: Lugar;
@@ -17,12 +16,13 @@ export function CardLugar({
   showCategory = false,
   showSubcategoria = false,
 }: CardLugarProps) {
-  const routePrefix = getCategoriaRota(lugar.categoria);
+  // Rota vem diretamente do objeto categoria (populado via include)
+  const routePrefix = lugar.categoria?.rota ?? 'restaurantes';
   const detailsUrl = `/${routePrefix}/${lugar.slug}`;
   const imageHeight = variant === 'large' ? 'h-64 md:h-80' : 'h-48 md:h-56';
 
-  // Label para exibição: usa subcategoria se disponível, senão a categoria
-  const displayLabel = lugar.subcategoria || getCategoriaLabel(lugar.categoria);
+  // Label para exibição: usa subcategoria se disponível, senão o label da categoria
+  const displayLabel = lugar.subcategoria?.nome ?? lugar.categoria?.label ?? '';
 
   return (
     <article
@@ -56,9 +56,9 @@ export function CardLugar({
         {/* Nome do lugar */}
         <h3 className="text-xl md:text-2xl font-display font-bold text-marrom-escuro mb-2 line-clamp-2">
           {lugar.nome}
-          {showSubcategoria && lugar.subcategoria && (
+          {showSubcategoria && lugar.subcategoria?.nome && (
             <span className="text-base md:text-lg font-normal text-marrom-escuro/80 ml-2">
-              ({lugar.subcategoria})
+              ({lugar.subcategoria.nome})
             </span>
           )}
         </h3>

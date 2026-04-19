@@ -1,98 +1,111 @@
 // Types and Interfaces for Reviews por Isabel
 
-export type CategoriaLugar =
-  | 'hamburgueria'
-  | 'esfirraria'
-  | 'padaria'
-  | 'gelateria'
-  | 'pastelaria'
-  | 'empadas'
-  | 'hotdog'
-  | 'germanico'
-  | 'buffet'
-  | 'bar'
-  | 'coreano'
-  | 'mexicano'
-  | 'italiano'
-  | 'japones'
-  | 'pizzaria'
-  | 'romantico'
-  | 'cafeteria'
-  | 'doceria'
-  | 'brunch'
-  | 'evento'
-  | 'concerto'
-  | 'festival'
-  | 'parque'
-  | 'lazer'
-  | 'dentista'
-  | 'arquiteta'
-  | 'unhas'
-  | 'beleza'
-  | 'servico'
-  | 'moda'
-  | 'decoracao'
-  | 'livraria'
-  | 'loja';
+// ---------------------------------------------------------------------------
+// Tipos de Categoria e Subcategoria
+// ---------------------------------------------------------------------------
+
+export interface CategoriaInfo {
+  id: string;
+  nome: string;
+  slug: string;
+  rota: string;
+  label: string;
+  ordem: number;
+}
+
+export interface SubcategoriaInfo {
+  id: string;
+  nome: string;
+  categoriaId: string;
+  ordem: number;
+}
+
+export interface CategoriaComSubcategorias extends CategoriaInfo {
+  subcategorias: SubcategoriaInfo[];
+}
+
+// ---------------------------------------------------------------------------
+// Lugar
+// ---------------------------------------------------------------------------
 
 export interface Lugar {
-  id: string;                    // Unique identifier (slug)
+  id: string;
+  slug: string;
   nome: string;
-  slug: string;                  // Nome do lugar
-  categoria: string;             // Categoria do lugar
-  subcategoria?: string | null;         // Subcategoria opcional
-  descricaoCurta: string;        // Descrição para card (max 150 chars)
-  descricaoCompleta: string;     // Descrição detalhada
-  imagem: string;                // Path da imagem principal
-  imagemAlt: string;             // Alt text da imagem
-  galeria?: string[] | null;            // Imagens adicionais
-  endereco?: string | null;             // Endereço completo
-  enderecoGoogleMaps?: string | null;   // Link do Google Maps (endereço 1)
-  enderecoGoogleMapsLabel?: string | null; // Descrição do endereço 1 (ex: "Hamburgueria")
-  enderecoGoogleMaps2?: string | null;  // Link do Google Maps (endereço 2)
-  enderecoGoogleMaps2Label?: string | null; // Descrição do endereço 2 (ex: "Pizzaria")
-  telefone?: string | null;             // Telefone de contato
-  instagram?: string | null;            // Handle/URL do Instagram do estabelecimento
-  instagramReview?: string | null;      // URL do vídeo de review no Instagram
-  website?: string | null;              // URL do website
-  horarioFuncionamento?: string | null; // Horário de funcionamento
-  faixaPreco?: number | null;   // Faixa de preço ($ a $$$$)
-  destaque?: boolean | null;            // Se é destaque na home
-  ordem?: number | null;                // Ordem de exibição
+  // Relacionamentos (populados via include)
+  categoriaId: string | null;
+  categoria: CategoriaInfo | null;
+  subcategoriaId?: string | null;
+  subcategoria?: SubcategoriaInfo | null;
+
+  // Conteúdo
+  descricaoCurta: string;
+  descricaoCompleta: string;
+  imagem: string;
+  imagemAlt: string;
+  galeria?: string[] | null;
+  // Localização
+  endereco?: string | null;
+  enderecoGoogleMaps?: string | null;
+  enderecoGoogleMapsLabel?: string | null;
+  enderecoGoogleMaps2?: string | null;
+  enderecoGoogleMaps2Label?: string | null;
+  // Contato
+  telefone?: string | null;
+  instagram?: string | null;
+  instagramReview?: string | null;
+  website?: string | null;
+  // Informações
+  horarioFuncionamento?: string | null;
+  faixaPreco?: number | null;
+  destaque?: boolean | null;
+  ordem?: number | null;
 }
 
+// ---------------------------------------------------------------------------
+// Cupom
+// ---------------------------------------------------------------------------
+
 export interface Cupom {
-  id: string;                    // Unique identifier
-  lugarId: string;               // ID do lugar relacionado
-  lugarNome: string;             // Nome do lugar
-  categoria: string;             // Categoria (restaurantes, cafes, lojas, prestadores)
-  subcategoria: string;          // Subcategoria específica
-  codigo: string;                // Código do cupom
-  descricao: string;             // Descrição do desconto
-  validade?: string;             // Data de validade (ISO string)
-  termos?: string;               // Termos e condições
-  ativo: boolean;                // Se o cupom está ativo
+  id: string;
+  lugarId: string;
+  lugarNome: string;
+  categoria: string;
+  subcategoria: string;
+  codigo: string;
+  descricao: string;
+  validade?: string;
+  termos?: string;
+  ativo: boolean;
 }
+
+// ---------------------------------------------------------------------------
+// Roteiro
+// ---------------------------------------------------------------------------
 
 export interface RoteiroPeriodo {
   periodo: 'manha' | 'tarde' | 'noite';
-  titulo: string;                // Ex: "Café da Manhã Especial"
-  descricao: string;             // Descrição da atividade
-  lugarId?: string;              // ID do lugar (se aplicável)
-  imagem?: string;               // Imagem ilustrativa
-  dicas?: string[];              // Dicas adicionais
+  titulo: string;
+  descricao: string;
+  lugarId?: string;
+  imagem?: string;
+  dicas?: string[];
 }
 
 export interface Roteiro {
-  titulo: string;                // Ex: "1 Dia em Blumenau"
-  descricao: string;             // Introdução do roteiro
-  periodos: RoteiroPeriodo[];    // Manhã, Tarde, Noite
+  titulo: string;
+  descricao: string;
+  periodos: RoteiroPeriodo[];
 }
 
+// ---------------------------------------------------------------------------
+// Formulários
+// ---------------------------------------------------------------------------
+
 export interface ContatoFormData {
-  nome: string;                  // Nome do usuário
-  email: string;                 // Email do usuário
-  mensagem: string;              // Mensagem
+  nome: string;
+  email: string;
+  mensagem: string;
 }
 
 export interface ContatoFormErrors {
@@ -101,15 +114,18 @@ export interface ContatoFormErrors {
   mensagem?: string;
 }
 
-// Interface para o mapa interativo
+// ---------------------------------------------------------------------------
+// Mapa Interativo
+// ---------------------------------------------------------------------------
+
 export interface Place {
-  nome: string;              // Nome do lugar (ex: "Cafehaus - Centro")
-  categoria: string;         // Categoria principal (ex: "Cafés e docerias")
-  subcategoria: string;      // Subcategoria (ex: "Cafeteria")
-  regiao: string;            // Região (ex: "Blumenau-SC")
-  avaliacao: string;         // Avaliação da Isabel
-  cupom?: string;            // Cupom de desconto (opcional)
-  mapsLink: string;          // Link do Google Maps
-  lat: number;               // Latitude
-  lng: number;               // Longitude
+  nome: string;
+  categoria: string;
+  subcategoria: string;
+  regiao: string;
+  avaliacao: string;
+  cupom?: string;
+  mapsLink: string;
+  lat: number;
+  lng: number;
 }

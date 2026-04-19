@@ -2,16 +2,7 @@ import { Metadata } from 'next';
 import { Container } from '@/components/Container';
 import { CategorySection } from '@/components/CategorySection';
 import { getPasseios } from '@/lib/data/passeios';
-import { CATEGORIAS, SUBCATEGORIAS } from '@/lib/categorias';
-
-/**
- * Página de Passeios
- *
- * Exibe passeios e experiências agrupados dinamicamente por subcategoria.
- * As seções são renderizadas apenas para subcategorias com registros no banco.
- *
- * Requirements: 5.1, 5.4, 5.5
- */
+import { getCategoriaByRota } from '@/lib/categorias';
 
 export const metadata: Metadata = {
   title: 'Passeios',
@@ -19,29 +10,28 @@ export const metadata: Metadata = {
 };
 
 export default async function PasseiosPage() {
-  const todosPasseios = await getPasseios();
+  const [todosPasseios, categoriaData] = await Promise.all([
+    getPasseios(),
+    getCategoriaByRota('lazer'),
+  ]);
 
-  // Agrupar dinamicamente por subcategoria
+  const subcategoriasOrdenadas = categoriaData?.subcategorias ?? [];
+
   const porSubcategoria = todosPasseios.reduce((acc, passeio) => {
-    const key = passeio.subcategoria?.trim() || 'Outro';
+    const key = passeio.subcategoriaId ?? 'sem-subcategoria';
     if (!acc[key]) acc[key] = [];
     acc[key].push(passeio);
     return acc;
   }, {} as Record<string, typeof todosPasseios>);
 
-  // Ordenar: subcategorias conhecidas primeiro (na ordem de SUBCATEGORIAS),
-  // depois as desconhecidas em ordem alfabética
-  const ordemPreferida = SUBCATEGORIAS[CATEGORIAS.PASSEIOS] ?? [];
-  const subcategoriasOrdenadas = [
-    ...ordemPreferida.filter((s) => porSubcategoria[s]),
-    ...Object.keys(porSubcategoria)
-      .filter((s) => !ordemPreferida.includes(s))
-      .sort(),
-  ];
+  const subcategoriasComLugares = subcategoriasOrdenadas.filter(
+    (s) => porSubcategoria[s.id]
+  );
+
+  const semSubcategoria = porSubcategoria['sem-subcategoria'];
 
   return (
     <Container size="xl" className="py-8 md:py-12">
-      {/* Hero Section */}
       <div className="mb-12 md:mb-16 text-center">
         <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-marrom-escuro mb-4">
           Passeios
@@ -52,15 +42,18 @@ export default async function PasseiosPage() {
         </p>
       </div>
 
-      {/* Seções dinâmicas por subcategoria */}
-      {subcategoriasOrdenadas.map((subcategoria) => (
+      {subcategoriasComLugares.map((subcategoria) => (
         <CategorySection
-          key={subcategoria}
-          title={subcategoria}
-          lugares={porSubcategoria[subcategoria]}
+          key={subcategoria.id}
+          title={subcategoria.nome}
+          lugares={porSubcategoria[subcategoria.id]}
           columns={3}
         />
       ))}
+
+      {semSubcategoria && semSubcategoria.length > 0 && (
+        <CategorySection title="Outros" lugares={semSubcategoria} columns={3} />
+      )}
     </Container>
   );
 }

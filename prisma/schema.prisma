@@ -8,47 +8,79 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model Categoria {
+  id            String         @id @default(cuid())
+  nome          String         @unique   // "Restaurantes", "Cafés e Docerias", etc.
+  slug          String         @unique   // "restaurantes", "cafes", etc.
+  rota          String                   // rota URL: "restaurantes", "cafes", "lazer", "lojas", "prestadores"
+  label         String                   // label de exibição: "Lazer & Passeios"
+  ordem         Int            @default(0)
+  subcategorias Subcategoria[]
+  lugares       Lugar[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Subcategoria {
+  id          String    @id @default(cuid())
+  nome        String
+  categoriaId String
+  categoria   Categoria @relation(fields: [categoriaId], references: [id], onDelete: Cascade)
+  ordem       Int       @default(0)
+  lugares     Lugar[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([categoriaId, nome])
+}
+
 model Lugar {
-  id                      String   @id @default(cuid())
-  slug                    String   @unique
-  nome                    String
-  categoria               String
-  subcategoria            String?
-  descricaoCurta          String
-  descricaoCompleta       String   @db.Text
-  imagem                  String
-  imagemAlt               String
-  endereco                String?
-  enderecoGoogleMaps      String?
-  enderecoGoogleMapsLabel String?
-  enderecoGoogleMaps2     String?
+  id                       String        @id @default(cuid())
+  slug                     String        @unique
+  nome                     String
+
+  // Novos campos relacionais
+  categoriaId              String?
+  categoria                Categoria?    @relation(fields: [categoriaId], references: [id])
+  subcategoriaId           String?
+  subcategoria             Subcategoria? @relation(fields: [subcategoriaId], references: [id])
+  descricaoCurta           String
+  descricaoCompleta        String        @db.Text
+  imagem                   String
+  imagemAlt                String
+  endereco                 String?
+  enderecoGoogleMaps       String?
+  enderecoGoogleMapsLabel  String?
+  enderecoGoogleMaps2      String?
   enderecoGoogleMaps2Label String?
-  telefone                String?
-  instagram               String?
-  instagramReview         String?
-  website                 String?
-  horarioFuncionamento    String?
-  faixaPreco              Int?     // 1, 2, 3, 4
-  destaque                Boolean  @default(false)
-  ordem                   Int      @default(0)
-  
-  cupons                  Cupom[]
-  
-  createdAt               DateTime @default(now())
-  updatedAt               DateTime @updatedAt
+  telefone                 String?
+  instagram                String?
+  instagramReview          String?
+  website                  String?
+  horarioFuncionamento     String?
+  faixaPreco               Int?          // 1, 2, 3, 4
+  destaque                 Boolean       @default(false)
+  ordem                    Int           @default(0)
+
+  cupons Cupom[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Cupom {
-  id          String   @id @default(cuid())
-  lugarId     String
-  codigo      String
-  descricao   String
-  validade    DateTime?
-  termos      String?
-  ativo       Boolean  @default(true)
-  
-  lugar       Lugar    @relation(fields: [lugarId], references: [id], onDelete: Cascade)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String    @id @default(cuid())
+  lugarId   String
+  codigo    String
+  descricao String
+  validade  DateTime?
+  termos    String?
+  ativo     Boolean   @default(true)
+
+  lugar Lugar @relation(fields: [lugarId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

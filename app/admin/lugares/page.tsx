@@ -7,7 +7,8 @@ export const dynamic = "force-dynamic";
 
 export default async function LugaresAdminPage() {
   const lugares = await prisma.lugar.findMany({
-    orderBy: { createdAt: "desc" }
+    orderBy: { createdAt: "desc" },
+    include: { categoria: true, subcategoria: true }
   });
 
   return (

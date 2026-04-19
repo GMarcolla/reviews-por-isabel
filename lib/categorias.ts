@@ -1,174 +1,79 @@
 /**
- * SISTEMA DE CATEGORIAS - FONTE ÚNICA DE VERDADE
+ * SISTEMA DE CATEGORIAS - FUNÇÕES ASYNC (BANCO DE DADOS)
  *
- * Categorias canônicas armazenadas no banco de dados:
- * - "Restaurantes"
- * - "Cafés e Docerias"
- * - "Passeios"
- * - "Onde Comprar"
- * - "Serviços"
+ * Categorias e subcategorias agora são gerenciadas no banco via modelos
+ * Categoria e Subcategoria. Este arquivo expõe funções async para consulta.
  *
- * Subcategorias são armazenadas no campo `subcategoria` separado.
+ * As constantes hardcoded antigas foram removidas.
+ * Use as funções abaixo para acessar categorias e subcategorias.
  */
 
-export const CATEGORIAS = {
-  RESTAURANTES: 'Restaurantes',
-  CAFES: 'Cafés e Docerias',
-  PASSEIOS: 'Passeios',
-  LOJAS: 'Onde Comprar',
-  SERVICOS: 'Serviços',
+import { prisma } from './prisma';
+
+export type { Categoria, Subcategoria } from '@prisma/client';
+
+// ---------------------------------------------------------------------------
+// Queries de Categorias
+// ---------------------------------------------------------------------------
+
+/** Retorna todas as categorias ordenadas pelo campo `ordem` */
+export async function getCategorias() {
+  return prisma.categoria.findMany({
+    orderBy: { ordem: 'asc' },
+    include: { subcategorias: { orderBy: { ordem: 'asc' } } },
+  });
+}
+
+/** Retorna uma categoria pelo ID */
+export async function getCategoriaById(id: string) {
+  return prisma.categoria.findUnique({
+    where: { id },
+    include: { subcategorias: { orderBy: { ordem: 'asc' } } },
+  });
+}
+
+/** Retorna uma categoria pelo slug da rota URL (ex: 'restaurantes', 'cafes', 'lazer') */
+export async function getCategoriaByRota(rota: string) {
+  return prisma.categoria.findFirst({
+    where: { rota },
+    include: { subcategorias: { orderBy: { ordem: 'asc' } } },
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Queries de Subcategorias
+// ---------------------------------------------------------------------------
+
+/** Retorna todas as subcategorias de uma categoria, ordenadas por `ordem` */
+export async function getSubcategorias(categoriaId: string) {
+  return prisma.subcategoria.findMany({
+    where: { categoriaId },
+    orderBy: { ordem: 'asc' },
+  });
+}
+
+/** Retorna uma subcategoria pelo ID */
+export async function getSubcategoriaById(id: string) {
+  return prisma.subcategoria.findUnique({ where: { id } });
+}
+
+// ---------------------------------------------------------------------------
+// Helpers síncronos para uso em Server Components que já carregam os dados
+// (evita chamadas extras ao banco quando o include já foi feito)
+// ---------------------------------------------------------------------------
+
+/** Retorna a rota URL dado um objeto categoria ou seu rota string */
+export function getCategoriaRota(rota: string): string {
+  return rota;
+}
+
+/** Constantes de IDs canônicos para uso tipado no código */
+export const CATEGORIA_IDS = {
+  RESTAURANTES: 'cat_rest',
+  CAFES: 'cat_cafe',
+  PASSEIOS: 'cat_pass',
+  LOJAS: 'cat_loja',
+  SERVICOS: 'cat_serv',
 } as const;
 
-export type CategoriaCanonica = typeof CATEGORIAS[keyof typeof CATEGORIAS];
-
-/** Mapeia categoria canônica → rota da URL */
-export const CATEGORIA_PARA_ROTA: Record<string, string> = {
-  [CATEGORIAS.RESTAURANTES]: 'restaurantes',
-  [CATEGORIAS.CAFES]: 'cafes',
-  [CATEGORIAS.PASSEIOS]: 'lazer',
-  [CATEGORIAS.LOJAS]: 'lojas',
-  [CATEGORIAS.SERVICOS]: 'prestadores',
-};
-
-/** Mapeia categoria canônica → label de exibição */
-export const CATEGORIA_LABEL: Record<string, string> = {
-  [CATEGORIAS.RESTAURANTES]: 'Restaurantes',
-  [CATEGORIAS.CAFES]: 'Cafés e Docerias',
-  [CATEGORIAS.PASSEIOS]: 'Lazer & Passeios',
-  [CATEGORIAS.LOJAS]: 'Onde Comprar',
-  [CATEGORIAS.SERVICOS]: 'Serviços',
-};
-
-/** Subcategorias disponíveis por categoria canônica */
-export const SUBCATEGORIAS: Record<string, string[]> = {
-  [CATEGORIAS.RESTAURANTES]: [
-    'Hamburgueria', 'Pizza', 'Japonês', 'Italiano', 'Mexicano', 'Coreano',
-    'Alemão / Germânico', 'Buffet', 'Bar', 'Esfirraria', 'Padaria',
-    'Pastelaria', 'Hot Dog', 'Empadas', 'Gelateria', 'Romântico', 'Outro',
-  ],
-  [CATEGORIAS.CAFES]: [
-    'Cafeteria', 'Doceria', 'Brunch', 'Sorveteria', 'Outro',
-  ],
-  [CATEGORIAS.PASSEIOS]: [
-    'Parque', 'Evento', 'Festival', 'Concerto', 'Museu', 'Mirante', 'Outro',
-  ],
-  [CATEGORIAS.LOJAS]: [
-    'Moda', 'Decoração', 'Livraria', 'Presentes', 'Eletrônicos', 'Outro',
-  ],
-  [CATEGORIAS.SERVICOS]: [
-    'Dentista', 'Beleza / Estética', 'Unhas', 'Arquiteta', 'Outro',
-  ],
-};
-
-/** Retorna a rota correta para qualquer categoria (canônica ou legada) */
-export function getCategoriaRota(categoria: string): string {
-  // Tenta match direto (categoria canônica)
-  if (CATEGORIA_PARA_ROTA[categoria]) {
-    return CATEGORIA_PARA_ROTA[categoria];
-  }
-
-  // Fallback para valores legados (categorias antigas no banco)
-  const lower = categoria.toLowerCase();
-  if (['hamburgueria', 'esfirraria', 'padaria', 'gelateria', 'pastelaria', 'empadas',
-    'hotdog', 'germanico', 'buffet', 'bar', 'coreano', 'mexicano', 'italiano',
-    'japones', 'pizzaria', 'romantico'].includes(lower)) {
-    return 'restaurantes';
-  }
-  if (['cafeteria', 'doceria', 'brunch'].includes(lower)) {
-    return 'cafes';
-  }
-  if (['evento', 'concerto', 'festival', 'parque', 'lazer', 'passeios'].includes(lower)) {
-    return 'lazer';
-  }
-  if (['dentista', 'arquiteta', 'unhas', 'beleza', 'servico', 'serviços'].includes(lower)) {
-    return 'prestadores';
-  }
-  if (['moda', 'decoracao', 'decoração', 'livraria', 'loja'].includes(lower)) {
-    return 'lojas';
-  }
-
-  return 'lazer'; // fallback final
-}
-
-/** Retorna o label de exibição para uma categoria */
-export function getCategoriaLabel(categoria: string): string {
-  return CATEGORIA_LABEL[categoria] || categoria;
-}
-
-/** 
- * Helpers para migração de dados antigos para os novos canônicos.
- * Exemplo: getCanonicalCategoria('hamburgueria') => 'Restaurantes'
- */
-export function getCanonicalCategoria(categoria: string): string {
-  if (!categoria) return '';
-  if (Object.values(CATEGORIAS).includes(categoria as any)) return categoria;
-  
-  const lower = categoria.toLowerCase();
-  if (['hamburgueria', 'esfirraria', 'padaria', 'gelateria', 'pastelaria', 'empadas',
-    'hotdog', 'germanico', 'buffet', 'bar', 'coreano', 'mexicano', 'italiano',
-    'japones', 'pizzaria', 'romantico'].includes(lower)) {
-    return CATEGORIAS.RESTAURANTES;
-  }
-  if (['cafeteria', 'doceria', 'brunch'].includes(lower)) {
-    return CATEGORIAS.CAFES;
-  }
-  if (['evento', 'concerto', 'festival', 'parque', 'lazer', 'passeios'].includes(lower)) {
-    return CATEGORIAS.PASSEIOS;
-  }
-  if (['dentista', 'arquiteta', 'unhas', 'beleza', 'servico', 'serviços'].includes(lower)) {
-    return CATEGORIAS.SERVICOS;
-  }
-  if (['moda', 'decoracao', 'decoração', 'livraria', 'loja'].includes(lower)) {
-    return CATEGORIAS.LOJAS;
-  }
-  return '';
-}
-
-/** 
- * Mapeia a categoria antiga para a subcategoria canônica mais próxima
- * Ex: getCanonicalSubcategoria('hamburgueria') => 'Hamburgueria'
- */
-export function getCanonicalSubcategoria(categoria: string): string {
-  if (!categoria) return '';
-  // Se for uma categoria canônica, não tem subcategoria implícita nela
-  if (Object.values(CATEGORIAS).includes(categoria as any)) return '';
-
-  const lower = categoria.toLowerCase();
-  
-  // Mapa de normalização (opcional/parcial, capitalizando a primeira letra ou usando as do map)
-  const map: Record<string, string> = {
-    hamburgueria: 'Hamburgueria',
-    pizzaria: 'Pizza',
-    japones: 'Japonês',
-    italiano: 'Italiano',
-    mexicano: 'Mexicano',
-    coreano: 'Coreano',
-    germanico: 'Alemão / Germânico',
-    buffet: 'Buffet',
-    bar: 'Bar',
-    esfirraria: 'Esfirraria',
-    padaria: 'Padaria',
-    pastelaria: 'Pastelaria',
-    hotdog: 'Hot Dog',
-    empadas: 'Empadas',
-    gelateria: 'Gelateria',
-    romantico: 'Romântico',
-    cafeteria: 'Cafeteria',
-    doceria: 'Doceria',
-    brunch: 'Brunch',
-    parque: 'Parque',
-    evento: 'Evento',
-    festival: 'Festival',
-    concerto: 'Concerto',
-    moda: 'Moda',
-    decoracao: 'Decoração',
-    decoração: 'Decoração',
-    livraria: 'Livraria',
-    dentista: 'Dentista',
-    unhas: 'Unhas',
-    beleza: 'Beleza / Estética',
-    arquiteta: 'Arquiteta'
-  };
-
-  return map[lower] || '';
-}
+export type CategoriaId = typeof CATEGORIA_IDS[keyof typeof CATEGORIA_IDS];

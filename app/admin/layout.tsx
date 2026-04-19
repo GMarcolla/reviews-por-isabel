@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { LayoutDashboard, MapPin, Ticket, LogOut } from "lucide-react";
+import { LayoutDashboard, MapPin, Ticket, LogOut, Tags } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -17,6 +17,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Link href="/admin/lugares" className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
             <MapPin className="w-5 h-5 mr-3" />
             Lugares
+          </Link>
+          <Link href="/admin/categorias" className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+            <Tags className="w-5 h-5 mr-3" />
+            Categorias
           </Link>
           <Link href="/admin/cupons" className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
             <Ticket className="w-5 h-5 mr-3" />

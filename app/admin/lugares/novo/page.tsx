@@ -1,8 +1,13 @@
 import AdminLugarForm from "@/components/AdminLugarForm";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { getCategorias } from "@/lib/categorias";
 
-export default function NovoLugarPage() {
+export const dynamic = "force-dynamic";
+
+export default async function NovoLugarPage() {
+  const categorias = await getCategorias();
+
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-6">
@@ -14,7 +19,7 @@ export default function NovoLugarPage() {
         <p className="text-gray-500">Adicione um novo local para exibir no diretório.</p>
       </div>
 
-      <AdminLugarForm />
+      <AdminLugarForm categorias={categorias} />
     </div>
   );
 }

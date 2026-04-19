@@ -2,16 +2,21 @@ import AdminLugarForm from "@/components/AdminLugarForm";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { prisma } from "@/lib/prisma";
+import { getCategorias } from "@/lib/categorias";
 import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 export default async function EditarLugarPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  
-  const lugar = await prisma.lugar.findUnique({
-    where: { id }
-  });
+
+  const [lugar, categorias] = await Promise.all([
+    prisma.lugar.findUnique({
+      where: { id },
+      include: { categoria: true, subcategoria: true },
+    }),
+    getCategorias(),
+  ]);
 
   if (!lugar) {
     notFound();
@@ -28,7 +33,7 @@ export default async function EditarLugarPage({ params }: { params: Promise<{ id
         <p className="text-gray-500">Alterando informações de: {lugar.nome}</p>
       </div>
 
-      <AdminLugarForm initialData={lugar} />
+      <AdminLugarForm initialData={lugar} categorias={categorias} />
     </div>
   );
 }

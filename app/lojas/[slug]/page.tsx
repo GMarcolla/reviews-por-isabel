@@ -148,14 +148,16 @@ export default async function LojaPage({ params }: { params: Promise<{ slug: str
             
             <div className="space-y-4">
               {/* Address */}
-              {loja.endereco && (
+              {(loja.endereco || loja.enderecoGoogleMaps) && (
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div className="flex-1">
                     <p className="text-sm font-semibold text-marrom-forte">Endereço</p>
-                    <p className="text-sm text-marrom-rosado mb-2">{loja.endereco}</p>
+                    {loja.endereco && (
+                      <p className="text-sm text-marrom-rosado mb-2">{loja.endereco}</p>
+                    )}
                     <div className="space-y-2">
-                      {loja.enderecoGoogleMaps && (
+                      {loja.enderecoGoogleMaps ? (
                         <a 
                           href={loja.enderecoGoogleMaps}
                           target="_blank"
@@ -163,6 +165,15 @@ export default async function LojaPage({ params }: { params: Promise<{ slug: str
                           className="block text-xs !text-white bg-terracota hover:bg-terracota-claro px-3 py-2 rounded-md transition-colors text-center"
                         >
                           📍 {loja.enderecoGoogleMapsLabel || 'Ver no Google Maps'}
+                        </a>
+                      ) : (
+                        <a 
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${loja.nome}, ${loja.endereco}`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block text-xs !text-white bg-terracota hover:bg-terracota-claro px-3 py-2 rounded-md transition-colors text-center"
+                        >
+                          📍 Ver no Google Maps
                         </a>
                       )}
                       {loja.enderecoGoogleMaps2 && (

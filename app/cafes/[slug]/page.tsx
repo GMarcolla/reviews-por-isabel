@@ -148,14 +148,16 @@ export default async function CafePage({ params }: { params: Promise<{ slug: str
             
             <div className="space-y-4">
               {/* Address */}
-              {cafe.endereco && (
+              {(cafe.endereco || cafe.enderecoGoogleMaps) && (
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div className="flex-1">
                     <p className="text-sm font-semibold text-marrom-forte">Endereço</p>
-                    <p className="text-sm text-marrom-rosado mb-2">{cafe.endereco}</p>
+                    {cafe.endereco && (
+                      <p className="text-sm text-marrom-rosado mb-2">{cafe.endereco}</p>
+                    )}
                     <div className="space-y-2">
-                      {cafe.enderecoGoogleMaps && (
+                      {cafe.enderecoGoogleMaps ? (
                         <a 
                           href={cafe.enderecoGoogleMaps}
                           target="_blank"
@@ -163,6 +165,15 @@ export default async function CafePage({ params }: { params: Promise<{ slug: str
                           className="block text-xs !text-white bg-terracota hover:bg-terracota-claro px-3 py-2 rounded-md transition-colors text-center"
                         >
                           📍 {cafe.enderecoGoogleMapsLabel || 'Ver no Google Maps'}
+                        </a>
+                      ) : (
+                        <a 
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${cafe.nome}, ${cafe.endereco}`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block text-xs !text-white bg-terracota hover:bg-terracota-claro px-3 py-2 rounded-md transition-colors text-center"
+                        >
+                          📍 Ver no Google Maps
                         </a>
                       )}
                       {cafe.enderecoGoogleMaps2 && (

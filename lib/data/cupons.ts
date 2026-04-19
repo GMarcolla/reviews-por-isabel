@@ -6,8 +6,8 @@ function mapCupom(dbCupom: any): Cupom {
     id: dbCupom.id,
     lugarId: dbCupom.lugarId,
     lugarNome: dbCupom.lugar.nome,
-    categoria: dbCupom.lugar.categoria,
-    subcategoria: dbCupom.lugar.subcategoria || dbCupom.lugar.categoria,
+    categoria: dbCupom.lugar.categoria?.nome || '',
+    subcategoria: dbCupom.lugar.subcategoria?.nome || dbCupom.lugar.categoria?.nome || '',
     codigo: dbCupom.codigo,
     descricao: dbCupom.descricao,
     termos: dbCupom.termos || undefined,
@@ -18,7 +18,7 @@ function mapCupom(dbCupom: any): Cupom {
 export async function getCupons(): Promise<Cupom[]> {
   const cupons = await prisma.cupom.findMany({
     where: { ativo: true },
-    include: { lugar: true }
+    include: { lugar: { include: { categoria: true, subcategoria: true } } }
   });
   return cupons.map(mapCupom);
 }
@@ -26,7 +26,7 @@ export async function getCupons(): Promise<Cupom[]> {
 export async function getCupomByLugarId(lugarId: string): Promise<Cupom | undefined> {
   const cupom = await prisma.cupom.findFirst({
     where: { lugarId, ativo: true },
-    include: { lugar: true }
+    include: { lugar: { include: { categoria: true, subcategoria: true } } }
   });
   return cupom ? mapCupom(cupom) : undefined;
 }
@@ -34,23 +34,23 @@ export async function getCupomByLugarId(lugarId: string): Promise<Cupom | undefi
 export async function getCuponsByLugarId(lugarId: string): Promise<Cupom[]> {
   const cupons = await prisma.cupom.findMany({
     where: { lugarId, ativo: true },
-    include: { lugar: true }
+    include: { lugar: { include: { categoria: true, subcategoria: true } } }
   });
   return cupons.map(mapCupom);
 }
 
 export async function getCuponsByCategoria(categoria: string): Promise<Cupom[]> {
   const cupons = await prisma.cupom.findMany({
-    where: { ativo: true, lugar: { categoria } },
-    include: { lugar: true }
+    where: { ativo: true, lugar: { categoria: { nome: categoria } } },
+    include: { lugar: { include: { categoria: true, subcategoria: true } } }
   });
   return cupons.map(mapCupom);
 }
 
 export async function getCuponsBySubcategoria(subcategoria: string): Promise<Cupom[]> {
   const cupons = await prisma.cupom.findMany({
-    where: { ativo: true, lugar: { subcategoria } },
-    include: { lugar: true }
+    where: { ativo: true, lugar: { subcategoria: { nome: subcategoria } } },
+    include: { lugar: { include: { categoria: true, subcategoria: true } } }
   });
   return cupons.map(mapCupom);
 }
@@ -64,7 +64,7 @@ export async function searchCupons(query: string): Promise<Cupom[]> {
         { lugar: { nome: { contains: query, mode: 'insensitive' } } }
       ]
     },
-    include: { lugar: true }
+    include: { lugar: { include: { categoria: true, subcategoria: true } } }
   });
   return cupons.map(mapCupom);
 }

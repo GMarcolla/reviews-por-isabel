@@ -155,14 +155,16 @@ export default async function PrestadorPage({ params }: { params: Promise<{ slug
             
             <div className="space-y-4">
               {/* Address */}
-              {prestador.endereco && (
+              {(prestador.endereco || prestador.enderecoGoogleMaps) && (
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-marrom-rosado flex-shrink-0 mt-1" />
                   <div className="flex-1">
                     <p className="text-sm font-semibold text-marrom-forte">Endereço</p>
-                    <p className="text-sm text-marrom-rosado mb-2">{prestador.endereco}</p>
+                    {prestador.endereco && (
+                      <p className="text-sm text-marrom-rosado mb-2">{prestador.endereco}</p>
+                    )}
                     <div className="space-y-2">
-                      {prestador.enderecoGoogleMaps && (
+                      {prestador.enderecoGoogleMaps ? (
                         <a 
                           href={prestador.enderecoGoogleMaps}
                           target="_blank"
@@ -170,6 +172,15 @@ export default async function PrestadorPage({ params }: { params: Promise<{ slug
                           className="block text-xs !text-white bg-terracota hover:bg-terracota-claro px-3 py-2 rounded-md transition-colors text-center"
                         >
                           📍 {prestador.enderecoGoogleMapsLabel || 'Ver no Google Maps'}
+                        </a>
+                      ) : (
+                        <a 
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${prestador.nome}, ${prestador.endereco}`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block text-xs !text-white bg-terracota hover:bg-terracota-claro px-3 py-2 rounded-md transition-colors text-center"
+                        >
+                          📍 Ver no Google Maps
                         </a>
                       )}
                       {prestador.enderecoGoogleMaps2 && (
