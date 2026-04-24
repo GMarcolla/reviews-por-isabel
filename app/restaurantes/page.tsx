@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { Container } from '@/components/Container';
-import { CategorySection } from '@/components/CategorySection';
+import { FilteredCategoryView } from '@/components/FilteredCategoryView';
 import { getRestaurantes } from '@/lib/data/restaurantes';
 import { getCategoriaByRota } from '@/lib/categorias';
 
@@ -18,22 +18,6 @@ export default async function RestaurantesPage() {
   // Subcategorias ordenadas pelo campo `ordem` do banco
   const subcategoriasOrdenadas = categoriaData?.subcategorias ?? [];
 
-  // Agrupar por subcategoriaId
-  const porSubcategoria = todosRestaurantes.reduce((acc, restaurante) => {
-    const key = restaurante.subcategoriaId ?? 'sem-subcategoria';
-    if (!acc[key]) acc[key] = [];
-    acc[key].push(restaurante);
-    return acc;
-  }, {} as Record<string, typeof todosRestaurantes>);
-
-  // Subcategorias que têm lugares, na ordem definida no banco
-  const subcategoriasComLugares = subcategoriasOrdenadas.filter(
-    (s) => porSubcategoria[s.id]
-  );
-
-  // Lugares sem subcategoria (edge case)
-  const semSubcategoria = porSubcategoria['sem-subcategoria'];
-
   return (
     <Container size="xl" className="py-8 md:py-12">
       {/* Hero Section */}
@@ -46,24 +30,11 @@ export default async function RestaurantesPage() {
         </p>
       </div>
 
-      {/* Seções dinâmicas por subcategoria (ordem do banco) */}
-      {subcategoriasComLugares.map((subcategoria) => (
-        <CategorySection
-          key={subcategoria.id}
-          title={subcategoria.nome}
-          lugares={porSubcategoria[subcategoria.id]}
-          columns={3}
-        />
-      ))}
-
-      {/* Lugares sem subcategoria */}
-      {semSubcategoria && semSubcategoria.length > 0 && (
-        <CategorySection
-          title="Outros"
-          lugares={semSubcategoria}
-          columns={3}
-        />
-      )}
+      {/* Grid com Filtros e Listagem */}
+      <FilteredCategoryView 
+        lugares={todosRestaurantes}
+        subcategorias={subcategoriasOrdenadas}
+      />
     </Container>
   );
 }

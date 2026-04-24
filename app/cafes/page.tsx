@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { Container } from '@/components/Container';
-import { CategorySection } from '@/components/CategorySection';
+import { FilteredCategoryView } from '@/components/FilteredCategoryView';
 import { getCafes } from '@/lib/data/cafes';
 import { getCategoriaByRota } from '@/lib/categorias';
 
@@ -17,19 +17,6 @@ export default async function CafesPage() {
 
   const subcategoriasOrdenadas = categoriaData?.subcategorias ?? [];
 
-  const porSubcategoria = todosCafes.reduce((acc, cafe) => {
-    const key = cafe.subcategoriaId ?? 'sem-subcategoria';
-    if (!acc[key]) acc[key] = [];
-    acc[key].push(cafe);
-    return acc;
-  }, {} as Record<string, typeof todosCafes>);
-
-  const subcategoriasComLugares = subcategoriasOrdenadas.filter(
-    (s) => porSubcategoria[s.id]
-  );
-
-  const semSubcategoria = porSubcategoria['sem-subcategoria'];
-
   return (
     <Container size="xl" className="py-8 md:py-12">
       <div className="mb-12 md:mb-16 text-center">
@@ -41,18 +28,10 @@ export default async function CafesPage() {
         </p>
       </div>
 
-      {subcategoriasComLugares.map((subcategoria) => (
-        <CategorySection
-          key={subcategoria.id}
-          title={subcategoria.nome}
-          lugares={porSubcategoria[subcategoria.id]}
-          columns={3}
-        />
-      ))}
-
-      {semSubcategoria && semSubcategoria.length > 0 && (
-        <CategorySection title="Outros" lugares={semSubcategoria} columns={3} />
-      )}
+      <FilteredCategoryView 
+        lugares={todosCafes}
+        subcategorias={subcategoriasOrdenadas}
+      />
     </Container>
   );
 }

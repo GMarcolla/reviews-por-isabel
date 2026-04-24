@@ -46,6 +46,8 @@ export interface Lugar {
   galeria?: string[] | null;
   // Localização
   endereco?: string | null;
+  cidade?: string | null;
+  bairro?: string | null;
   enderecoGoogleMaps?: string | null;
   enderecoGoogleMapsLabel?: string | null;
   enderecoGoogleMaps2?: string | null;

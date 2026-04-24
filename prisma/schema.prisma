@@ -51,6 +51,8 @@ model Lugar {
   imagem                   String
   imagemAlt                String
   endereco                 String?
+  cidade                   String?
+  bairro                   String?
   enderecoGoogleMaps       String?
   enderecoGoogleMapsLabel  String?
   enderecoGoogleMaps2      String?

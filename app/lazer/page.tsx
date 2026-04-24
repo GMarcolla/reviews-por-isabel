@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
 import { Container } from '@/components/Container';
-import { CardLugar } from '@/components/CardLugar';
+import { FilteredCategoryView } from '@/components/FilteredCategoryView';
 import { getPasseios } from '@/lib/data/passeios';
+import { getCategoriaByRota } from '@/lib/categorias';
 
 /**
  * Página de Lazer
@@ -17,8 +18,12 @@ export const metadata: Metadata = {
 };
 
 export default async function LazerPage() {
-  // Buscar todos os itens de lazer
-  const todosLazer = await getPasseios();
+  const [todosLazer, categoriaData] = await Promise.all([
+    getPasseios(),
+    getCategoriaByRota('lazer'),
+  ]);
+
+  const subcategoriasOrdenadas = categoriaData?.subcategorias ?? [];
 
   return (
     <Container size="xl" className="py-8 md:py-12">
@@ -32,16 +37,10 @@ export default async function LazerPage() {
         </p>
       </div>
 
-      {/* Grid de cards */}
-      <div className="grid gap-6 md:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {todosLazer.map((item) => (
-          <CardLugar 
-            key={item.id} 
-            lugar={item} 
-            variant="large"
-          />
-        ))}
-      </div>
+      <FilteredCategoryView 
+        lugares={todosLazer}
+        subcategorias={subcategoriasOrdenadas}
+      />
     </Container>
   );
 }

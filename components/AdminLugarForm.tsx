@@ -19,6 +19,8 @@ const schema = z.object({
   imagem: z.string().min(1, "A URL da imagem é obrigatória"),
   imagemAlt: z.string().min(1, "Texto alternativo para a imagem é obrigatório"),
   endereco: z.string().optional(),
+  cidade: z.string().optional(),
+  bairro: z.string().optional(),
   enderecoGoogleMaps: z.string().optional(),
   enderecoGoogleMapsLabel: z.string().optional(),
   enderecoGoogleMaps2: z.string().optional(),
@@ -64,6 +66,8 @@ export default function AdminLugarForm({ initialData, categorias }: Props) {
           imagem: initialData.imagem || "",
           imagemAlt: initialData.imagemAlt || "",
           endereco: initialData.endereco || "",
+          cidade: initialData.cidade || "",
+          bairro: initialData.bairro || "",
           enderecoGoogleMaps: initialData.enderecoGoogleMaps || "",
           enderecoGoogleMapsLabel: initialData.enderecoGoogleMapsLabel || "",
           enderecoGoogleMaps2: initialData.enderecoGoogleMaps2 || "",
@@ -384,6 +388,28 @@ export default function AdminLugarForm({ initialData, categorias }: Props) {
           <input
             {...register("endereco")}
             placeholder="Ex: Avenida Beira Mar, 1000 - Balneário Camboriú"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Cidade
+          </label>
+          <input
+            {...register("cidade")}
+            placeholder="Ex: Balneário Camboriú"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Bairro
+          </label>
+          <input
+            {...register("bairro")}
+            placeholder="Ex: Centro"
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
           />
         </div>
