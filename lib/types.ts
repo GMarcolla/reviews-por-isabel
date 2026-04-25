@@ -86,12 +86,14 @@ export interface Cupom {
 // ---------------------------------------------------------------------------
 
 export interface RoteiroPeriodo {
-  periodo: 'manha' | 'tarde' | 'noite';
+  periodo: 'manha' | 'almoco' | 'tarde' | 'extras' | 'noite';
   titulo: string;
   descricao: string;
   lugarId?: string;
   imagem?: string;
   dicas?: string[];
+  enderecos?: string[];
+  horarios?: string[];
 }
 
 export interface Roteiro {

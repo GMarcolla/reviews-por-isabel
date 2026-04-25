@@ -4,6 +4,7 @@ import { getRoteiro } from '@/lib/data/roteiro';
 import { getRestauranteBySlug } from '@/lib/data/restaurantes';
 import { Clock, MapPin, Lightbulb } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -15,23 +16,52 @@ export const metadata: Metadata = {
   },
 };
 
-const periodoLabels = {
+const periodoLabels: Record<string, string> = {
   manha: 'Manhã',
+  almoco: 'Almoço',
   tarde: 'Tarde',
+  extras: 'Passeios Extras',
   noite: 'Noite',
 };
 
-const periodoIcons = {
+const periodoIcons: Record<string, string> = {
   manha: '🌅',
+  almoco: '🍽️',
   tarde: '☀️',
+  extras: '⭐',
   noite: '🌙',
 };
 
 export default async function RoteiroPage() {
   const roteiro = getRoteiro();
-  const lugares = await Promise.all(
-    roteiro.periodos.map(p => p.lugarId ? getRestauranteBySlug(p.lugarId) : Promise.resolve(null))
-  );
+  
+  // Buscar lugares que tem id
+  const lugaresPromises = roteiro.periodos.map(async (p) => {
+    if (p.lugarId) {
+      const restaurante = await getRestauranteBySlug(p.lugarId);
+      return { id: p.lugarId, data: restaurante };
+    }
+    return null;
+  });
+  
+  const lugaresResult = await Promise.all(lugaresPromises);
+  const lugaresMap = lugaresResult.reduce((acc, item) => {
+    if (item && item.data) {
+      acc[item.id] = item.data;
+    }
+    return acc;
+  }, {} as Record<string, any>);
+
+  // Agrupar períodos na ordem desejada
+  const order = ['manha', 'almoco', 'tarde', 'extras', 'noite'];
+  
+  const periodosAgrupados = roteiro.periodos.reduce((acc, curr) => {
+    if (!acc[curr.periodo]) {
+      acc[curr.periodo] = [];
+    }
+    acc[curr.periodo].push(curr);
+    return acc;
+  }, {} as Record<string, typeof roteiro.periodos>);
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-white via-off-white-rosado to-beje-tulipa/10">
@@ -65,133 +95,164 @@ export default async function RoteiroPage() {
       {/* Roteiro Content */}
       <section className="py-16 md:py-20 px-6">
         <Container size="lg">
-          <div className="max-w-4xl mx-auto space-y-16 md:space-y-24">
-            {roteiro.periodos.map((periodo, index) => (
-              <article 
-                key={periodo.periodo}
-                className="relative"
-              >
-                {/* Timeline connector */}
-                {index < roteiro.periodos.length - 1 && (
-                  <div className="absolute left-6 md:left-8 top-20 bottom-0 w-0.5 bg-gradient-to-b from-rosa-tulipa to-beje-tulipa -z-10" />
-                )}
+          <div className="max-w-4xl mx-auto space-y-20 md:space-y-32 relative">
+            {/* Main Timeline Line (Connects period icons) */}
+            <div className="absolute left-6 md:left-[3.5rem] top-8 bottom-0 w-1 bg-gradient-to-b from-rosa-tulipa/30 via-beje-tulipa/30 to-transparent -z-10 hidden md:block" />
 
-                <div className="space-y-6">
+            {order.map((periodoKey) => {
+              const atividades = periodosAgrupados[periodoKey];
+              if (!atividades || atividades.length === 0) return null;
+
+              return (
+                <div key={periodoKey} className="relative">
+                  
                   {/* Período Header */}
-                  <div className="flex items-start gap-4 md:gap-6">
-                    <div className="flex-shrink-0">
-                      <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-rosa-tulipa to-rosa-tulipa-claro shadow-lg flex items-center justify-center text-2xl md:text-3xl">
-                        {periodoIcons[periodo.periodo]}
+                  <div className="flex items-center gap-4 md:gap-6 mb-8 md:mb-12 sticky top-16 z-20 bg-white/95 backdrop-blur-sm pt-6 pb-4 -mx-6 px-6 md:-mx-4 md:px-4 rounded-b-xl md:rounded-b-2xl border-b border-beje-tulipa/20 shadow-sm">
+                    <div className="flex-shrink-0 relative z-10">
+                      <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-rosa-tulipa to-rosa-tulipa-claro shadow-lg flex items-center justify-center text-2xl md:text-3xl ring-4 ring-white">
+                        {periodoIcons[periodoKey]}
                       </div>
                     </div>
                     
-                    <div className="flex-1 pt-2">
-                      <div className="inline-block px-3 py-1 bg-beje-tulipa/30 rounded-full mb-3">
-                        <span className="text-xs md:text-sm font-medium text-marrom-escuro uppercase tracking-wide">
-                          {periodoLabels[periodo.periodo]}
-                        </span>
-                      </div>
-                      
-                      <h2 className="font-display text-3xl md:text-4xl text-marrom-escuro mb-4">
-                        {periodo.titulo}
-                      </h2>
-                    </div>
-                  </div>
-
-                  {/* Imagem ilustrativa */}
-                  <div className="relative rounded-2xl overflow-hidden shadow-xl bg-gradient-to-br from-beje-tulipa/30 to-off-white-rosado aspect-[16/9] md:aspect-[21/9]">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center p-8">
-                        <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-rosa-tulipa/20 flex items-center justify-center">
-                          <svg 
-                            className="w-10 h-10 text-marrom-escuro/40" 
-                            fill="none" 
-                            stroke="currentColor" 
-                            viewBox="0 0 24 24"
-                          >
-                            <path 
-                              strokeLinecap="round" 
-                              strokeLinejoin="round" 
-                              strokeWidth={1.5} 
-                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" 
-                            />
-                          </svg>
+                    <div className="flex-1">
+                      {periodoKey !== 'extras' && (
+                        <div className="inline-block px-3 py-1 bg-beje-tulipa/30 rounded-full mb-2">
+                          <span className="text-xs md:text-sm font-medium text-marrom-escuro uppercase tracking-wide">
+                            Período
+                          </span>
                         </div>
-                        <p className="text-sm text-marrom-escuro/50">
-                          Imagem ilustrativa em breve
+                      )}
+                      <h2 className="font-display text-3xl md:text-4xl text-marrom-escuro">
+                        {periodoLabels[periodoKey]}
+                      </h2>
+                      {periodoKey === 'noite' && (
+                        <p className="text-marrom-escuro/70 mt-1 text-sm md:text-base">
+                          Indicações de jantar
                         </p>
-                      </div>
+                      )}
                     </div>
                   </div>
 
-                  {/* Descrição */}
-                  <div className="prose prose-lg max-w-none">
-                    <p className="text-marrom-escuro/80 leading-relaxed text-base md:text-lg">
-                      {periodo.descricao}
-                    </p>
-                  </div>
+                  {/* Lista de Atividades do Período */}
+                  <div className="space-y-12 md:ml-8 pl-4 md:pl-10 border-l-2 border-rosa-tulipa/20 md:border-l-0 relative">
+                    
+                    {/* Linha vertical Mobile */}
+                    <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-rosa-tulipa/20 md:hidden" />
 
-                  {/* Link para lugar (se aplicável) */}
-                  {periodo.lugarId && (
-                    <div className="bg-gradient-to-r from-beje-tulipa/30 to-off-white-rosado rounded-xl p-6 border border-rosa-tulipa/20">
-                      {(() => {
-                        const lugar = lugares[index];
-                        if (!lugar) return null;
-                        
-                        return (
-                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                            <div>
-                              <p className="text-sm text-marrom-escuro/60 mb-1">
-                                Recomendação especial
-                              </p>
-                              <h3 className="font-display text-xl md:text-2xl text-marrom-escuro">
-                                {lugar.nome}
-                              </h3>
-                              <p className="text-marrom-escuro/70 mt-1">
-                                {lugar.descricaoCurta}
-                              </p>
+                    {atividades.map((atividade, aIndex) => (
+                      <article key={atividade.titulo} className="relative">
+                        {/* Ponto na linha do tempo */}
+                        <div className="absolute -left-[21px] md:-left-[46px] top-6 md:top-8 w-4 h-4 rounded-full bg-rosa-tulipa border-4 border-white shadow-sm z-10" />
+
+                        <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-beje-tulipa/40 relative hover:shadow-md transition-shadow">
+                          <h3 className="font-display text-2xl md:text-3xl text-marrom-escuro mb-6">
+                            {atividade.titulo}
+                          </h3>
+
+                          {/* Imagem ilustrativa */}
+                          {atividade.imagem && (
+                            <div className="relative rounded-2xl overflow-hidden shadow-xl bg-gradient-to-br from-beje-tulipa/30 to-off-white-rosado aspect-[4/3] md:aspect-[16/9] mb-6">
+                              <Image
+                                src={atividade.imagem}
+                                alt={atividade.titulo}
+                                fill
+                                className="object-cover object-center transition-transform duration-500 hover:scale-105"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              />
                             </div>
-                            <Link
-                              href={`/restaurantes/${lugar.id}`}
-                              className="flex-shrink-0 px-6 py-3 bg-verde-tulipa text-white rounded-lg hover:bg-verde-tulipa-claro transition-all duration-200 font-medium"
-                            >
-                              Ver detalhes
-                            </Link>
-                          </div>
-                        );
-                      })()}
-                    </div>
-                  )}
+                          )}
 
-                  {/* Dicas */}
-                  {periodo.dicas && periodo.dicas.length > 0 && (
-                    <div className="bg-white rounded-xl p-6 shadow-md border border-beje-tulipa">
-                      <div className="flex items-center gap-2 mb-4">
-                        <Lightbulb className="w-5 h-5 text-rosa-tulipa" />
-                        <h3 className="font-display text-lg text-marrom-escuro">
-                          Dicas da Isa
-                        </h3>
-                      </div>
-                      <ul className="space-y-2">
-                        {periodo.dicas.map((dica, i) => (
-                          <li 
-                            key={i}
-                            className="flex items-start gap-3 text-marrom-escuro/80"
-                          >
-                            <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-rosa-tulipa mt-2" />
-                            <span>{dica}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                          {/* Dicas antes da descricao se quiser, mas deixarei onde estava */}
+
+                          {/* Descrição */}
+                          <div className="prose prose-lg max-w-none mb-6">
+                            <p className="text-marrom-escuro/80 leading-relaxed text-base md:text-lg">
+                              {atividade.descricao}
+                            </p>
+                          </div>
+
+                          {/* Bloco de Endereços e Horários */}
+                          {(atividade.enderecos?.length || atividade.horarios?.length) ? (
+                            <div className="bg-gradient-to-r from-beje-tulipa/20 to-transparent rounded-xl p-5 mb-6 space-y-4">
+                              {atividade.enderecos && atividade.enderecos.length > 0 && (
+                                <div className="flex items-start gap-3 text-marrom-escuro/80">
+                                  <MapPin className="w-5 h-5 flex-shrink-0 text-rosa-tulipa mt-0.5" />
+                                  <div className="space-y-1.5 flex-1">
+                                    {atividade.enderecos.map((end, i) => (
+                                      <p key={i} className="text-sm md:text-base leading-snug">{end}</p>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                              {atividade.horarios && atividade.horarios.length > 0 && (
+                                <div className="flex items-start gap-3 text-marrom-escuro/80">
+                                  <Clock className="w-5 h-5 flex-shrink-0 text-rosa-tulipa mt-0.5" />
+                                  <div className="space-y-1.5 flex-1">
+                                    {atividade.horarios.map((hor, i) => (
+                                      <p key={i} className="text-sm md:text-base leading-snug">{hor}</p>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          ) : null}
+
+                          {/* Link para lugar (se aplicável no banco) */}
+                          {atividade.lugarId && lugaresMap[atividade.lugarId] && (
+                            <div className="bg-gradient-to-r from-beje-tulipa/30 to-off-white-rosado rounded-xl p-5 border border-rosa-tulipa/20 mb-6">
+                              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                <div>
+                                  <p className="text-sm text-marrom-escuro/60 mb-1">
+                                    Página do Restaurante
+                                  </p>
+                                  <h4 className="font-display text-xl text-marrom-escuro">
+                                    {lugaresMap[atividade.lugarId].nome}
+                                  </h4>
+                                </div>
+                                <Link
+                                  href={`/restaurantes/${lugaresMap[atividade.lugarId].slug || atividade.lugarId}`}
+                                  className="flex-shrink-0 px-6 py-2.5 bg-verde-tulipa text-white rounded-lg hover:bg-verde-tulipa-claro transition-all duration-200 font-medium text-sm"
+                                >
+                                  Ver detalhes
+                                </Link>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Dicas */}
+                          {atividade.dicas && atividade.dicas.length > 0 && (
+                            <div className="bg-off-white-rosado rounded-xl p-5 border border-beje-tulipa/50">
+                              <div className="flex items-center gap-2 mb-3">
+                                <Lightbulb className="w-5 h-5 text-rosa-tulipa" />
+                                <h4 className="font-display text-lg text-marrom-escuro">
+                                  Dicas da Isa
+                                </h4>
+                              </div>
+                              <ul className="space-y-2">
+                                {atividade.dicas.map((dica, i) => (
+                                  <li 
+                                    key={i}
+                                    className="flex items-start gap-3 text-marrom-escuro/80 text-sm md:text-base"
+                                  >
+                                    <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-rosa-tulipa mt-2" />
+                                    <span>{dica}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                        </div>
+                      </article>
+                    ))}
+                  </div>
                 </div>
-              </article>
-            ))}
+              );
+            })}
           </div>
 
           {/* Call to Action */}
-          <div className="max-w-4xl mx-auto mt-16 md:mt-20">
+          <div className="max-w-4xl mx-auto mt-20 md:mt-24">
             <div className="bg-gradient-to-br from-rosa-tulipa/10 via-beje-tulipa/20 to-off-white-rosado rounded-2xl p-8 md:p-12 text-center border border-rosa-tulipa/20">
               <h3 className="font-display text-2xl md:text-3xl text-marrom-escuro mb-4">
                 Pronta para sua aventura?
