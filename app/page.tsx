@@ -1,8 +1,28 @@
 import { BotaoHub } from '@/components/BotaoHub';
 import { Mail } from 'lucide-react';
 import Image from 'next/image';
+import { prisma } from '@/lib/prisma';
+import { CarrosselLugares } from '@/components/CarrosselLugares';
+import { Lugar } from '@/lib/types';
 
-export default function Home() {
+export const revalidate = 60; // Revalida a cada 60 segundos
+
+export default async function Home() {
+  const favoritosDaIsaRaw = await prisma.lugar.findMany({
+    where: { destaque: true },
+    include: { categoria: true, subcategoria: true },
+    orderBy: { nome: 'asc' }
+  });
+
+  const ultimosVisitadosRaw = await prisma.lugar.findMany({
+    orderBy: { createdAt: 'desc' },
+    take: 5,
+    include: { categoria: true, subcategoria: true }
+  });
+
+  const favoritosDaIsa = favoritosDaIsaRaw as unknown as Lugar[];
+  const ultimosVisitados = ultimosVisitadosRaw as unknown as Lugar[];
+
   return (
     <main className="min-h-screen">
       {/* Hero Section - Reviews por Isabel */}
@@ -47,6 +67,26 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Favoritos da Isa */}
+      {favoritosDaIsa.length > 0 && (
+        <CarrosselLugares 
+          lugares={favoritosDaIsa} 
+          title="Favoritos da Isa 💖" 
+          subtitle="Lugares que eu amo e super recomendo!" 
+        />
+      )}
+
+      {/* Últimos Visitados */}
+      {ultimosVisitados.length > 0 && (
+        <div className="bg-beje-tulipa/20">
+          <CarrosselLugares 
+            lugares={ultimosVisitados} 
+            title="Últimos Visitados 🆕" 
+            subtitle="As novidades fresquinhas que acabei de conhecer" 
+          />
+        </div>
+      )}
 
       {/* Hub Buttons Section */}
       <section className="py-16 px-6 md:py-24 bg-white">

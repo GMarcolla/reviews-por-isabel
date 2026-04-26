@@ -29,7 +29,7 @@ export function CardLugar({
       className={cn(
         'group bg-white rounded-card overflow-hidden shadow-card-tulipa',
         'transition-all duration-300 hover:shadow-card-tulipa-hover hover:-translate-y-1',
-        'flex flex-col'
+        'flex flex-col h-full'
       )}
     >
       {/* Imagem */}
