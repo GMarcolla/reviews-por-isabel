@@ -20,7 +20,7 @@ const menuItems = [
   { label: 'Lojas', href: '/lojas' },
   { label: '1 dia em Blumenau', href: '/roteiro' },
   { label: 'Cupons', href: '/cupons' },
-  { label: 'Contato', href: '/contato' },
+  { label: 'Sobre mim', href: '/sobre-mim' },
 ];
 
 /**

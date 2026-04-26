@@ -25,65 +25,42 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen">
-      {/* Hero Section - Reviews por Isabel */}
-      <section className="relative bg-gradient-to-br from-beje-tulipa/30 via-off-white-rosado to-white py-20 px-6 md:py-32">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Text Content */}
-            <div className="text-center md:text-left space-y-6">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-display text-marrom-escuro leading-tight">
-                Oi! Eu sou a Isa!
-              </h1>
-              <div className="space-y-3 text-marrom-escuro text-base md:text-lg leading-relaxed max-w-lg mx-auto md:mx-0">
-                <p>
-                  O Reviews por Isabel nasceu da minha vontade de compartilhar lugares que realmente valem a visita em Blumenau e região.
-                </p>
-                <p>
-                  Por aqui você encontra restaurantes, cafés, passeios e experiências que eu já conheci e recomendo.
-                  Tudo baseado nas minhas próprias visitas.
-                </p>
-                <p>
-                  Espero te ajudar a descobrir lugares legais e ter novas experiências pela região!
-                </p>
-              </div>
-            </div>
+      {/* Hero Section & Favoritos da Isa */}
+      <section className="relative bg-gradient-to-br from-beje-tulipa/30 via-off-white-rosado to-white pt-8 pb-4 md:pt-10 md:pb-4 overflow-hidden">
 
-            {/* Image */}
-            <div className="relative">
-              <div className="aspect-square rounded-2xl shadow-lg overflow-hidden">
-                <Image
-                  src="/foto-home.jpeg"
-                  alt="Isabel - Reviews por Isabel"
-                  width={600}
-                  height={600}
-                  className="object-cover w-full h-full"
-                  priority
-                />
-              </div>
-              {/* Decorative elements */}
-              <div className="absolute -top-4 -right-4 w-24 h-24 bg-rosa-tulipa/20 rounded-full blur-2xl"></div>
-              <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-verde-tulipa/20 rounded-full blur-2xl"></div>
-            </div>
-          </div>
+        {/* Texto do Guia */}
+        <div className="max-w-3xl mx-auto px-6 space-y-4 text-center relative z-10">
+          <h1 className="text-4xl md:text-5xl font-display font-bold text-marrom-escuro leading-tight">
+            Seu guia de experiências testadas e aprovadas
+          </h1>
+          <p className="text-marrom-escuro/80 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+            Descubra restaurantes, cafés, passeios e serviços da região através de avaliações sinceras de lugares que eu já visitei e recomendo.
+          </p>
         </div>
-      </section>
 
-      {/* Favoritos da Isa */}
-      {favoritosDaIsa.length > 0 && (
-        <CarrosselLugares 
-          lugares={favoritosDaIsa} 
-          title="Favoritos da Isa 💖" 
-          subtitle="Lugares que eu amo e super recomendo!" 
-        />
-      )}
+        {/* Favoritos da Isa */}
+        {favoritosDaIsa.length > 0 && (
+          <div className="relative z-10 mt-4 md:mt-8">
+            <CarrosselLugares
+              lugares={favoritosDaIsa}
+              title="Favoritos da Isa 💖"
+              subtitle="Lugares que eu amo e super recomendo!"
+            />
+          </div>
+        )}
+
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-rosa-tulipa/20 rounded-full blur-3xl pointer-events-none -z-0"></div>
+        <div className="absolute bottom-10 left-0 w-80 h-80 bg-verde-tulipa/20 rounded-full blur-3xl pointer-events-none -z-0"></div>
+      </section>
 
       {/* Últimos Visitados */}
       {ultimosVisitados.length > 0 && (
         <div className="bg-beje-tulipa/20">
-          <CarrosselLugares 
-            lugares={ultimosVisitados} 
-            title="Últimos Visitados 🆕" 
-            subtitle="As novidades fresquinhas que acabei de conhecer" 
+          <CarrosselLugares
+            lugares={ultimosVisitados}
+            title="Últimos Visitados 🆕"
+            subtitle="As novidades fresquinhas que acabei de conhecer"
           />
         </div>
       )}
@@ -142,17 +119,10 @@ export default async function Home() {
               variant="primary"
             />
             <BotaoHub
-              title="Favoritos da Isa"
-              description="Descubra os meus lugares preferidos"
-              imageSrc="/img-botoes/favoritos.png"
-              href="/favoritos-da-isa"
-              variant="secondary"
-            />
-            <BotaoHub
-              title="Contato"
-              description="Fale comigo"
+              title="Sobre mim"
+              description="Conheça a Isa"
               imageSrc="/img-botoes/fale-comigo.png"
-              href="/contato"
+              href="/sobre-mim"
               variant="secondary"
             />
           </div>
