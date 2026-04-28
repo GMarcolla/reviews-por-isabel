@@ -9,7 +9,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Roteiro em Blumenau',
-  description: 'Descubra o melhor de Blumenau em um roteiro especialmente pensado para você aproveitar a cidade do início ao fim do dia.',
+  description: 'Descubra o melhor de Blumenau em um roteiro de um dia pensado por mim!',
   openGraph: {
     title: 'Roteiro em Blumenau - Reviews por Isabel',
     description: 'Um dia perfeito em Blumenau com curadoria especial',
@@ -34,7 +34,7 @@ const periodoIcons: Record<string, string> = {
 
 export default async function RoteiroPage() {
   const roteiro = getRoteiro();
-  
+
   // Buscar lugares que tem id
   const lugaresPromises = roteiro.periodos.map(async (p) => {
     if (p.lugarId) {
@@ -43,7 +43,7 @@ export default async function RoteiroPage() {
     }
     return null;
   });
-  
+
   const lugaresResult = await Promise.all(lugaresPromises);
   const lugaresMap = lugaresResult.reduce((acc, item) => {
     if (item && item.data) {
@@ -54,7 +54,7 @@ export default async function RoteiroPage() {
 
   // Agrupar períodos na ordem desejada
   const order = ['manha', 'almoco', 'tarde', 'extras', 'noite'];
-  
+
   const periodosAgrupados = roteiro.periodos.reduce((acc, curr) => {
     if (!acc[curr.periodo]) {
       acc[curr.periodo] = [];
@@ -66,7 +66,7 @@ export default async function RoteiroPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-white via-off-white-rosado to-beje-tulipa/10">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-beje-tulipa/30 via-off-white-rosado to-white py-16 md:py-24 px-6">
+      <section className="relative bg-gradient-to-br from-beje-tulipa/30 via-off-white-rosado to-white pt-16 md:pt-24 pb-4 md:pb-8 px-6">
         <Container size="lg">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-rosa-tulipa/20 rounded-full">
@@ -75,11 +75,11 @@ export default async function RoteiroPage() {
                 Blumenau, SC
               </span>
             </div>
-            
+
             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-marrom-escuro leading-tight">
               {roteiro.titulo}
             </h1>
-            
+
             <p className="text-lg md:text-xl text-marrom-escuro/80 leading-relaxed">
               {roteiro.descricao}
             </p>
@@ -93,9 +93,9 @@ export default async function RoteiroPage() {
       </section>
 
       {/* Roteiro Content */}
-      <section className="py-16 md:py-20 px-6">
+      <section className="pt-4 md:pt-8 pb-16 md:pb-20 px-6">
         <Container size="lg">
-          <div className="max-w-4xl mx-auto space-y-20 md:space-y-32 relative">
+          <div className="max-w-4xl mx-auto flex flex-col gap-20 md:gap-32 relative">
             {/* Main Timeline Line (Connects period icons) */}
             <div className="absolute left-6 md:left-[3.5rem] top-8 bottom-0 w-1 bg-gradient-to-b from-rosa-tulipa/30 via-beje-tulipa/30 to-transparent -z-10 hidden md:block" />
 
@@ -105,7 +105,7 @@ export default async function RoteiroPage() {
 
               return (
                 <div key={periodoKey} className="relative">
-                  
+
                   {/* Período Header */}
                   <div className="flex items-center gap-4 md:gap-6 mb-8 md:mb-12 sticky top-16 z-20 bg-white/95 backdrop-blur-sm pt-6 pb-4 -mx-6 px-6 md:-mx-4 md:px-4 rounded-b-xl md:rounded-b-2xl border-b border-beje-tulipa/20 shadow-sm">
                     <div className="flex-shrink-0 relative z-10">
@@ -113,7 +113,7 @@ export default async function RoteiroPage() {
                         {periodoIcons[periodoKey]}
                       </div>
                     </div>
-                    
+
                     <div className="flex-1">
                       {periodoKey !== 'extras' && (
                         <div className="inline-block px-3 py-1 bg-beje-tulipa/30 rounded-full mb-2">
@@ -134,8 +134,8 @@ export default async function RoteiroPage() {
                   </div>
 
                   {/* Lista de Atividades do Período */}
-                  <div className="space-y-12 md:ml-8 pl-4 md:pl-10 border-l-2 border-rosa-tulipa/20 md:border-l-0 relative">
-                    
+                  <div className="flex flex-col gap-12 md:ml-8 pl-4 md:pl-10 border-l-2 border-rosa-tulipa/20 md:border-l-0 relative">
+
                     {/* Linha vertical Mobile */}
                     <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-rosa-tulipa/20 md:hidden" />
 
@@ -151,14 +151,19 @@ export default async function RoteiroPage() {
 
                           {/* Imagem ilustrativa */}
                           {atividade.imagem && (
-                            <div className="relative rounded-2xl overflow-hidden shadow-xl bg-gradient-to-br from-beje-tulipa/30 to-off-white-rosado aspect-[4/3] md:aspect-[16/9] mb-6">
+                            <div className="relative rounded-2xl overflow-hidden shadow-xl bg-gradient-to-br from-beje-tulipa/30 to-off-white-rosado aspect-[4/3] md:aspect-[16/9] mb-6 group">
                               <Image
                                 src={atividade.imagem}
                                 alt={atividade.titulo}
                                 fill
-                                className="object-cover object-center transition-transform duration-500 hover:scale-105"
+                                className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                               />
+                              {atividade.creditoImagem && (
+                                <div className="absolute bottom-3 right-3 bg-black/50 backdrop-blur-md text-white/90 text-[10px] md:text-xs px-2.5 py-1 rounded-md pointer-events-none shadow-sm border border-white/10 z-10">
+                                  Foto: {atividade.creditoImagem}
+                                </div>
+                              )}
                             </div>
                           )}
 
@@ -230,7 +235,7 @@ export default async function RoteiroPage() {
                               </div>
                               <ul className="space-y-2">
                                 {atividade.dicas.map((dica, i) => (
-                                  <li 
+                                  <li
                                     key={i}
                                     className="flex items-start gap-3 text-marrom-escuro/80 text-sm md:text-base"
                                   >
@@ -258,7 +263,7 @@ export default async function RoteiroPage() {
                 Pronta para sua aventura?
               </h3>
               <p className="text-marrom-escuro/80 mb-6 max-w-2xl mx-auto">
-                Este roteiro é apenas uma sugestão! Sinta-se livre para adaptar conforme seu estilo e preferências. 
+                Este roteiro é apenas uma sugestão! Sinta-se livre para adaptar conforme seu estilo e preferências.
                 Explore mais lugares nas outras seções do site.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

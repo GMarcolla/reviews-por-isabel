@@ -91,6 +91,7 @@ export interface RoteiroPeriodo {
   descricao: string;
   lugarId?: string;
   imagem?: string;
+  creditoImagem?: string;
   dicas?: string[];
   enderecos?: string[];
   horarios?: string[];
