@@ -33,7 +33,7 @@ const config: Config = {
         'marrom-escuro': '#742615',
       },
       fontFamily: {
-        display: ['var(--font-playfair)', 'serif'],
+        display: ['var(--font-lora)', 'serif'],
         body: ['var(--font-inter)', 'sans-serif'],
       },
       borderRadius: {

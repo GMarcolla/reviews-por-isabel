@@ -25,26 +25,26 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen">
-      {/* Hero Section & Favoritos da Isa */}
+      {/* Hero Section & Últimos Visitados */}
       <section className="relative bg-gradient-to-br from-beje-tulipa/30 via-off-white-rosado to-white pt-8 pb-4 md:pt-10 md:pb-4 overflow-hidden">
 
         {/* Texto do Guia */}
         <div className="max-w-3xl mx-auto px-6 space-y-4 text-center relative z-10">
           <h1 className="text-4xl md:text-5xl font-display font-bold text-marrom-escuro leading-tight">
-            Seu guia de experiências testadas e aprovadas
+           Um guia de visitas
           </h1>
           <p className="text-marrom-escuro/80 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
             Descubra restaurantes, cafés, passeios e serviços da região através de avaliações sinceras de lugares que eu já visitei e recomendo.
           </p>
         </div>
 
-        {/* Favoritos da Isa */}
-        {favoritosDaIsa.length > 0 && (
+        {/* Últimos Visitados */}
+        {ultimosVisitados.length > 0 && (
           <div className="relative z-10 mt-4 md:mt-8">
             <CarrosselLugares
-              lugares={favoritosDaIsa}
-              title="Favoritos da Isa 💖"
-              subtitle="Lugares que eu amo e super recomendo!"
+              lugares={ultimosVisitados}
+              title="Últimos Visitados 🆕"
+              subtitle="As novidades fresquinhas que acabei de conhecer"
             />
           </div>
         )}
@@ -54,13 +54,13 @@ export default async function Home() {
         <div className="absolute bottom-10 left-0 w-80 h-80 bg-verde-tulipa/20 rounded-full blur-3xl pointer-events-none -z-0"></div>
       </section>
 
-      {/* Últimos Visitados */}
-      {ultimosVisitados.length > 0 && (
+      {/* Favoritos da Isa */}
+      {favoritosDaIsa.length > 0 && (
         <div className="bg-beje-tulipa/20">
           <CarrosselLugares
-            lugares={ultimosVisitados}
-            title="Últimos Visitados 🆕"
-            subtitle="As novidades fresquinhas que acabei de conhecer"
+            lugares={favoritosDaIsa}
+            title="Favoritos da Isa 💖"
+            subtitle="Lugares que eu amo e super recomendo!"
           />
         </div>
       )}
