@@ -36,7 +36,7 @@ export function CarrosselLugares({ lugares, title, subtitle, showCategory = true
     <section className="pt-4 pb-10 md:pt-6 md:pb-12 w-full overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 mb-6 flex items-end justify-between">
         <div>
-          <h2 className="text-2xl md:text-4xl font-display font-bold text-marrom-escuro">{title}</h2>
+          <h2 className="text-2xl md:text-4xl font-body font-bold text-marrom-escuro">{title}</h2>
           {subtitle && <p className="text-marrom-escuro/70 mt-1 md:mt-2 text-sm md:text-lg">{subtitle}</p>}
         </div>
         
@@ -65,7 +65,7 @@ export function CarrosselLugares({ lugares, title, subtitle, showCategory = true
             {lugares.map((lugar) => (
               <div 
                 key={lugar.id} 
-                className="flex-[0_0_280px] sm:flex-[0_0_320px] md:flex-[0_0_350px] min-w-0 h-auto mr-4 md:mr-6"
+                className="flex-[0_0_320px] sm:flex-[0_0_360px] md:flex-[0_0_400px] min-w-0 h-auto mr-4 md:mr-6"
               >
                 <CardLugar 
                   lugar={lugar} 

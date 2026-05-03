@@ -19,7 +19,7 @@ export function CardLugar({
   // Rota vem diretamente do objeto categoria (populado via include)
   const routePrefix = lugar.categoria?.rota ?? 'restaurantes';
   const detailsUrl = `/${routePrefix}/${lugar.slug}`;
-  const imageHeight = variant === 'large' ? 'h-64 md:h-80' : 'h-48 md:h-56';
+  const imageHeight = variant === 'large' ? 'h-72 md:h-96' : 'h-56 md:h-72';
 
   // Label para exibição: usa subcategoria se disponível, senão o label da categoria
   const displayLabel = lugar.subcategoria?.nome ?? lugar.categoria?.label ?? '';

@@ -32,8 +32,8 @@ const colors = {
 };
 
 const fonts = {
-  display: 'Playfair Display, serif',
-  body: 'Inter, sans-serif',
+  display: 'Outfit, sans-serif',
+  body: 'Outfit, sans-serif',
 };
 
 const semanticColors = {

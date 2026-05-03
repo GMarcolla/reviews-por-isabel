@@ -11,7 +11,7 @@ export default async function Home() {
   const favoritosDaIsaRaw = await prisma.lugar.findMany({
     where: { destaque: true },
     include: { categoria: true, subcategoria: true },
-    orderBy: { nome: 'asc' }
+    orderBy: { ordem: 'desc' }
   });
 
   const ultimosVisitadosRaw = await prisma.lugar.findMany({
@@ -30,8 +30,8 @@ export default async function Home() {
 
         {/* Texto do Guia */}
         <div className="max-w-3xl mx-auto px-6 space-y-3 md:space-y-4 text-center relative z-10">
-          <h1 className="text-3xl md:text-5xl font-display font-bold text-marrom-escuro leading-tight">
-           Um guia de visitas
+          <h1 className="text-3xl md:text-5xl font-body font-bold text-marrom-escuro leading-tight">
+           UM GUIA DE VISITAS
           </h1>
           <p className="text-marrom-escuro/80 text-sm md:text-lg leading-relaxed max-w-2xl mx-auto">
             Descubra os melhores lugares de Blumenau com reviews sinceras
@@ -43,7 +43,7 @@ export default async function Home() {
           <div className="relative z-10 mt-6 md:mt-8">
             <CarrosselLugares
               lugares={ultimosVisitados}
-              title="🆕 Últimos Visitados"
+              title="🆕 Últimos visitados"
               subtitle="As novidades que acabei de conhecer"
             />
           </div>
