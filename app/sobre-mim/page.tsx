@@ -24,7 +24,7 @@ export default function SobreMim() {
                   O Reviews por Isabel nasceu da minha vontade de compartilhar lugares que realmente valem a visita em Blumenau e região. Por aqui, reúno restaurantes, cafés, passeios e experiências que já vivi e recomendo, sempre com base nas minhas próprias vivências.
                 </p>
                 <p>
-                  Acredito que boas memórias merecem ser transformadas em registros que permanecem. Espero com isso, te inspirar a descobrir novos lugares e viver experiências incríveis pela região.
+                  Espero com isso, te inspirar a descobrir novos lugares e viver experiências incríveis pela região.
                 </p>
               </div>
             </div>

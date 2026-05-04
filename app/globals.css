@@ -44,6 +44,16 @@ a:hover {
   outline-color: #f6f4f0; /* background-principal para melhor contraste */
 }
 
+/* Hide scrollbar for category navigation */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Leaflet Map Styles */
 .leaflet-container {
   font-family: var(--font-inter);
