@@ -260,7 +260,7 @@ export default async function RoteiroPage() {
           <div className="max-w-4xl mx-auto mt-20 md:mt-24">
             <div className="bg-gradient-to-br from-rosa-tulipa/10 via-beje-tulipa/20 to-off-white-rosado rounded-2xl p-8 md:p-12 text-center border border-rosa-tulipa/20">
               <h3 className="font-display text-2xl md:text-3xl text-marrom-escuro mb-4">
-                Pronta para sua aventura?
+                Pronto para sua aventura?
               </h3>
               <p className="text-marrom-escuro/80 mb-6 max-w-2xl mx-auto">
                 Este roteiro é apenas uma sugestão! Sinta-se livre para adaptar conforme seu estilo e preferências.
