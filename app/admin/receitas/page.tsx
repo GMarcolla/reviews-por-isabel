@@ -16,7 +16,7 @@ export default async function ReceitasAdminPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Receitas</h1>
           <p className="text-gray-500">
-            Gerencie as receitas do quadro "Cozinhando com Isabel".
+            Gerencie as receitas do quadro &ldquo;Cozinhando com Isabel&rdquo;.
           </p>
         </div>
         <Link
