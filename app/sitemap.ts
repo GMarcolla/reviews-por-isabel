@@ -4,6 +4,7 @@ import { getCafes } from '@/lib/data/cafes';
 import { getPasseios } from '@/lib/data/passeios';
 import { getPrestadores } from '@/lib/data/prestadores';
 import { getLojas } from '@/lib/data/lojas';
+import { getReceitas } from '@/lib/receitas';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://reviewsporisabel.com.br';
@@ -45,6 +46,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/receitas`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/roteiro`,
@@ -111,5 +118,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...restaurantePages, ...cafePages, ...lazerPages, ...prestadorPages, ...lojaPages];
+  // Páginas dinâmicas de receitas
+  const receitas = await getReceitas();
+  const receitaPages = receitas.map((receita) => ({
+    url: `${baseUrl}/receitas/${receita.slug}`,
+    lastModified: receita.updatedAt,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
+  return [...staticPages, ...restaurantePages, ...cafePages, ...lazerPages, ...prestadorPages, ...lojaPages, ...receitaPages];
 }

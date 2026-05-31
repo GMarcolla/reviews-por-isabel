@@ -86,3 +86,19 @@ model Cupom {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Receita {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  titulo        String
+  convidado     String
+  ingredientes  String   @db.Text
+  passos        String   @db.Text
+  imagem        String
+  opiniao       String   @db.Text
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([slug])
+  @@map("receitas")
+}

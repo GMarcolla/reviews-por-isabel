@@ -27,6 +27,12 @@ export default async function AdminDashboard() {
           <p className="text-gray-600 mb-4">Gerencie os códigos de desconto oferecidos pelos parceiros.</p>
           <Link href="/admin/cupons" className="text-blue-600 hover:underline font-medium">Ver todos &rarr;</Link>
         </div>
+
+        <div className="p-6 bg-white rounded-lg shadow border border-gray-200">
+          <h2 className="text-xl font-semibold mb-2">Receitas</h2>
+          <p className="text-gray-600 mb-4">Gerencie as receitas do quadro &ldquo;Cozinhando com Isabel&rdquo;.</p>
+          <Link href="/admin/receitas" className="text-blue-600 hover:underline font-medium">Ver todas &rarr;</Link>
+        </div>
       </div>
     </div>
   );

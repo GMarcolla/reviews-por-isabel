@@ -120,6 +120,32 @@ export interface ContatoFormErrors {
 }
 
 // ---------------------------------------------------------------------------
+// Receita (Cozinhando com Isabel)
+// ---------------------------------------------------------------------------
+
+export interface Receita {
+  id: string;
+  slug: string;
+  titulo: string;
+  convidado: string;
+  ingredientes: string;
+  passos: string;
+  imagem: string;
+  opiniao: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ReceitaFormData {
+  titulo: string;
+  convidado: string;
+  ingredientes: string;
+  passos: string;
+  imagem?: File | string;
+  opiniao: string;
+}
+
+// ---------------------------------------------------------------------------
 // Mapa Interativo
 // ---------------------------------------------------------------------------
 

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { LayoutDashboard, MapPin, Ticket, LogOut, Tags } from "lucide-react";
+import { LayoutDashboard, MapPin, Ticket, LogOut, Tags, ChefHat } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -25,6 +25,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Link href="/admin/cupons" className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
             <Ticket className="w-5 h-5 mr-3" />
             Cupons
+          </Link>
+          <Link href="/admin/receitas" className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+            <ChefHat className="w-5 h-5 mr-3" />
+            Receitas
           </Link>
         </nav>
         <div className="p-4 border-t border-gray-200">

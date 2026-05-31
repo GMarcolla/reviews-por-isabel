@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Coffee, UtensilsCrossed, Palmtree, Store, Ticket, Map, Briefcase } from 'lucide-react';
+import { Coffee, UtensilsCrossed, Palmtree, Store, Ticket, Map, Briefcase, ChefHat } from 'lucide-react';
 
 interface Category {
   id: string;
@@ -19,6 +19,7 @@ const categories: Category[] = [
   { id: 'lojas', label: 'Lojas', href: '/lojas', icon: Store },
   { id: 'cupons', label: 'Cupons', href: '/cupons', icon: Ticket },
   { id: 'roteiro', label: 'Roteiro', href: '/roteiro', icon: Map },
+  { id: 'receitas', label: 'Receitas', href: '/receitas', icon: ChefHat },
 ];
 
 export function CategoryNav() {

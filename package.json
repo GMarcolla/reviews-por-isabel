@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "convert-csv": "tsx scripts/convert-csv-to-json.ts",
-    "audit-contrast": "tsx scripts/audit-contrast.ts"
+    "audit-contrast": "tsx scripts/audit-contrast.ts",
+    "restore-backup": "tsx scripts/restore-from-backup.ts"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^2.0.2",
