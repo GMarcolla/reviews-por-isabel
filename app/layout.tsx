@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Lora, Outfit } from "next/font/google";
+import { Analytics } from "@/components/Analytics";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -132,6 +133,7 @@ export default function RootLayout({
         </main>
         <WhatsAppButton />
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
