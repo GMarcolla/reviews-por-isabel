@@ -3,7 +3,15 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Otimizações para produção
   reactStrictMode: true,
-  
+
+  // A rota do PDF lê as fontes de public/fonts em tempo de execução. O tracing
+  // do Next não detecta esse caminho (é montado com path.join), então os
+  // arquivos precisam ser incluídos no bundle da função explicitamente —
+  // sem isso a geração quebra em produção, mas funciona em dev.
+  outputFileTracingIncludes: {
+    '/api/roteiro/pdf': ['./public/fonts/**'],
+  },
+
   // Configuração de imagens
   images: {
     formats: ['image/avif', 'image/webp'],

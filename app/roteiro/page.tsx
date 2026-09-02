@@ -3,6 +3,7 @@ import { SectionTitle } from '@/components/SectionTitle';
 import { getRoteiro } from '@/lib/data/roteiro';
 import { getRestauranteBySlug } from '@/lib/data/restaurantes';
 import { Clock, MapPin, Lightbulb } from 'lucide-react';
+import { ExportarRoteiroButton } from '@/components/ExportarRoteiroButton';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
@@ -87,6 +88,10 @@ export default async function RoteiroPage() {
             <div className="flex items-center justify-center gap-2 text-marrom-escuro/70">
               <Clock className="w-5 h-5" />
               <span className="text-sm">Duração: 1 dia completo</span>
+            </div>
+
+            <div className="pt-2">
+              <ExportarRoteiroButton />
             </div>
           </div>
         </Container>
